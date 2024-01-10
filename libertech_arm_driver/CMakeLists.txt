@@ -10,6 +10,42 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
+find_package(Eigen3 REQUIRED)
+
+include_directories(
+    include
+    ${EIGEN3_INCLUDE_DIRS}
+)
+link_directories(libs)
+
+# 外部导出给其他功能包用
+add_library(arm_driver SHARED
+  src/ArmDriver.cpp
+)
+# ament_target_dependencies(arm_driver 
+#   rclcpp 
+# )
+
+add_executable(demo_arm_driver src/main.cpp)
+# ament_target_dependencies(demo_arm_driver 
+#   rclcpp 
+# )
+target_link_libraries(demo_arm_driver arm_driver controlcan.so pthread)
+
+add_executable(test_hex src/test_hex.cpp)
+
+install(TARGETS
+  arm_driver
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
+)
+
+install(TARGETS
+  demo_arm_driver
+  test_hex
+  DESTINATION lib/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)

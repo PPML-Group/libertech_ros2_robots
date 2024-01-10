@@ -1,0 +1,25 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: libertech_arm_description
+    relative_path: urdf/arm.urdf
+  srdf:
+    relative_path: config/arm.srdf
+  package_settings:
+    author_name: Jinjian Li
+    author_email: 60728884+HomeworldL@users.noreply.github.com
+    generated_timestamp: 1704884703
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+    state:
+      - position
+      - velocity

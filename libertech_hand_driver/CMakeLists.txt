@@ -7,9 +7,34 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+find_package(ament_cmake_python REQUIRED)
+
+find_package(rclpy REQUIRED)
+find_package(geometry_msgs REQUIRED)
+find_package(std_msgs REQUIRED)
+find_package(sensor_msgs REQUIRED)
+
+find_package(Python3 REQUIRED Development)
+find_package(Python3 REQUIRED Interpreter)
+
+# Install Python modules
+ament_python_install_package(${PROJECT_NAME})
+ 
+# Install Python executables
+install(PROGRAMS
+  scripts/test_ik.py
+  scripts/hand_ros_driver.py
+  scripts/hand_demo.py
+  scripts/node.py
+
+  DESTINATION lib/${PROJECT_NAME}
+)
+
+install(DIRECTORY 
+  launch
+  config
+  DESTINATION share/${PROJECT_NAME}
+)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
@@ -24,3 +49,4 @@ if(BUILD_TESTING)
 endif()
 
 ament_package()
+
