@@ -41,11 +41,6 @@ def generate_launch_description():
         executable='joint_state_publisher_gui',
         condition=IfCondition(LaunchConfiguration('gui'))
     )
-    
-    hand_controller_node = Node(
-        package='freehand_controller',
-        executable='freehand_ros_driver.py',
-    )
 
     rviz_node = Node(
         package='rviz2',
