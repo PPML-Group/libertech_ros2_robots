@@ -1,11 +1,7 @@
 <?xml version="1.0"?>
-
-<robot name="freearm" xmlns:xacro="http://www.ros.org/wiki/xacro">
-   <xacro:arg name="UnitreeGripper" default="false"/>
-    <xacro:arg name="OAKCamera" default="true"/>
-    <xacro:arg name="FTSensor" default="true"/>
-
-    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_right.xacro"/>
+<!-- 该文件调用macro中的load_arm_left来构造arm_left -->
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <xacro:include filename="$(find libertech_arm_description)/urdf/macro.xacro"/>
     <!-- <xacro:include filename="$(find z1_description)/urdf/gazebo.xacro"/> -->
 
     <link name="world"/>
@@ -21,7 +17,7 @@
     <!-- add arms names prefixes -->
     <xacro:arg name="arm" default="" />
 
-    <xacro:freearm id="$(arg arm)" connected_to="baseout" xyz="0 0.0 0.0" rpy="0 0 0"/>
+    <xacro:load_arm_left id="$(arg arm)" connected_to="baseout" xyz="0 0.0 0.0" rpy="0 0 0"/>
 
     
 </robot>

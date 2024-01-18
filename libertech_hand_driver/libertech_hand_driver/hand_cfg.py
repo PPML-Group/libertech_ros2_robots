@@ -123,8 +123,7 @@ motor_direction_right = {
     "fourth": [ 1, 1],
     "little": [ 1, 1],
     "thumb" : [-1,-1, 1],
-    "all"   : [-1, 1, 1, 1, 1, 1,
-                -1, -1, 1, 1, 1, -1, 1],
+    "all"   : [-1, 1, 1, 1, 1, 1,-1,-1, 1, 1, 1, -1, 1],
 }
 motor_direction_left = {
     "index" : [ 1, 1,-1],

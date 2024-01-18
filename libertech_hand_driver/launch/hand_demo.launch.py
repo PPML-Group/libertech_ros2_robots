@@ -38,7 +38,8 @@ def generate_launch_description():
         executable='hand_demo.py',
         name='hand_demo',
         parameters=[{'urdf_file_path': LaunchConfiguration('model')},
-                    {'actions_file_path': LaunchConfiguration('actions_path')}],
+                    {'actions_file_path': LaunchConfiguration('actions_path')},
+                    {'ip': LaunchConfiguration('actions_path')}],
         output='screen',
     )
 

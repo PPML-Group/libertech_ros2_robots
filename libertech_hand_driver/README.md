@@ -149,6 +149,12 @@ motor_mapping = {
 * hand_model_cal.py:无名指、小拇指逆运动学函数
 * ExtCommProtocol.py:通信数据结构定义
 
+## BUG
+
+* 左手不能超过1000的力
+* 左右手由于装配不同，kp不一样
+* 轨迹规划还可以优化
+
 ## Change Log
 
 ### version:0.1.1

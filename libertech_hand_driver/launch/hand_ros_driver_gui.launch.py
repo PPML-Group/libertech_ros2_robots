@@ -9,8 +9,8 @@ from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
-    name = 'right'
-    # name = 'left'
+    # name = 'right'
+    name = 'left'
     urdf_package_path = get_package_share_path('libertech_hand_description')
     default_model_path = urdf_package_path / f'urdf/{name}_hand.urdf'
     default_rviz_config_path = urdf_package_path / f'rviz/urdf_{name}.rviz'
