@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<robot name="freearm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+   <xacro:arg name="UnitreeGripper" default="false"/>
+    <xacro:arg name="OAKCamera" default="true"/>
+    <xacro:arg name="FTSensor" default="true"/>
+
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_right.xacro"/>
+    <!-- <xacro:include filename="$(find z1_description)/urdf/gazebo.xacro"/> -->
+
+    <link name="world"/>
+
+    <link name="baseout"/>
+
+    <joint name="base_static_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="world"/>
+        <child link="baseout"/>
+    </joint>
+
+    <!-- add arms names prefixes -->
+    <xacro:arg name="arm" default="" />
+
+    <xacro:freearm id="$(arg arm)" connected_to="baseout" xyz="0 0.0 0.0" rpy="0 0 0"/>
+
+    
+</robot>
