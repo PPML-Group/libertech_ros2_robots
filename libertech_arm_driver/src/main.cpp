@@ -4,18 +4,36 @@ int main()
 {
 	ArmDriver armDriver;
 
-	armDriver.setZero();
+	// armDriver.setZero();
 
 	armDriver.runSendReceiveThread();
 
-	// Vec14 q;
-	
-	// float q0 = 10.;
-	// for (int i = 0; i<3; i++) {
-	// 	q[i] = q0/180 * M_PI;
-	// }
+	Vec14 q;
+	q[0] = 15;
+	q[1] = 15;
+	q[2] = 15;
+	q[3] = 15;
+	q[4] = 20;
+	q[5] = 20;
+	q[6] = 20;
 
-	// armDriver.setQ(q);
+	for (int i=0;i<2;i++) {
+		q[i+7] = q[i];
+	}
+
+	int dir = 0;
+	while (1)
+	{
+		if (dir % 2 == 0) {
+			armDriver.setQ(q);
+		}
+		else {
+			armDriver.setQ(-q);
+		}
+		dir++;
+		sleep(1);
+	}
+	
 
 // 	armDriver.setMode("velocity");
 //     // armDriver.setId(1,2);

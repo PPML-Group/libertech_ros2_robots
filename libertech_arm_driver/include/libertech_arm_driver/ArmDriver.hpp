@@ -66,7 +66,6 @@ public:
     int sendQd();
     int sendTau();
 
-
     // 设置模式
     int setModePosition();
     int setModeVelocity();
@@ -75,7 +74,6 @@ public:
     int setHome();
 
     // 标定与辅助功能
- 
     int setId(int id,int setID);
     int setZero();
     int save();
@@ -102,12 +100,13 @@ int test() ;
     int setKp(const Vec14& kp);
     int setKd(const Vec14& kd);
     int setCmd();
-    int getKp();//位置环
-    int getKd();
-    // 读取关节角度
-    std::vector<double> getQ() const;
 
-
+    // 读取关节
+    int getQ(Vec14& qm);
+    int getQd(Vec14& qdm);
+    int getTau(Vec14& taum);
+    int getKp(Vec14& kpm);//位置环
+    int getKd(Vec14& kpm);
 
     // 转换
     void convertPositionToHexBytes(float p, uint8_t (&bytes)[4]);
@@ -140,6 +139,7 @@ private:
     std::mutex mtx_; // 创建一个共享互斥锁
 
     int numJoints_; // 电机数量
+    int numCAN_; // 两条CAN
     // VCI_CAN_OBJ *send_;
     // VCI_CAN_OBJ rec_[3000];
     Command *cmd_ = nullptr;
