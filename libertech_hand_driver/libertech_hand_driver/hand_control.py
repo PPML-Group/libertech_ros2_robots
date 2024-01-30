@@ -63,8 +63,8 @@ class HandAPI:
             logger.info("使用位置模式")
             self.duration_send_ = 0.005
             if self.plan_ == 1:
-                # self.motor_kp_ = 2*np.array([3, 5, 5, 2, 2, 2, 4, 4, 2, 2, 2, 6, 6])
-                self.motor_kp_ = 2*np.array([3, 5, 5, 2, 2, 1, 3, 3, 1, 1, 1, 6, 6])
+                self.motor_kp_ = 2*np.array([3, 1, 1, 2, 2, 2, 4, 4, 2, 2, 2, 6, 6])
+                # self.motor_kp_ = 1*np.array([3, 5, 5, 2, 2, 1, 3, 3, 1, 1, 1, 6, 6])  # left
                 self.motor_kd_  = 3*np.array([2, 2, 2, 2, 2, 8, 2, 2, 8, 8, 8, 2, 2]) 
                 # self.motor_kp_  = np.ones(MOTOR_NUM) * 0.5
                 # self.motor_kd_  = np.ones(MOTOR_NUM) * 0.5 
@@ -116,7 +116,7 @@ class HandAPI:
         for i in range(MOTOR_NUM):
             await self.set_motor_ctrl_param(i, 0, 0)
             # await self.set_motor_enc_param(i, 1, 1)
-            # await self.set_motor_param(i, 1, 4599, 1)
+            await self.set_motor_param(i, 1, 2000, 0)  # 2300
         await asyncio.sleep(0.1)
         
         self.id_yaw_ = [1,2]
@@ -337,7 +337,7 @@ class HandAPI:
     async def update_data(self):
         while True:
             await self.get_motor_states()
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.1)
             
     async def send_cmds(self):
         # self.cmd_始终为当前位置速度指令
@@ -510,108 +510,108 @@ class HandAPI:
         # while(1):
         #     await asyncio.sleep(1)
         
-        # async def index_move(q1,q2, dt, n, n_loop=1):
-        #     for _ in range(n_loop):
-        #         await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="index")
-        #         await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="index")
-        # async def middle_move(q1,q2, dt, n, n_loop=1):
-        #     for _ in range(n_loop):
-        #         await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="middle")
-        #         await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="middle")
-        # async def fourth_move(q, dt, n, n_loop=1):
-        #     for _ in range(n_loop):
-        #         await self.set_q(np.array([0,q]), n=n, dt=dt, fg_name="fourth")
-        #         await self.set_q(np.array([0,0]), n=n, dt=dt, fg_name="fourth")
-        # async def little_move(q, dt, n, n_loop=1):
-        #     for _ in range(n_loop):
-        #         await self.set_q(np.array([0,q]), n=n, dt=dt, fg_name="little")
-        #         await self.set_q(np.array([0,0]), n=n, dt=dt, fg_name="little")
-        # async def thumb_move(q1,q2, dt, n, n_loop=1):
-        #     for _ in range(n_loop):
-        #         await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="thumb")
-        #         await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="thumb")
+        async def index_move(q1,q2, dt, n, n_loop=1):
+            for _ in range(n_loop):
+                await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="index")
+                await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="index")
+        async def middle_move(q1,q2, dt, n, n_loop=1):
+            for _ in range(n_loop):
+                await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="middle")
+                await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="middle")
+        async def fourth_move(q, dt, n, n_loop=1):
+            for _ in range(n_loop):
+                await self.set_q(np.array([0,q]), n=n, dt=dt, fg_name="fourth")
+                await self.set_q(np.array([0,0]), n=n, dt=dt, fg_name="fourth")
+        async def little_move(q, dt, n, n_loop=1):
+            for _ in range(n_loop):
+                await self.set_q(np.array([0,q]), n=n, dt=dt, fg_name="little")
+                await self.set_q(np.array([0,0]), n=n, dt=dt, fg_name="little")
+        async def thumb_move(q1,q2, dt, n, n_loop=1):
+            for _ in range(n_loop):
+                await self.set_q(np.array([0,q1,q2]), n=n, dt=dt, fg_name="thumb")
+                await self.set_q(np.array([0,0,0]), n=n, dt=dt, fg_name="thumb")
                 
-        # logger.info("弯曲演示")
-        # q = 1.45
-        # dt = 0.8
-        # n = 30
-        # for _ in range(1):
-        #     # await index_move(q, 0.0, dt, n)
-        #     # await index_move(0.0, q, dt, n)
-        #     # await middle_move(q, 0.0, dt, n)
-        #     # await middle_move(0.0, q, dt, n)
+        logger.info("弯曲演示")
+        q = 1.45
+        dt = 0.8
+        n = 30
+        for _ in range(1):
+            # await index_move(q, 0.0, dt, n)
+            # await index_move(0.0, q, dt, n)
+            # await middle_move(q, 0.0, dt, n)
+            # await middle_move(0.0, q, dt, n)
             
-        #     # await index_move(q, q, dt, n)
-        #     # await middle_move(q, q, dt, n)
-        #     # await fourth_move(q, dt, n)
-        #     # await little_move(q, dt, n)
-        #     # await thumb_move(q, 0.0, dt, n)
-        #     # await thumb_move(0.0, q, dt, n)
-        #     # await thumb_move(q, q, dt, n)
+            # await index_move(q, q, dt, n)
+            # await middle_move(q, q, dt, n)
+            # await fourth_move(q, dt, n)
+            # await little_move(q, dt, n)
+            # await thumb_move(q, 0.0, dt, n)
+            # await thumb_move(0.0, q, dt, n)
+            # await thumb_move(q, q, dt, n)
             
-        #     await little_move(q, dt, n)
-        #     await fourth_move(q, dt, n)
-        #     await middle_move(q, 0.0, dt, n)
-        #     await middle_move(0.0, q, dt, n)
-        #     await middle_move(q, q, dt, n)
-        #     await index_move(q, 0.0, dt, n)
-        #     await index_move(0.0, q, dt, n)
-        #     await index_move(q, q, dt, n)
-        #     await thumb_move(q, 0.0, dt, n)
-        #     await thumb_move(0.0, q, dt, n)
-        #     await thumb_move(q, q, dt, n)
+            await little_move(q, dt, n)
+            await fourth_move(q, dt, n)
+            await middle_move(q, 0.0, dt, n)
+            await middle_move(0.0, q, dt, n)
+            await middle_move(q, q, dt, n)
+            await index_move(q, 0.0, dt, n)
+            await index_move(0.0, q, dt, n)
+            await index_move(q, q, dt, n)
+            await thumb_move(q, 0.0, dt, n)
+            await thumb_move(0.0, q, dt, n)
+            await thumb_move(q, q, dt, n)
                 
-        # logger.info("侧摆演示")
+        logger.info("侧摆演示")
 
         
-        # dt = 0.8
-        # n = 30
-        # for name in ["index", "middle"]:
-        #     await self.set_q(np.array([0.3,0.3,0]), n=n, dt=dt, fg_name=name)
-        #     # await asyncio.sleep(dt)
-        # for name in ["fourth", "little"]:
-        #     await self.set_q(np.array([0.3,0.0]), n=n, dt=dt, fg_name=name)
-        # for name in reversed(["fourth", "little"]):
-        #     await self.set_q(np.array([-0.3,0.0]), n=n, dt=dt, fg_name=name)
-        # for name in reversed(["index", "middle"]):
-        #     await self.set_q(np.array([-0.3,0.3,0]), n=n, dt=dt, fg_name=name)
-        # await asyncio.sleep(dt)
+        dt = 0.8
+        n = 30
+        for name in ["index", "middle"]:
+            await self.set_q(np.array([0.3,0.3,0]), n=n, dt=dt, fg_name=name)
+            # await asyncio.sleep(dt)
+        for name in ["fourth", "little"]:
+            await self.set_q(np.array([0.3,0.0]), n=n, dt=dt, fg_name=name)
+        for name in reversed(["fourth", "little"]):
+            await self.set_q(np.array([-0.3,0.0]), n=n, dt=dt, fg_name=name)
+        for name in reversed(["index", "middle"]):
+            await self.set_q(np.array([-0.3,0.3,0]), n=n, dt=dt, fg_name=name)
+        await asyncio.sleep(dt)
         
-        # await self.action('diverge', dt=0.5, n=30)
-        # await self.action('open', dt=0.5, n=30)
+        await self.action('diverge', dt=0.5, n=30)
+        await self.action('open', dt=0.5, n=30)
         
-        # logger.info("动作演示")
-        # for _ in range(1):
-        #     await self.action('one')
-        #     await self.action('two')
-        #     await self.action('three')
-        #     await self.action('four')
-        #     await self.action('five')
-        #     await self.action('six')
-        #     await self.action('seven')
-        #     await self.action('eight')
-        #     await self.action('nine')
+        logger.info("动作演示")
+        for _ in range(1):
+            await self.action('one')
+            await self.action('two')
+            await self.action('three')
+            await self.action('four')
+            await self.action('five')
+            await self.action('six')
+            await self.action('seven')
+            await self.action('eight')
+            await self.action('nine')
 
-        # await self.action('ok')
-        # await self.action('open')
-        # await asyncio.sleep(1)
+        await self.action('ok')
+        await self.action('open')
+        await asyncio.sleep(1)
         
-        # logger.info("异步演示")
-        # self.plan_ = 1
-        # q = 1.5
-        # dt = 0.8
-        # dt2 = 0.2
-        # n = 30
-        # n_loop = 3
-        # for _ in range(1):
-        #     asyncio.create_task(index_move(q, q, dt, n, n_loop))
-        #     await asyncio.sleep(dt2)
-        #     asyncio.create_task(middle_move(q, q, dt, n, n_loop))
-        #     await asyncio.sleep(dt2)
-        #     asyncio.create_task(fourth_move(q, dt, n, n_loop))
-        #     await asyncio.sleep(dt2)
-        #     asyncio.create_task(little_move(q, dt, n, n_loop))
-        #     await asyncio.sleep(dt2)
+        logger.info("异步演示")
+        self.plan_ = 1
+        q = 1.6
+        dt = 0.8
+        dt2 = 0.2
+        n = 30
+        n_loop = 3
+        for _ in range(1):
+            asyncio.create_task(index_move(q, q, dt, n, n_loop))
+            await asyncio.sleep(dt2)
+            asyncio.create_task(middle_move(q, q, dt, n, n_loop))
+            await asyncio.sleep(dt2)
+            asyncio.create_task(fourth_move(q, dt, n, n_loop))
+            await asyncio.sleep(dt2)
+            asyncio.create_task(little_move(q, dt, n, n_loop))
+            await asyncio.sleep(dt2)
         
         while 1:
             await asyncio.sleep(0.1)

@@ -16,6 +16,7 @@ import threading
 from typing import Tuple
 from libertech_hand_driver.logger import logger
 import urdf_parser_py.urdf as urdf
+from math import cos, sin
 
 np.set_printoptions(precision=3, suppress=True)
 
