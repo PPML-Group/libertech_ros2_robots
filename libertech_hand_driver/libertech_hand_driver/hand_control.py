@@ -34,17 +34,15 @@ class HandAPI:
         #   力控模式：给出的轨迹经过力转换模块，使用无模型的PID/PD算法给出，使用PID时
         # 7. 手指与外界交互时，使用导纳控制（存在触觉传感），根据接触程度修正末端偏差，然后进一步修正电机位置指令
         #   此时，使用力控模式的PD会比较好
-        logger.info(f"{hand_file}")
+        
         self.hand_model_ = HandModelKinematics(hand_file, display)
         self.hand_dir_ = self.hand_model_.hand_dir_
         self.hand_name_ = self.hand_model_.hand_name_  
         # logger.info(f"{self.hand_name_}")
-        
         with open(action_file, 'r') as file:
             self.actions = yaml.safe_load(file)
         self.motor_mapping_ = motor_mapping[self.hand_name_]
         self.motor_direction_ = motor_direction[self.hand_name_]
-        logger.info(self.motor_direction_)
 
         self.mode_ = mode
         self.plan_ = 1
@@ -116,7 +114,7 @@ class HandAPI:
         for i in range(MOTOR_NUM):
             await self.set_motor_ctrl_param(i, 0, 0)
             # await self.set_motor_enc_param(i, 1, 1)
-            await self.set_motor_param(i, 1, 2000, 0)  # 2300
+            # await self.set_motor_param(i, 1, 2000, 0)  # 2300
         await asyncio.sleep(0.1)
         
         self.id_yaw_ = [1,2]
@@ -133,7 +131,7 @@ class HandAPI:
             # elif i == 12 or i == 6 or i == 7:
             #     await self.set_motor_target(i, 0, 0, -800*self.motor_direction_["all"][i])
             else:
-                await self.set_motor_target(i, 0, 0, -1000*self.motor_direction_["all"][i])
+                await self.set_motor_target(i, 0, 0, -800*self.motor_direction_["all"][i])
             # elif i == 5 or i == 6 or i == 10:
             #     await self.set_motor_target(i, 0, 0, -3000*self.motor_direction_["all"][i])
         await asyncio.sleep(4)
@@ -153,6 +151,7 @@ class HandAPI:
             for i in range(MOTOR_NUM): 
                 await self.set_motor_ctrl_param(i, self.motor_kp_[i], self.motor_kd_[i])
                 # await self.set_motor_enc_param(i, self.enc_dir_[i], 1)
+                # await self.set_motor_param(i, 1, 1000, 1)
 
         elif self.mode_ == 'p_t':
             for i in range(MOTOR_NUM): 
@@ -163,9 +162,6 @@ class HandAPI:
         self.enable_rx_ = 1
         await asyncio.sleep(0.5)
         self.recv_task_ = asyncio.create_task(self.read_forever())
-        
-        logger.info("开始读取")
-        
         await self.reset_id()
         await asyncio.sleep(2)
         self.update_task_ = asyncio.create_task(self.update_data())
@@ -265,9 +261,9 @@ class HandAPI:
     async def send_cmd(self, cmd : CommPack):
         rawdata = cmd.pack()
         await self.tf.send_async(cmd.pkt_type, rawdata)
-        time.sleep(0.002)
+        time.sleep(0.001)
         # await asyncio.sleep(0.0002)
-        await asyncio.sleep(0.01)
+        await asyncio.sleep(0.001)
         
     async def tf_write_async(self, data: bytes) -> int:
         self.writer.write(data)

@@ -8,8 +8,8 @@ import asyncio
 import traceback
 from rich.traceback import Traceback
 
-# TARGET_IP = '10.10.20.61'
-TARGET_IP = '192.168.1.200'
+TARGET_IP = '10.10.20.61'
+# TARGET_IP = '192.168.1.200'
 TARGET_PORT = 2000
 # TARGET_IP = '127.0.0.1'
 # TARGET_PORT = 8801
@@ -111,14 +111,14 @@ async def user_task(flexhand:FlexHand):
     t = time.time()
     while time.time() -t <20:
         for i in range(14):
-            if i != 1 or i != 2:
-                await flexhand.set_motor_target(i,-1500,0,0)  # 如果这不await呢
+            # if i != 1 or i != 2:
+            await flexhand.set_motor_target(i,-1500,0,0)  # 如果这不await呢
             # await asyncio.sleep(0.1)
             
         await asyncio.sleep(0.3)
         for i in range(14):
-            if i != 1 or i != 2:
-                await flexhand.set_motor_target(i,1500,0,0)
+            # if i != 1 or i != 2:
+            await flexhand.set_motor_target(i,1500,0,0)
             
         await asyncio.sleep(0.3)
 

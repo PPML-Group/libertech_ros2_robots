@@ -8,8 +8,8 @@ import asyncio
 import traceback
 from rich.traceback import Traceback
 
-# TARGET_IP = '10.10.20.61'
-TARGET_IP = '192.168.1.200'
+TARGET_IP = '10.10.20.61'
+# TARGET_IP = '192.168.1.200'
 TARGET_PORT = 2000
 # TARGET_IP = '127.0.0.1'
 # TARGET_PORT = 8801
