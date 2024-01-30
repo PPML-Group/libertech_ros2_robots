@@ -4,31 +4,73 @@ from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.conditions import IfCondition, UnlessCondition
 from launch.substitutions import Command, LaunchConfiguration
-
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+from launch_ros.substitutions import FindPackageShare
+
 
 def generate_launch_description():
-    name = 'right' 
-    name = 'left'
-    urdf_path = get_package_share_path('libertech_hand_description')
-    default_model_path = urdf_path / f'urdf/{name}_hand.urdf'
-    default_rviz_config_path = urdf_path / f'rviz/urdf_{name}.rviz'
+    # Declare arguments
+    declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "prefix",
+            default_value="",
+            description="prefix",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "hand_type",
+            default_value="right",
+            description="Type of hand",
+            choices=["right", "left"],
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "gui",
+            default_value='true',
+            description="Flag to enable joint_state_publisher_gu",
+            choices=['true', 'false'],
+        )
+    )
+    
+    prefix = LaunchConfiguration("prefix")
+    hand_type = LaunchConfiguration("hand_type")
+    
+    robot_description_content = Command(
+        [
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution(
+                [FindPackageShare("libertech_hand_description"), "urdf", "hand.xacro"]
+            ),
+            " ",
+            "prefix:=",
+            prefix,
+            " ",
+            "type:=",
+            hand_type,
+            " ",
+        ]
+    )
+    robot_description = {"robot_description": robot_description_content}
 
-    gui_arg = DeclareLaunchArgument(name='gui', default_value='true', choices=['true', 'false'],
-                                    description='Flag to enable joint_state_publisher_gui')
-    model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
-                                      description='Absolute path to robot urdf file')
-    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
-                                     description='Absolute path to rviz config file')
-
-    robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
-                                       value_type=str)
+    rviz_file = PathJoinSubstitution(
+        [FindPackageShare("libertech_hand_description"), "rviz", "urdf.rviz"]
+    )
 
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
-        parameters=[{'robot_description': robot_description}]
+        parameters=[robot_description]
     )
 
     # Depending on gui parameter, either launch joint_state_publisher or joint_state_publisher_gui
@@ -49,15 +91,14 @@ def generate_launch_description():
         executable='rviz2',
         name='rviz2',
         output='screen',
-        arguments=['-d', LaunchConfiguration('rvizconfig')],
+        arguments=['-d', rviz_file],
     )
 
-    return LaunchDescription([
-        gui_arg,
-        model_arg,
-        rviz_arg,
+    nodes_to_start = [
+        robot_state_publisher_node,
         joint_state_publisher_node,
         joint_state_publisher_gui_node,
-        robot_state_publisher_node,
-        rviz_node
-    ])
+        rviz_node,
+    ]
+
+    return LaunchDescription(declared_arguments + nodes_to_start)

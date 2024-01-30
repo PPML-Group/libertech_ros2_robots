@@ -1,69 +1,83 @@
 from ament_index_python.packages import get_package_share_path
+import launch
+from launch import LaunchDescription, LaunchContext
+from launch.actions import DeclareLaunchArgument, TimerAction, ExecuteProcess
+# from launch.actions import DeclareLaunchArgument, LogInfo, PushRosNamespace, ExecuteProcess
 
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, TimerAction
 from launch.conditions import IfCondition, UnlessCondition
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import Command, LaunchConfiguration, PythonExpression
 
+from launch.substitutions import (
+    Command,
+    FindExecutable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+)
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
+from launch_ros.substitutions import FindPackageShare
+
+
+def launch_hand_driver(context, *args, **kwargs):
+    # urdf_path = get_package_share_path('libertech_hand_description')
+    urdf_file_name = 'hand_' + \
+        launch.substitutions.LaunchConfiguration('hand_type').perform(context) + ".xacro.urdf"
+    
+    urdf_file = PathJoinSubstitution(
+        [FindPackageShare("libertech_hand_description"), "urdf", urdf_file_name]
+    )
+    
+    return [
+        Node(
+            package='libertech_hand_driver',
+            executable='hand_demo.py',
+            name='hand_demo',
+            parameters=[{'urdf_file': urdf_file},
+                        {'action_file': LaunchConfiguration("action_file")},
+                        {'ip': LaunchConfiguration("hand_ip")}],
+            output='screen',
+        )
+    ]
+
 
 def generate_launch_description():
-    # name = 'right'
-    name = 'left'
-    urdf_package_path = get_package_share_path('libertech_hand_description')
-    default_model_path = urdf_package_path / f'urdf/{name}_hand.urdf'
-    default_rviz_config_path = urdf_package_path / f'rviz/urdf_{name}.rviz'
-    model_arg = DeclareLaunchArgument(name='model', default_value=str(default_model_path),
-                                      description='Absolute path to robot urdf file')
-    rviz_arg = DeclareLaunchArgument(name='rvizconfig', default_value=str(default_rviz_config_path),
-                                     description='Absolute path to rviz config file')
-    
-    driver_path = get_package_share_path('libertech_hand_driver')
-    actions_path = driver_path / f'config/actions.yaml'
-    actions_arg = DeclareLaunchArgument(name='actions_path', default_value=str(actions_path),
-                                     description='Absolute path to actions yaml file')
-
-    robot_description = ParameterValue(Command(['xacro ', LaunchConfiguration('model')]),
-                                       value_type=str)
-
-    robot_state_publisher_node = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        parameters=[{'robot_description': robot_description}]
+    # Declare arguments
+    declared_arguments = []
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "prefix",
+            default_value="",
+            description="prefix",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "hand_type",
+            default_value="right",
+            description="Type of hand",
+            choices=["right", "left"],
+        )
+    )    
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "hand_ip",
+            default_value='10.10.20.61',
+            description="IP of Hand",
+        )
     )
     
-    hand_controller_node = Node(
-        package='libertech_hand_driver',
-        executable='hand_demo.py',
-        name='hand_demo',
-        parameters=[{'urdf_file_path': LaunchConfiguration('model')},
-                    {'actions_file_path': LaunchConfiguration('actions_path')},
-                    {'ip': LaunchConfiguration('actions_path')}],
-        output='screen',
+    action_file = PathJoinSubstitution(
+        [FindPackageShare("libertech_hand_driver"), "config", "actions.yaml"]
     )
-
-    rviz_node = Node(
-        package='rviz2',
-        executable='rviz2',
-        name='rviz2',
-        output='screen',
-        arguments=['-d', LaunchConfiguration('rvizconfig')],
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "action_file",
+            default_value=action_file,
+            description="action_file",
+        )
     )
     
-    rqt_node = Node(
-        package='rqt_reconfigure',
-        executable='rqt_reconfigure',
-        name='rqt_reconfigure',
-        output='screen',
-    )
-
-    return LaunchDescription([
-        model_arg,
-        rviz_arg,
-        actions_arg,
-        hand_controller_node,
-        # TimerAction(period=5.0, actions=[robot_state_publisher_node]),
-        # rviz_node,
-        # rqt_node,
-    ])
+    nodes_to_start = [
+        launch.actions.OpaqueFunction(function=launch_hand_driver),
+    ]
+    return LaunchDescription(declared_arguments + nodes_to_start)

@@ -63,13 +63,13 @@ class HandModelKinematics:
         "thumb": 10,
     }
     def __init__(self,
-                 hand_path,
+                 hand_file,
                  display=True):
-        self.model_rtb_ = HandModelRTB(hand_path)
+        self.model_rtb_ = HandModelRTB(hand_file)
         self.qdim_ = self.model_rtb_.n
         self.qlim_ = self.model_rtb_.qlim
         self.qlim_act_ = []
-        self.qname_ = self.model_rtb_.joint_names_
+        self.qname_ = self.model_rtb_.joint_names_[2:]
         self.qname_act_ = []
         for i in range(5):
             self.qlim_act_.append(self.qlim_[:, 4*i:4*i+list(self.finger_driver_num.items())[i][1]])
@@ -606,9 +606,9 @@ class HandModelKinematics:
         
 # %% main  
 if __name__ == '__main__':
-    hand_path = '/home/ccs/test_ws/src/freehand_controller/freehand_controller/individual/description/urdf/freehand_right.urdf'
+    hand_file = '/home/ccs/test_ws/src/freehand_controller/freehand_controller/individual/description/urdf/freehand_right.urdf'
     
-    model = HandModelKinematics(hand_path)
+    model = HandModelKinematics(hand_file)
 
     # print(model.fk_q2e(np.array([0,1,1]), "index"))
     

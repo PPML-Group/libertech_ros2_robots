@@ -15,8 +15,8 @@ np.set_printoptions(precision=3, suppress=True)
 
 class HandAPI:
     def __init__(self, 
-                 hand_path,
-                 actions_path='actions.yaml',
+                 hand_file,
+                 action_file='actions.yaml',
                  mode='p_p', # p_p
                  target_ip='10.10.20.61',
                  target_port=2000,
@@ -34,12 +34,13 @@ class HandAPI:
         #   力控模式：给出的轨迹经过力转换模块，使用无模型的PID/PD算法给出，使用PID时
         # 7. 手指与外界交互时，使用导纳控制（存在触觉传感），根据接触程度修正末端偏差，然后进一步修正电机位置指令
         #   此时，使用力控模式的PD会比较好
-        
-        self.hand_model_ = HandModelKinematics(hand_path, display)
+        logger.info(f"{hand_file}")
+        self.hand_model_ = HandModelKinematics(hand_file, display)
         self.hand_dir_ = self.hand_model_.hand_dir_
         self.hand_name_ = self.hand_model_.hand_name_  
         # logger.info(f"{self.hand_name_}")
-        with open(actions_path, 'r') as file:
+        
+        with open(action_file, 'r') as file:
             self.actions = yaml.safe_load(file)
         self.motor_mapping_ = motor_mapping[self.hand_name_]
         self.motor_direction_ = motor_direction[self.hand_name_]
@@ -616,8 +617,8 @@ class HandAPI:
             await asyncio.sleep(0.1)
            
 async def main():
-    hand_path = '/home/ccs/test_ws/src/freehand_controller/freehand_controller/individual/description/urdf/freehand_right.urdf'
-    hand = HandAPI(hand_path)
+    hand_file = '/home/ccs/test_ws/src/freehand_controller/freehand_controller/individual/description/urdf/freehand_right.urdf'
+    hand = HandAPI(hand_file)
     
     joints = np.array([0,0,0])
     d = hand.hand_model_.ik_q2d(joints, "thumb")

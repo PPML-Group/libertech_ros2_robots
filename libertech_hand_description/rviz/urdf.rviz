@@ -68,132 +68,116 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
-        base_link:
+        baseout:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+        right_f11:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f11:
+        right_f12:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f12:
+        right_f13:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f13:
+        right_f14:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f14:
+        right_f21:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f14_touch:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        f21:
+        right_f22:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f22:
+        right_f23:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f23:
+        right_f24:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f24:
+        right_f31:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f24_touch:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        f31:
+        right_f32:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f32:
+        right_f33:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f33:
+        right_f34:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f34:
+        right_f41:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f34_touch:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        f41:
+        right_f42:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f42:
+        right_f43:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f43:
+        right_f44:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f44:
+        right_f51:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f44_touch:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        f51:
+        right_f52:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f52:
+        right_f53:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f53:
+        right_f54:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f54:
+        right_palm:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        f54_touch:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        wrist:
+        world:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -210,59 +194,51 @@ Visualization Manager:
       Frame Timeout: 15
       Frames:
         All Enabled: true
-        base_link:
+        baseout:
           Value: true
-        f11:
+        right_f11:
           Value: true
-        f12:
+        right_f12:
           Value: true
-        f13:
+        right_f13:
           Value: true
-        f14:
+        right_f14:
           Value: true
-        f14_touch:
+        right_f21:
           Value: true
-        f21:
+        right_f22:
           Value: true
-        f22:
+        right_f23:
           Value: true
-        f23:
+        right_f24:
           Value: true
-        f24:
+        right_f31:
           Value: true
-        f24_touch:
+        right_f32:
           Value: true
-        f31:
+        right_f33:
           Value: true
-        f32:
+        right_f34:
           Value: true
-        f33:
+        right_f41:
           Value: true
-        f34:
+        right_f42:
           Value: true
-        f34_touch:
+        right_f43:
           Value: true
-        f41:
+        right_f44:
           Value: true
-        f42:
+        right_f51:
           Value: true
-        f43:
+        right_f52:
           Value: true
-        f44:
+        right_f53:
           Value: true
-        f44_touch:
+        right_f54:
           Value: true
-        f51:
+        right_palm:
           Value: true
-        f52:
-          Value: true
-        f53:
-          Value: true
-        f54:
-          Value: true
-        f54_touch:
-          Value: true
-        wrist:
+        world:
           Value: true
       Marker Scale: 0.10000000149011612
       Name: TF
@@ -270,45 +246,40 @@ Visualization Manager:
       Show Axes: true
       Show Names: false
       Tree:
-        base_link:
-          f11:
-            f12:
-              f13:
-                f14:
-                  f14_touch:
-                    {}
-          f21:
-            f22:
-              f23:
-                f24:
-                  f24_touch:
-                    {}
-          f31:
-            f32:
-              f33:
-                f34:
-                  f34_touch:
-                    {}
-          f41:
-            f42:
-              f43:
-                f44:
-                  f44_touch:
-                    {}
-          f51:
-            f52:
-              f53:
-                f54:
-                  f54_touch:
-                    {}
-          wrist:
-            {}
+        world:
+          baseout:
+            right_palm:
+              right_f11:
+                right_f12:
+                  right_f13:
+                    right_f14:
+                      {}
+              right_f21:
+                right_f22:
+                  right_f23:
+                    right_f24:
+                      {}
+              right_f31:
+                right_f32:
+                  right_f33:
+                    right_f34:
+                      {}
+              right_f41:
+                right_f42:
+                  right_f43:
+                    right_f44:
+                      {}
+              right_f51:
+                right_f52:
+                  right_f53:
+                    right_f54:
+                      {}
       Update Interval: 0
       Value: true
   Enabled: true
   Global Options:
     Background Color: 48; 48; 48
-    Fixed Frame: base_link
+    Fixed Frame: baseout
     Frame Rate: 30
   Name: root
   Tools:
@@ -366,10 +337,10 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.6402015089988708
+      Pitch: 0.15020161867141724
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 1.1053869724273682
+      Yaw: 0.5053871273994446
     Saved: ~
 Window Geometry:
   Displays:
@@ -388,4 +359,4 @@ Window Geometry:
     collapsed: false
   Width: 1200
   X: 291
-  Y: 178
+  Y: 234

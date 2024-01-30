@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<robot name="$(arg type)_hand" xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <!-- Arguments -->
+    <xacro:arg name="prefix" default="" />
+    <xacro:arg name="type" default="right" />
+
+    <xacro:include filename="$(find libertech_hand_description)/urdf/macro_hand_$(arg type).xacro" />
+
+    <link name="world"/>
+
+    <link name="baseout"/>
+
+    <joint name="base_static_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="world"/>
+        <child link="baseout"/>
+    </joint>
+
+    <xacro:load_hand prefix="$(arg prefix)" connected_to="baseout" xyz="0 0.0 0.0" rpy="0 0 0"/>
+
+    
+</robot>

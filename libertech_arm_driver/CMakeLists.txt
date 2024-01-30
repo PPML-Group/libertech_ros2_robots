@@ -11,6 +11,8 @@ find_package(ament_cmake REQUIRED)
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 find_package(Eigen3 REQUIRED)
+find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 include_directories(
     include
@@ -32,6 +34,12 @@ add_executable(demo_arm_driver src/main.cpp)
 # )
 target_link_libraries(demo_arm_driver arm_driver controlcan.so pthread)
 
+add_executable(demo_arm_hello src/node_hello.cpp)
+ament_target_dependencies(demo_arm_hello 
+  rclcpp sensor_msgs
+)
+target_link_libraries(demo_arm_hello arm_driver controlcan.so pthread)
+
 add_executable(test_hex src/test_hex.cpp)
 
 install(TARGETS
@@ -44,6 +52,7 @@ install(TARGETS
 install(TARGETS
   demo_arm_driver
   test_hex
+  demo_arm_hello
   DESTINATION lib/${PROJECT_NAME}
 )
 

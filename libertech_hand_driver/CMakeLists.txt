@@ -25,7 +25,6 @@ install(PROGRAMS
   scripts/test_ik.py
   scripts/hand_ros_driver.py
   scripts/hand_demo.py
-  scripts/node.py
 
   DESTINATION lib/${PROJECT_NAME}
 )

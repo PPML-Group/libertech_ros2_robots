@@ -17,17 +17,19 @@ class HandDriver(Node):
     def __init__(self):
         super().__init__('freehand_ros_driver')
         
-        self.declare_parameter('urdf_file_path', value='')
-        self.declare_parameter('actions_file_path', value='')
+        self.declare_parameter('urdf_file', value='')
+        self.declare_parameter('action_file', value='')
+        self.declare_parameter('ip', value='')
         
-        hand_path = self.get_parameter('urdf_file_path').value
-        actions_path = self.get_parameter('actions_file_path').value
-        self.get_logger().info(f'load {hand_path}')
+        urdf_file = self.get_parameter('urdf_file').value
+        action_file = self.get_parameter('action_file').value
+        ip = self.get_parameter('ip').value
+        
+        self.get_logger().info(f'load {urdf_file}')
         
         self.joint_states_pub = self.create_publisher(JointState,"/joint_states",10)
         self.joint_states = JointState()
-        # self.hand = HandAPI(hand_path, actions_path=actions_path, target_ip='10.10.20.61')
-        self.hand = HandAPI(hand_path, actions_path=actions_path, target_ip='192.168.1.200')
+        self.hand = HandAPI(urdf_file, action_file=action_file, target_ip=ip)
         self.joint_states.name = self.hand.hand_model_.qname_
         
         self.joint_name_param = ['f11', 'f12', 'f13', \
