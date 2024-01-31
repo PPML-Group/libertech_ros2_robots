@@ -191,6 +191,7 @@ int ArmDriver::doSendReceive() {
 	}
 
 	// std::cout<<"ret: "<<ret<<std::endl;
+	usleep(500);
 	
 	VCI_CAN_OBJ rec[3000];
 	int reclen=0;
@@ -229,7 +230,7 @@ void ArmDriver::runSendReceive() {
     // TODO: 只有位置模式
     while(isRunning_) {
 		int ret = doSendReceive();
-		usleep(1000);
+		// usleep(1000);
     }
 }
 
