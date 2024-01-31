@@ -180,10 +180,10 @@ int ArmDriver::doSendReceive() {
 		// ret = sendKp();
 		// ret = sendKd();
 		ret = sendQ();
-		std::cout<<"sendQ"<<std::endl;
+		// std::cout<<"sendQ"<<std::endl;
 	} else if (mode_ == "velocity") {
 		ret = sendQd();
-		std::cout<<"sendQd"<<std::endl;
+		// std::cout<<"sendQd"<<std::endl;
 	} else if (mode_ == "force") {
 		ret = sendTau();
 	} else {
@@ -201,23 +201,34 @@ int ArmDriver::doSendReceive() {
 	{
 		for(int j=0;j<reclen;j++)
 		{
-			printf("CAN%d RX ID:0x%08X", ind+1, rec[j].ID);//ID
-			if(rec[j].ExternFlag==0) printf(" Standard ");//帧格式：标准帧
-			if(rec[j].ExternFlag==1) printf(" Extend   ");//帧格式：扩展帧
-			if(rec[j].RemoteFlag==0) printf(" Data   ");//帧类型：数据帧
-			if(rec[j].RemoteFlag==1) printf(" Remote ");//帧类型：远程帧
-			printf("DLC:0x%02X",rec[j].DataLen);//帧长度
-			printf(" data:0x");	//数据
-			for(int i = 0; i < rec[j].DataLen; i++)
-			{
-				printf(" %02X", rec[j].Data[i]);
-			}
-			// TODO: 对应的储存在Data
-			
+			// printf("CAN%d RX ID:0x%08X", ind+1, rec[j].ID);//ID
+			// if(rec[j].ExternFlag==0) printf(" Standard ");//帧格式：标准帧
+			// if(rec[j].ExternFlag==1) printf(" Extend   ");//帧格式：扩展帧
+			// if(rec[j].RemoteFlag==0) printf(" Data   ");//帧类型：数据帧
+			// if(rec[j].RemoteFlag==1) printf(" Remote ");//帧类型：远程帧
+			// printf("DLC:0x%02X",rec[j].DataLen);//帧长度
+			// printf(" data:0x");	//数据
+			// for(int i = 0; i < rec[j].DataLen; i++)
+			// {
+			// 	printf(" %02X", rec[j].Data[i]);
+			// }
 
+			// 解析电流（前两个字节）
+			int32_t cur_int = static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]); // TODO: 2字节怎么转
+			// data_->tau[rec[j].ID-1];
+			// 解析速度（中间两个字节）
+			int32_t qd_int = static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]); // TODO: 2字节怎么转
+			// data_->tau[rec[j].ID-1];
+			// 解析位置（最后四个字节）	
+			uint8_t bytes[4];
+    		std::copy(rec[j].Data + 5, rec[j].Data + 9, bytes);
+			data_->q[rec[j].ID-1] = convertHexBytesToPosition(bytes);
 
-			printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
-			printf("\n");
+			// printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
+			// printf("\n");
+
+			printf("CAN%d RX ID:0x%08X ", ind+1, rec[j].ID); // ID
+			std::cout<<"data_->q["<<rec[j].ID-1<<"]: "<<data_->q[rec[j].ID-1]<<std::endl;
 		}
 	}
 
@@ -969,13 +980,13 @@ void ArmDriver::convertPositionToHexBytes(float p, uint8_t (&bytes)[4]) {
 }
 
 void ArmDriver::convertVelocityToHexBytes(float v, uint8_t (&bytes)[4]) {
-	convertFloatToHexBytes((convertRadiansToDegrees(v)*51*100)/360,bytes);
-
-
+	convertFloatToHexBytes((convertRadiansToDegrees(v)*51*100)/360,bytes);  // Check
 }
 
 void ArmDriver::convertTorqueToHexBytes(float t, uint8_t (&bytes)[4]) {
-
+	// 力转电流
+	float cur = t;  // Check
+	convertFloatToHexBytes(cur,bytes);
 }
 
 float ArmDriver::convertHexBytesToPosition(const uint8_t (&bytes)[4]) {
@@ -984,15 +995,15 @@ float ArmDriver::convertHexBytesToPosition(const uint8_t (&bytes)[4]) {
 }
 
 float ArmDriver::convertHexBytesToVelocity(const uint8_t (&bytes)[4]) {
-
+	float p_convert = convertHexBytesToFloat(bytes)/(360*51*65536); // Check
 }
 
 float ArmDriver::convertHexBytesToTorque(const uint8_t (&bytes)[4]) {
-
+	 // Check
 }
 
 void ArmDriver::convertFloatToHexBytes(float x, uint8_t (&bytes)[4]) {
-	// 默认Little-Endian, 转换后低位在前
+	// 默认Little-Endian, 转换后低位在前,4位
 	int32_t int_x = static_cast<int32_t>(x);
     for (int i = 0; i < 4; ++i) {
         bytes[i] = (int_x >> (i * 8)) & 0xFF;
@@ -1026,7 +1037,10 @@ void ArmDriver::swapEndianness(uint8_t (&bytes)[4]) {
 
 void ArmDriver::printHexBytes(const uint8_t (&bytes)[4]) {
     std::cout << "Hex representation: ";
-    for (int i = 3; i >= 0; --i) {
+    // for (int i = 3; i >= 0; --i) {
+    //     std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(bytes[i]) << " ";
+    // }
+	for (int i = 0; i <= 3; ++i) {
         std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(bytes[i]) << " ";
     }
     std::cout << std::endl;
