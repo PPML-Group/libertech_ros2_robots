@@ -3,8 +3,7 @@
 int main()
 {
 	ArmDriver armDriver;
-
-	// armDriver.setZero();
+	sleep(2);
 
 	armDriver.runSendReceiveThread();
 

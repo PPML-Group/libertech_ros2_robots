@@ -13,6 +13,18 @@ public:
     armDriver_ = new ArmDriver;
     armDriver_->runSendReceiveThread();
 
+    Vec14 q = Vec14::Zero();
+
+    q[2] += 40 * M_PI / 180;
+    armDriver_->setQ(q);
+    sleep(1);
+
+    for (int i=1;i<8;i++) {
+      q[1] += 0.5 * i * 10 * M_PI / 180;
+      q[3] += i * 10 * M_PI / 180;
+      armDriver_->setQ(q);
+      sleep(0.3);
+    }
 
     subscription_ = create_subscription<sensor_msgs::msg::JointState>(
             "joint_states", 10, std::bind(&ArmSimpleSubscriber::jointStateCallback, this, std::placeholders::_1));

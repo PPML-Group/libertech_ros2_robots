@@ -301,7 +301,7 @@ int ArmDriver::sendKp() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_];
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -333,7 +333,7 @@ int ArmDriver::sendKd() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_];
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -364,7 +364,7 @@ int ArmDriver::sendQ() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_];
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -395,7 +395,7 @@ int ArmDriver::sendQd() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_];
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -426,7 +426,7 @@ int ArmDriver::sendTau() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_];
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -460,7 +460,7 @@ int ArmDriver::setModePosition() {
 		// 获取
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) { 
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -494,7 +494,7 @@ int ArmDriver::setModePosition() {
 					{
 						printf(" %02X", rec[j].Data[i]);
 					}
-
+					// 已经变成正常顺序，低位在后
 					int_q[rec[j].ID-1] = (int32_t(rec[j].Data[1]))  |  (int32_t(rec[j].Data[2]) << 8)  |   (int32_t(rec[j].Data[3])<< 16) | (int32_t(rec[j].Data[4])<<24);
 
 					printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
@@ -507,7 +507,7 @@ int ArmDriver::setModePosition() {
 
 		// 设置电机运行模式为位置模式 ，并设置目标位置
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -515,7 +515,7 @@ int ArmDriver::setModePosition() {
 			send[i].DataLen=5;
 			send[i].Data[0]=0x1e;
 
-			std::cout<<"int_q:" << int_q[i] << std::endl;
+			std::cout<<"int_q[" << i << "]:" << int_q[i] << std::endl;
 
 			uint8_t u8[4];
 			for (int j = 0; j < 4; ++j) {
@@ -525,8 +525,7 @@ int ArmDriver::setModePosition() {
 			swapEndianness(u8);
 			for (size_t j = 1; j <5 ; j++)
 			{
-				send[i].Data[j]=u8[j-1];
-				// send[i].Data[j]=0;
+				send[i].Data[j]=u8[j-1]; // 0
 			}
 
 			// !!!! 避免位置跳变，将cmd的值赋值为当前值
@@ -547,7 +546,7 @@ int ArmDriver::setModeVelocity() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -570,7 +569,7 @@ int ArmDriver::setModeTorque() {
     for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -610,7 +609,7 @@ int ArmDriver::resetToDefault() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -630,7 +629,7 @@ int ArmDriver::clearError() {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) {
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -652,7 +651,7 @@ int ArmDriver::setMinMaxPos(const Vec14& qmin, const Vec14& qmax) {
 
 		for(int i=0;i<numJoints_;i++) { 
 		
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -677,7 +676,7 @@ int ArmDriver::setMinMaxPos(const Vec14& qmin, const Vec14& qmax) {
 		////////////////////////////////////////////////////////////////////////////////////////
 		for(int i=0;i<numJoints_;i++) { 
 		
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -767,7 +766,7 @@ int ArmDriver::setKp(const Vec14& kp) {
 
     // for(int i=0;i<numJoints_;i++) { 
 	 
-    //     int id = i+1; // TODO: 双臂id得换
+    //     int id = i+1;
 	// 	send[i].SendType=0;
     //     send[i].RemoteFlag=0;
     //     send[i].ExternFlag=0;
@@ -801,7 +800,7 @@ int ArmDriver::setKd(const Vec14& kd) {
 	// VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
     // for(int i=0;i<numJoints_;i++) { 
 	 
-    //     int id = i+1; // TODO: 双臂id得换
+    //     int id = i+1;
 	// 	send[i].SendType=0;
     //     send[i].RemoteFlag=0;
     //     send[i].ExternFlag=0;
@@ -870,7 +869,7 @@ int ArmDriver::getKp(Vec14& kpm) {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) { 
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -920,7 +919,7 @@ int ArmDriver::getKd(Vec14& kdm) {
 	for (int idCAN=0; idCAN<numCAN_; idCAN++) {
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) { 
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -993,6 +992,7 @@ float ArmDriver::convertHexBytesToTorque(const uint8_t (&bytes)[4]) {
 }
 
 void ArmDriver::convertFloatToHexBytes(float x, uint8_t (&bytes)[4]) {
+	// 默认Little-Endian, 转换后低位在前
 	int32_t int_x = static_cast<int32_t>(x);
     for (int i = 0; i < 4; ++i) {
         bytes[i] = (int_x >> (i * 8)) & 0xFF;
@@ -1001,16 +1001,14 @@ void ArmDriver::convertFloatToHexBytes(float x, uint8_t (&bytes)[4]) {
 }
 
 float ArmDriver::convertHexBytesToFloat(const uint8_t (&bytes)[4]) {
-    uint8_t swappedBytes[4];
-    std::copy(std::begin(bytes), std::end(bytes), std::begin(swappedBytes)); // 复制数组
-
-    // swapEndianness(swappedBytes); // 执行大小端转换
-
+	// 默认Little-Endian, 输入低位在前的数
     int32_t int_x = 0;
     for (int i = 0; i < 4; ++i) {
-        int_x |= static_cast<int32_t>(swappedBytes[i]) << (i * 8);
+        int_x |= static_cast<int32_t>(bytes[i]) << (i * 8);
     }
-    return *reinterpret_cast<float*>(&int_x);
+    // return *reinterpret_cast<float*>(&int_x);
+    // return (float)int_x;
+    return static_cast<float>(int_x);
 }
 
 double ArmDriver::convertDegreesToRadians(double degrees) {
@@ -1044,7 +1042,7 @@ int ArmDriver::setZero() {
 		// 获取
 		VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
 		for(int i=0;i<numJoints_;i++) { 
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -1076,6 +1074,7 @@ int ArmDriver::setZero() {
 					printf(" %02X", rec[j].Data[i]);
 				}
 
+				// 已经变成正常顺序，第一位被放在个位
 				int_q[rec[j].ID-1] = (int32_t(rec[j].Data[1]))  |  (int32_t(rec[j].Data[2]) << 8)  |   (int32_t(rec[j].Data[3])<< 16) | (int32_t(rec[j].Data[4])<<24);
 
 				printf(" !TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
@@ -1091,7 +1090,7 @@ int ArmDriver::setZero() {
 		///////////////////////////////////////////////////////////////////////////////////////////////////////
 		
 		for(int i=0;i<numJoints_;i++) { 
-			int id = i+1; // TODO: 双臂id得换
+			int id = i+1;
 			send[i].SendType=0;
 			send[i].RemoteFlag=0;
 			send[i].ExternFlag=0;
@@ -1142,7 +1141,7 @@ int ArmDriver::setZero() {
 
 		////////////////////////////////////////////////////////////////////////////////////
 		for(int s=0;s<numJoints_;s++) { 
-			int id = s+1; // TODO: 双臂id得换
+			int id = s+1;
 			send[s].SendType=0;
 			send[s].RemoteFlag=0;
 			send[s].ExternFlag=0;
@@ -1151,7 +1150,7 @@ int ArmDriver::setZero() {
 			send[s].Data[0]=0x53;
 			uint8_t u8[4];
 			convertFloatToHexBytes(buff_ff[s],u8);
-			//swapEndianness(u8);//加上大小端反了
+			//swapEndianness(u8);//加上大小端反了, 感觉得加上
 			for (size_t t = 0; t < 4; t++)
 			{
 				send[s].Data[t+1]=u8[t];

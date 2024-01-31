@@ -29,10 +29,10 @@ add_library(arm_driver SHARED
 # )
 
 add_executable(demo_arm_driver src/main.cpp)
-# ament_target_dependencies(demo_arm_driver 
-#   rclcpp 
-# )
 target_link_libraries(demo_arm_driver arm_driver controlcan.so pthread)
+
+add_executable(demo_arm_calibration src/calibration.cpp)
+target_link_libraries(demo_arm_calibration arm_driver controlcan.so pthread)
 
 add_executable(demo_arm_hello src/node_hello.cpp)
 ament_target_dependencies(demo_arm_hello 
@@ -53,6 +53,7 @@ install(TARGETS
   demo_arm_driver
   test_hex
   demo_arm_hello
+  demo_arm_calibration
   DESTINATION lib/${PROJECT_NAME}
 )
 
