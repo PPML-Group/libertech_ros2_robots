@@ -31,7 +31,7 @@ def launch_hand_driver(context, *args, **kwargs):
         Node(
             package='libertech_hand_driver',
             executable='hand_demo.py',
-            name='hand_demo',
+            name='hand_demo_'+launch.substitutions.LaunchConfiguration('hand_type').perform(context),
             parameters=[{'urdf_file': urdf_file},
                         {'action_file': LaunchConfiguration("action_file")},
                         {'ip': LaunchConfiguration("hand_ip")}],
