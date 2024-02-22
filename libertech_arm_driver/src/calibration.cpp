@@ -2,13 +2,14 @@
 
 int main()
 {
-	ArmDriver armDriver;
-	sleep(2);
+  ArmDriver armDriver;
+  armDriver.init();
+  sleep(2);
 
-    // 零位
-	armDriver.setZero();
+  // 零位
+  armDriver.setZero();
 
-    armDriver.save();
+  armDriver.save();
 
-	return 0;
+  return 0;
 }

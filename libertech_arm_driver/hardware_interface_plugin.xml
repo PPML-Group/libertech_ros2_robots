@@ -1,0 +1,9 @@
+<library path="libertech_arm_driver">
+  <class name="libertech_arm_driver/LibertechArmInterfaceHardware"
+         type="libertech_arm_driver::LibertechArmInterfaceHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      The ROS2 Control for the Libertech arm.
+    </description>
+  </class>
+</library>

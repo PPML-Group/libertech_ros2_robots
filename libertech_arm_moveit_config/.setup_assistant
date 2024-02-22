@@ -1,13 +1,13 @@
 moveit_setup_assistant_config:
   urdf:
     package: libertech_arm_description
-    relative_path: urdf/arm.urdf
+    relative_path: urdf/arm_dual.xacro.urdf
   srdf:
     relative_path: config/arm.srdf
   package_settings:
     author_name: Jinjian Li
-    author_email: 60728884+HomeworldL@users.noreply.github.com
-    generated_timestamp: 1704884703
+    author_email: robot_wgc2023@163.com
+    generated_timestamp: 1708591945
   control_xacro:
     command:
       - position
