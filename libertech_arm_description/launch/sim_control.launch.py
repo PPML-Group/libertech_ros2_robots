@@ -122,10 +122,16 @@ def launch_setup(context, *args, **kwargs):
         )
     )
 
-    robot_traj_controller_spawner = Node(
+    arm_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=[robot_traj_controller, "-c", "/controller_manager"],
+        arguments=["arm_right_controller", "-c", "/controller_manager"],
+    )
+    
+    arm_left_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_left_controller", "-c", "/controller_manager"],
     )
 
     # Bridge
@@ -152,13 +158,13 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "2.0",
+            "0.5",
             "-R",
             "0.0",
             "-P",
             "0.0",
             "-Y",
-            "0.0",
+            "1.57",
         ],
         condition=IfCondition(sim_ignition),
     )
@@ -199,7 +205,13 @@ def launch_setup(context, *args, **kwargs):
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
-                on_exit=[robot_traj_controller_spawner],
+                on_exit=[arm_right_traj_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_left_traj_controller_spawner],
             )
         ),
         delay_rviz_after_joint_state_broadcaster_spawner

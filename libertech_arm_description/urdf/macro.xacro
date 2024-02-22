@@ -55,7 +55,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-1.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -63,7 +63,7 @@
             </visual>
             <collision>
                 <geometry>
-                  <mesh filename="file://$(find libertech_arm_description)/meshes/joint-1.STL" />
+                  <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" />
                 </geometry> 
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -90,7 +90,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-2.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -98,7 +98,7 @@
             </visual>
             <collision>
                 <geometry>
-                     <mesh filename="file://$(find libertech_arm_description)/meshes/joint-2.STL" scale="1 1 1"/>
+                     <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -125,7 +125,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-3.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -133,7 +133,7 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-3.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -160,7 +160,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-4.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4.STL"  scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -168,7 +168,7 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-4.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4.STL"  scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -195,7 +195,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-5.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -203,7 +203,7 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-5.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5.STL"  scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -230,7 +230,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-6.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -238,7 +238,7 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-6.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -266,7 +266,7 @@
              <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-7.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -274,7 +274,7 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-7.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -308,7 +308,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL"  scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL"  scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/base_left.STL"  scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -316,7 +317,8 @@
             </visual>
             <collision>
                 <geometry>
-                   <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL" scale="-1 1 1"/>
+                   <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL" scale="-1 1 1"/> -->
+                   <mesh filename="file://$(find libertech_arm_description)/meshes/base_left.STL"  scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>   
             </collision>
@@ -343,7 +345,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-1.STL" scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link1_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -351,7 +354,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-1.STL" scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link1_left.STL" scale="1 1 1"/>
                 </geometry> 
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -378,7 +382,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-2.STL" scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link2_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -386,7 +391,8 @@
             </visual>
             <collision>
                 <geometry>
-                     <mesh filename="file://$(find libertech_arm_description)/meshes/joint-2.STL" scale="-1 1 1"/>
+                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="-1 1 1"/> -->
+                     <mesh filename="file://$(find libertech_arm_description)/meshes/link2_left.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -413,7 +419,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-3.STL" scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -421,7 +428,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-3.STL" scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3_left.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -448,7 +456,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-4.STL"  scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -456,7 +465,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-4.STL"  scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -483,7 +493,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-5.STL" scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -491,7 +502,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-5.STL"  scale="-1 1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="-1 1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -518,7 +530,8 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-6.STL" scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -526,7 +539,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-6.STL" scale="1 1 -1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 -1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -549,12 +563,12 @@
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint6_PositionMin}" upper="${joint6_PositionMax}"/>
         </joint>
         
-
         <link name="${prefix}link07">
              <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-7.STL" scale="1 -1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 -1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 1 1"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -562,7 +576,8 @@
             </visual>
             <collision>
                 <geometry>
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/joint-7.STL" scale="1 -1 1"/>
+                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 -1 1"/> -->
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 1 1"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
