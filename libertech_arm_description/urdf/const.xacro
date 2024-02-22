@@ -1,5 +1,4 @@
 <?xml version="1.0"?>
-<!-- 该文件包含了右臂和左臂的macro函数 -->
 <robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
 
     <!-- Constants for robot dimensions -->
@@ -103,8 +102,6 @@
     <xacro:property name="L07_Iyz" value="2E-08"/>
     <xacro:property name="L07_Izz" value="0.00016405" />
 
-
-    
     <!-- joint limits -->
     <!-- <xacro:property name="jointDamping" value="3.0"/> -->
     <!-- <xacro:property name="jointFriction" value="2.0"/> -->
@@ -127,15 +124,4 @@
     <xacro:property name="joint6_PositionMax" value="${PI*0.5}"/>
     <xacro:property name="joint7_PositionMin" value="${-PI*0.5}"/>
     <xacro:property name="joint7_PositionMax" value="0.4"/>
-
-    <!-- collision size -->
-    <!-- <xacro:property name="motor_diameter" value="${0.065/2.0}"/>
-    <xacro:property name="motor_height" value="0.051"/>
-    <xacro:property name="arm1_diameter" value="${0.045/2.0}"/>
-    <xacro:property name="arm1_height" value="0.235"/>
-    <xacro:property name="arm2_diameter" value="${0.04/2.0}"/>
-    <xacro:property name="arm2_height" value="0.126"/>
-    <xacro:property name="gripperBox_X" value="0."/>
-    <xacro:property name="gripperBox_Y" value="0."/>
-    <xacro:property name="gripperBox_Z" value="0."/> -->
 </robot>

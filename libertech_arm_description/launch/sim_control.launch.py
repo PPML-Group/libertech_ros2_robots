@@ -37,15 +37,15 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
     # Initialize Arguments
-    sim_gazebo = LaunchConfiguration("sim_gazebo")
+    use_fake_hardware = LaunchConfiguration("use_fake_hardware")
+    sim_ignition = LaunchConfiguration("sim_ignition")
+    
     # General arguments
     controllers_file = LaunchConfiguration("controllers_file")
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
-    robot_name = LaunchConfiguration("robot_name")
     prefix = LaunchConfiguration("prefix")
     robot_traj_controller = LaunchConfiguration("robot_controller")
-    robot_pos_controller = LaunchConfiguration("robot_pos_controller")
     launch_rviz = LaunchConfiguration("launch_rviz")
     use_sim_time = LaunchConfiguration("use_sim_time")
 
@@ -53,7 +53,7 @@ def launch_setup(context, *args, **kwargs):
         # https://answers.ros.org/question/397123/how-to-access-the-runtime-value-of-a-launchconfiguration-instance-within-custom-launch-code-injected-via-an-opaquefunction-in-ros2/
         [
             FindPackageShare(description_package),
-            "arms/gen3/" + dof.perform(context) + "dof/config",
+            "config",
             controllers_file,
         ]
     )
@@ -67,38 +67,20 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare(description_package), "robots", description_file]
+                [FindPackageShare(description_package), "urdf", description_file]
             ),
-            " ",
-            "robot_ip:=xxx.yyy.zzz.www",
-            " ",
-            "name:=",
-            robot_name,
-            " ",
-            "arm:=",
-            robot_type,
-            " ",
-            "dof:=",
-            dof,
-            " ",
-            "vision:=",
-            vision,
             " ",
             "prefix:=",
             prefix,
             " ",
-            "sim_gazebo:=",
-            sim_gazebo,
+            "use_fake_hardware:=",
+            use_fake_hardware,
             " ",
-            "sim_gazebo:=",
-            sim_gazebo,
+            "sim_ignition:=",
+            sim_ignition,
             " ",
             "simulation_controllers:=",
             robot_controllers,
-            " ",
-            "gripper:=",
-            "robotiq_2f_85",
-            " ",
         ]
     )
     robot_description = {"robot_description": robot_description_content.perform(context)}
@@ -146,55 +128,12 @@ def launch_setup(context, *args, **kwargs):
         arguments=[robot_traj_controller, "-c", "/controller_manager"],
     )
 
-    robot_pos_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[robot_pos_controller, "--inactive", "-c", "/controller_manager"],
-    )
-
-    robot_hand_controller_spawner = Node(
-        package="controller_manager",
-        executable="spawner",
-        arguments=[robot_hand_controller, "-c", "/controller_manager"],
-    )
-
     # Bridge
     bridge = Node(
         package="ros_gz_bridge",
         executable="parameter_bridge",
         arguments=["/clock@rosgraph_msgs/msg/Clock[ignition.msgs.Clock"],
         output="screen",
-    )
-
-    # Gazebo nodes
-    gzserver = ExecuteProcess(
-        cmd=["gzserver", "-s", "libgazebo_ros_init.so", "-s", "libgazebo_ros_factory.so", ""],
-        output="screen",
-        condition=IfCondition(sim_gazebo),
-    )
-
-    # Gazebo client
-    gzclient = ExecuteProcess(
-        cmd=["gzclient"],
-        output="screen",
-        condition=IfCondition(sim_gazebo),
-    )
-
-    # gazebo = IncludeLaunchDescription(
-    # PythonLaunchDescriptionSource(
-    # [PathJoinSubstitution([FindPackageShare("gazebo_ros"), "launch", "gazebo.launch.py"])]
-    # ),
-    # launch_arguments={"verbose": "false"}.items(),
-    # )
-
-    # Spawn robot
-    gazebo_spawn_robot = Node(
-        package="gazebo_ros",
-        executable="spawn_entity.py",
-        name="spawn_robot",
-        arguments=["-entity", robot_name, "-topic", "robot_description"],
-        output="screen",
-        condition=IfCondition(sim_gazebo),
     )
 
     ignition_spawn_entity = Node(
@@ -205,7 +144,7 @@ def launch_setup(context, *args, **kwargs):
             "-string",
             robot_description_content,
             "-name",
-            robot_name,
+            "arm",
             "-allow_renaming",
             "true",
             "-x",
@@ -213,7 +152,7 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "0.3",
+            "2.0",
             "-R",
             "0.0",
             "-P",
@@ -221,7 +160,7 @@ def launch_setup(context, *args, **kwargs):
             "-Y",
             "0.0",
         ],
-        condition=IfCondition(sim_gazebo),
+        condition=IfCondition(sim_ignition),
     )
 
     ignition_launch_description = IncludeLaunchDescription(
@@ -229,37 +168,42 @@ def launch_setup(context, *args, **kwargs):
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
         launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
-        condition=IfCondition(sim_gazebo),
+        condition=IfCondition(sim_ignition),
     )
 
     # Bridge
-    gazebo_bridge = Node(
-        package="ros_gz_bridge",
-        executable="parameter_bridge",
-        parameters=[{"use_sim_time": use_sim_time}],
-        arguments=[
-            "/wrist_mounted_camera/image@sensor_msgs/msg/Image[ignition.msgs.Image",
-            "/wrist_mounted_camera/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
-            "/wrist_mounted_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
-            "/wrist_mounted_camera/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
-        ],
-        output="screen",
-    )
+    # gazebo_bridge = Node(
+    #     package="ros_gz_bridge",
+    #     executable="parameter_bridge",
+    #     parameters=[{"use_sim_time": use_sim_time}],
+    #     arguments=[
+    #         "/wrist_mounted_camera/image@sensor_msgs/msg/Image[ignition.msgs.Image",
+    #         "/wrist_mounted_camera/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
+    #         "/wrist_mounted_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
+    #         "/wrist_mounted_camera/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
+    #     ],
+    #     output="screen",
+    # )
 
     nodes_to_start = [
         bridge,
         robot_state_publisher_node,
-        joint_state_broadcaster_spawner,
-        delay_rviz_after_joint_state_broadcaster_spawner,
-        robot_traj_controller_spawner,
-        robot_pos_controller_spawner,
-        robot_hand_controller_spawner,
-        gzserver,
-        gzclient,
-        gazebo_spawn_robot,
         ignition_launch_description,
         ignition_spawn_entity,
-        gazebo_bridge,
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[joint_state_broadcaster_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[robot_traj_controller_spawner],
+            )
+        ),
+        delay_rviz_after_joint_state_broadcaster_spawner
+        # gazebo_bridge,
     ]
 
     return nodes_to_start
@@ -270,41 +214,16 @@ def generate_launch_description():
     # Simulation specific arguments
     declared_arguments.append(
         DeclareLaunchArgument(
-            "sim_gazebo",
+            "use_fake_hardware",
+            default_value="false",
+            description="Start robot with fake hardware mirroring command to its states.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "sim_ignition",
             default_value="true",
-            description="Use Ignition for simulation",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "sim_gazebo",
-            default_value="false",
             description="Use Gazebo Classic for simulation",
-        )
-    )
-    # Robot specific arguments
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "robot_type",
-            description="Type/series of robot.",
-            choices=["gen3", "gen3_lite"],
-            default_value="gen3",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "dof",
-            description="DoF of robot.",
-            choices=["6", "7"],
-            default_value="7",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "vision",
-            description="Use arm mounted realsense",
-            choices=["true", "false"],
-            default_value="false",
         )
     )
     # General arguments
@@ -318,7 +237,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_package",
-            default_value="kortex_description",
+            default_value="libertech_arm_description",
             description="Description package with robot URDF/XACRO files. Usually the argument \
         is not set, it enables use of a custom description.",
         )
@@ -326,15 +245,8 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "description_file",
-            default_value="kinova.urdf.xacro",
+            default_value="arm_dual.xacro",
             description="URDF/XACRO description file with the robot.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "robot_name",
-            default_value="gen3",
-            description="Robot name.",
         )
     )
     declared_arguments.append(
@@ -349,22 +261,8 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_controller",
-            default_value="joint_trajectory_controller",
+            default_value="arm_right_controller",
             description="Robot controller to start.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "robot_pos_controller",
-            default_value="twist_controller",
-            description="Robot controller to start.",
-        )
-    )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "robot_hand_controller",
-            default_value="robotiq_gripper_controller",
-            description="Robot hand controller to start.",
         )
     )
     declared_arguments.append(
