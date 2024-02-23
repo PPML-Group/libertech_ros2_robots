@@ -125,13 +125,13 @@ def launch_setup(context, *args, **kwargs):
     arm_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_right_controller", "-c", "/controller_manager"],
+        arguments=["arm_right_trajectory_controller", "-c", "/controller_manager"],
     )
     
     arm_left_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_left_controller", "-c", "/controller_manager"],
+        arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
     )
 
     # Bridge
@@ -273,7 +273,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "robot_controller",
-            default_value="arm_right_controller",
+            default_value="arm_right_trajectory_controller",
             description="Robot controller to start.",
         )
     )
@@ -285,7 +285,7 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
+        DeclareLaunchArgument("launch_rviz", default_value="false", description="Launch RViz?")
     )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

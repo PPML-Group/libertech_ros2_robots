@@ -57,9 +57,10 @@
                 <parameters>$(arg simulation_controllers)</parameters>
                 <controller_manager_node_name>/controller_manager</controller_manager_node_name>
             </plugin>
-            <!-- <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
-                <render_engine>$(arg gazebo_renderer)</render_engine>
-            </plugin> -->
+            <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+                <!-- <render_engine>$(arg gazebo_renderer)</render_engine> -->
+                <render_engine>"ogre"</render_engine>
+            </plugin>
         </gazebo>
     </xacro:if>
 </robot>

@@ -3,18 +3,18 @@ controller_manager:
   ros__parameters:
     update_rate: 100  # Hz
 
-    arm_right_controller:
+    arm_right_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
-    arm_left_controller:
+    arm_left_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
 
 
     joint_state_broadcaster:
       type: joint_state_broadcaster/JointStateBroadcaster
 
-arm_right_controller:
+arm_right_trajectory_controller:
   ros__parameters:
     joints:
       - right_joint1
@@ -29,7 +29,7 @@ arm_right_controller:
     state_interfaces:
       - position
       - velocity
-arm_left_controller:
+arm_left_trajectory_controller:
   ros__parameters:
     joints:
       - left_joint1
