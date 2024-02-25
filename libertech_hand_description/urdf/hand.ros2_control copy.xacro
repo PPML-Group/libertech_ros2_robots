@@ -1,0 +1,306 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="hand_ros2_control" params="
+    prefix
+    name
+    use_fake_hardware:=false
+    sim_ignition:=false
+    initial_positions:=${dict(f11_joint=0.0,f12_joint=0.0,f13_joint=0.0,f14_joint=0.0,
+                              f21_joint=0.0,f22_joint=0.0,f23_joint=0.0,f24_joint=0.0,
+                              f31_joint=0.0,f32_joint=0.0,f33_joint=0.0,f34_joint=0.0,
+                              f41_joint=0.0,f42_joint=0.0,f43_joint=0.0,f44_joint=0.0,
+                              f51_joint=0.0,f52_joint=0.0,f53_joint=0.0,f54_joint=0.0)}" >
+
+    <ros2_control name="${prefix}${name}MultiInterfaceHardware" type="system">
+      <hardware>
+        <xacro:if value="${sim_ignition}">
+          <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+        <!-- <xacro:unless value="${use_fake_hardware or sim_ignition}">
+          <plugin>kortex_driver/KortexMultiInterfaceHardware</plugin>
+          <param name="robot_ip">${robot_ip}</param>
+          <param name="username">${username}</param>
+          <param name="password">${password}</param>
+          <param name="port">${port}</param>
+          <param name="port_realtime">${port_realtime}</param>
+          <param name="session_inactivity_timeout_ms">${session_inactivity_timeout_ms}</param>
+          <param name="connection_inactivity_timeout_ms">${connection_inactivity_timeout_ms}</param>
+          <param name="tf_prefix">"${tf_prefix}"</param>
+          <param name="use_internal_bus_gripper_comm">${use_internal_bus_gripper_comm}</param>
+          <param name="gripper_joint_name">${gripper_joint_name}</param>
+          <param name="gripper_max_velocity">${gripper_max_velocity}</param>
+          <param name="gripper_max_force">${gripper_max_force}</param>
+        </xacro:unless> -->
+      </hardware>
+      <joint name="${prefix}${name}_f11_joint">
+        <command_interface name="position">
+          <param name="min">-0.4</param>
+          <param name="max">0.4</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f11_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f12_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">2.09</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f12_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f13_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f13_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f14_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f14_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <joint name="${prefix}${name}_f21_joint">
+        <command_interface name="position">
+          <param name="min">-0.4</param>
+          <param name="max">0.4</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f21_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f22_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">2.09</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f22_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f23_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f23_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f24_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f24_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <joint name="${prefix}${name}_f31_joint">
+        <command_interface name="position">
+          <param name="min">-0.4</param>
+          <param name="max">0.4</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f31_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f32_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f32_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f33_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f33_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f34_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f34_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <joint name="${prefix}${name}_f41_joint">
+        <command_interface name="position">
+          <param name="min">-0.4</param>
+          <param name="max">0.4</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f41_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f42_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f42_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f43_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f43_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f44_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f44_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+
+      <joint name="${prefix}${name}_f51_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.5</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f51_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f52_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.332</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f52_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f53_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f53_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_f54_joint">
+        <command_interface name="position">
+          <param name="min">0.0</param>
+          <param name="max">1.744</param>
+        </command_interface>
+        <command_interface name="velocity"/>
+        <command_interface name="effort"/>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['f54_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

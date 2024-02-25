@@ -37,8 +37,11 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):
     # Initialize Arguments
+    use_hand = LaunchConfiguration("use_hand")
+    use_gripper = LaunchConfiguration("use_gripper")
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     sim_ignition = LaunchConfiguration("sim_ignition")
+    sim_ignition_world = LaunchConfiguration("sim_ignition_world")
     
     # General arguments
     controllers_file = LaunchConfiguration("controllers_file")
@@ -72,6 +75,12 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "prefix:=",
             prefix,
+            " ",
+            "use_hand:=",
+            use_hand,
+            " ",
+            "use_gripper:=",
+            use_gripper,
             " ",
             "use_fake_hardware:=",
             use_fake_hardware,
@@ -133,7 +142,21 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
     )
-
+    
+    hand_right_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["hand_right_trajectory_controller", "-c", "/controller_manager"],
+        condition=IfCondition(use_hand),
+    )
+    
+    hand_left_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["hand_left_trajectory_controller", "-c", "/controller_manager"],
+        condition=IfCondition(use_hand),
+    )
+        
     # Bridge
     bridge = Node(
         package="ros_gz_bridge",
@@ -158,22 +181,31 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "0.5",
+            "0.35",
             "-R",
             "0.0",
             "-P",
             "0.0",
             "-Y",
-            "1.57",
+            "-1.57",
         ],
         condition=IfCondition(sim_ignition),
+    )
+    
+    ignition_world = PathJoinSubstitution(
+        [
+            FindPackageShare("libertech_arm_bringup"),
+            "world",
+            sim_ignition_world,
+        ]
     )
 
     ignition_launch_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
-        launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
+        # launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
+        launch_arguments={"ign_args": f" -r -v 3 {ignition_world.perform(context)}"}.items(),
         condition=IfCondition(sim_ignition),
     )
 
@@ -214,16 +246,64 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[arm_left_traj_controller_spawner],
             )
         ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[hand_right_traj_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[hand_left_traj_controller_spawner],
+            )
+        ),
         delay_rviz_after_joint_state_broadcaster_spawner
         # gazebo_bridge,
     ]
 
     return nodes_to_start
 
+    # ros2 topic pub /hand_right_effort_controller/commands std_msgs/msg/Float64MultiArray "data:
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0 
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0
+    #         - 0.0 
+    #         - 0.0"
+
 
 def generate_launch_description():
     declared_arguments = []
     # Simulation specific arguments
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_hand",
+            default_value="true",
+            description="Use hand.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_gripper",
+            default_value="false",
+            description="Use gripper.",
+        )
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_fake_hardware",
@@ -235,7 +315,14 @@ def generate_launch_description():
         DeclareLaunchArgument(
             "sim_ignition",
             default_value="true",
-            description="Use Gazebo Classic for simulation",
+            description="Use Gazebo Ignition for simulation",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "sim_ignition_world",
+            default_value="world_empty.sdf", # world_ycb world_box
+            description="Gazebo Ignition world",
         )
     )
     # General arguments

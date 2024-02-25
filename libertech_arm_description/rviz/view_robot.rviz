@@ -9,6 +9,7 @@ Panels:
         - /RobotModel1
         - /RobotModel1/Description Topic1
         - /TF1
+        - /TF1/Frames1
       Splitter Ratio: 0.5
     Tree Height: 549
   - Class: rviz_common/Selection
@@ -68,86 +69,296 @@ Visualization Manager:
         Expand Link Details: false
         Expand Tree: false
         Link Tree Style: Links in Alphabetic Order
+        arm_left_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link01:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link02:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link03:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link04:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link05:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link06:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_left_link07:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_base:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link01:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link02:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link03:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link04:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link05:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link06:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        arm_right_link07:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
         baseout:
           Alpha: 1
           Show Axes: false
           Show Trail: false
-        left_base:
+        hand_left_f11:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link01:
+        hand_left_f12:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link02:
+        hand_left_f13:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link03:
+        hand_left_f14:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link04:
+        hand_left_f21:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link05:
+        hand_left_f22:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link06:
+        hand_left_f23:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        left_link07:
+        hand_left_f24:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_base:
+        hand_left_f31:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link01:
+        hand_left_f32:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link02:
+        hand_left_f33:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link03:
+        hand_left_f34:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link04:
+        hand_left_f41:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link05:
+        hand_left_f42:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link06:
+        hand_left_f43:
           Alpha: 1
           Show Axes: false
           Show Trail: false
           Value: true
-        right_link07:
+        hand_left_f44:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_left_f51:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_left_f52:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_left_f53:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_left_f54:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_left_palm:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f11:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f12:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f13:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f14:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f21:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f22:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f23:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f24:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f31:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f32:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f33:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f34:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f41:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f42:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f43:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f44:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f51:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f52:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f53:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_f54:
+          Alpha: 1
+          Show Axes: false
+          Show Trail: false
+          Value: true
+        hand_right_palm:
           Alpha: 1
           Show Axes: false
           Show Trail: false
@@ -168,40 +379,124 @@ Visualization Manager:
       Enabled: true
       Frame Timeout: 15
       Frames:
-        All Enabled: true
+        All Enabled: false
+        arm_left_base:
+          Value: true
+        arm_left_link01:
+          Value: true
+        arm_left_link02:
+          Value: true
+        arm_left_link03:
+          Value: true
+        arm_left_link04:
+          Value: true
+        arm_left_link05:
+          Value: true
+        arm_left_link06:
+          Value: true
+        arm_left_link07:
+          Value: true
+        arm_right_base:
+          Value: true
+        arm_right_link01:
+          Value: true
+        arm_right_link02:
+          Value: true
+        arm_right_link03:
+          Value: true
+        arm_right_link04:
+          Value: true
+        arm_right_link05:
+          Value: true
+        arm_right_link06:
+          Value: true
+        arm_right_link07:
+          Value: true
         baseout:
           Value: true
-        left_base:
+        hand_left_f11:
+          Value: false
+        hand_left_f12:
+          Value: false
+        hand_left_f13:
+          Value: false
+        hand_left_f14:
+          Value: false
+        hand_left_f21:
+          Value: false
+        hand_left_f22:
+          Value: false
+        hand_left_f23:
+          Value: false
+        hand_left_f24:
+          Value: false
+        hand_left_f31:
+          Value: false
+        hand_left_f32:
+          Value: false
+        hand_left_f33:
+          Value: false
+        hand_left_f34:
+          Value: false
+        hand_left_f41:
+          Value: false
+        hand_left_f42:
+          Value: false
+        hand_left_f43:
+          Value: false
+        hand_left_f44:
+          Value: false
+        hand_left_f51:
+          Value: false
+        hand_left_f52:
+          Value: false
+        hand_left_f53:
+          Value: false
+        hand_left_f54:
+          Value: false
+        hand_left_palm:
           Value: true
-        left_link01:
-          Value: true
-        left_link02:
-          Value: true
-        left_link03:
-          Value: true
-        left_link04:
-          Value: true
-        left_link05:
-          Value: true
-        left_link06:
-          Value: true
-        left_link07:
-          Value: true
-        right_base:
-          Value: true
-        right_link01:
-          Value: true
-        right_link02:
-          Value: true
-        right_link03:
-          Value: true
-        right_link04:
-          Value: true
-        right_link05:
-          Value: true
-        right_link06:
-          Value: true
-        right_link07:
+        hand_right_f11:
+          Value: false
+        hand_right_f12:
+          Value: false
+        hand_right_f13:
+          Value: false
+        hand_right_f14:
+          Value: false
+        hand_right_f21:
+          Value: false
+        hand_right_f22:
+          Value: false
+        hand_right_f23:
+          Value: false
+        hand_right_f24:
+          Value: false
+        hand_right_f31:
+          Value: false
+        hand_right_f32:
+          Value: false
+        hand_right_f33:
+          Value: false
+        hand_right_f34:
+          Value: false
+        hand_right_f41:
+          Value: false
+        hand_right_f42:
+          Value: false
+        hand_right_f43:
+          Value: false
+        hand_right_f44:
+          Value: false
+        hand_right_f51:
+          Value: false
+        hand_right_f52:
+          Value: false
+        hand_right_f53:
+          Value: false
+        hand_right_f54:
+          Value: false
+        hand_right_palm:
           Value: true
         world:
           Value: true
@@ -213,24 +508,74 @@ Visualization Manager:
       Tree:
         world:
           baseout:
-            left_base:
-              left_link01:
-                left_link02:
-                  left_link03:
-                    left_link04:
-                      left_link05:
-                        left_link06:
-                          left_link07:
-                            {}
-            right_base:
-              right_link01:
-                right_link02:
-                  right_link03:
-                    right_link04:
-                      right_link05:
-                        right_link06:
-                          right_link07:
-                            {}
+            arm_left_base:
+              arm_left_link01:
+                arm_left_link02:
+                  arm_left_link03:
+                    arm_left_link04:
+                      arm_left_link05:
+                        arm_left_link06:
+                          arm_left_link07:
+                            hand_left_palm:
+                              hand_left_f11:
+                                hand_left_f12:
+                                  hand_left_f13:
+                                    hand_left_f14:
+                                      {}
+                              hand_left_f21:
+                                hand_left_f22:
+                                  hand_left_f23:
+                                    hand_left_f24:
+                                      {}
+                              hand_left_f31:
+                                hand_left_f32:
+                                  hand_left_f33:
+                                    hand_left_f34:
+                                      {}
+                              hand_left_f41:
+                                hand_left_f42:
+                                  hand_left_f43:
+                                    hand_left_f44:
+                                      {}
+                              hand_left_f51:
+                                hand_left_f52:
+                                  hand_left_f53:
+                                    hand_left_f54:
+                                      {}
+            arm_right_base:
+              arm_right_link01:
+                arm_right_link02:
+                  arm_right_link03:
+                    arm_right_link04:
+                      arm_right_link05:
+                        arm_right_link06:
+                          arm_right_link07:
+                            hand_right_palm:
+                              hand_right_f11:
+                                hand_right_f12:
+                                  hand_right_f13:
+                                    hand_right_f14:
+                                      {}
+                              hand_right_f21:
+                                hand_right_f22:
+                                  hand_right_f23:
+                                    hand_right_f24:
+                                      {}
+                              hand_right_f31:
+                                hand_right_f32:
+                                  hand_right_f33:
+                                    hand_right_f34:
+                                      {}
+                              hand_right_f41:
+                                hand_right_f42:
+                                  hand_right_f43:
+                                    hand_right_f44:
+                                      {}
+                              hand_right_f51:
+                                hand_right_f52:
+                                  hand_right_f53:
+                                    hand_right_f54:
+                                      {}
       Update Interval: 0
       Value: true
   Enabled: true
@@ -279,25 +624,25 @@ Visualization Manager:
   Views:
     Current:
       Class: rviz_default_plugins/Orbit
-      Distance: 2.007906436920166
+      Distance: 1.3292076587677002
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
       Focal Point:
-        X: -0.04808397963643074
-        Y: 0.008889821358025074
-        Z: 0.007526765111833811
+        X: 0.04914632812142372
+        Y: 0.1546189785003662
+        Z: -0.19234244525432587
       Focal Shape Fixed Size: true
       Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.06020135432481766
+      Pitch: 0.6452009081840515
       Target Frame: <Fixed Frame>
       Value: Orbit (rviz)
-      Yaw: 0.9053853750228882
+      Yaw: 0.5803838968276978
     Saved: ~
 Window Geometry:
   Displays:
@@ -315,5 +660,5 @@ Window Geometry:
   Views:
     collapsed: false
   Width: 1200
-  X: 3280
-  Y: 74
+  X: 3143
+  Y: 108

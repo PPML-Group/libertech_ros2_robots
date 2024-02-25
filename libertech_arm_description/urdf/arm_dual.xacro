@@ -1,23 +1,15 @@
 <?xml version="1.0"?>
-<!-- 该文件调用macro中的load_arm_right和load_arm_left来构造双臂 -->
+<!-- 该文件调用macro中的load_robot来构造双臂 -->
 <robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
-
     <!-- add arms names prefixes -->
     <xacro:arg name="prefix"  default="" />
-    <xacro:arg name="prefix_left"  default="left_" />
-    <xacro:arg name="prefix_right" default="right_" />
-    <xacro:arg name="use_fake_hardware" default="true" />
+    <xacro:arg name="use_hand" default="false" />
+    <xacro:arg name="use_gripper" default="false" />
+    <xacro:arg name="use_fake_hardware" default="false" />
     <xacro:arg name="sim_ignition" default="false" />
     <xacro:arg name="simulation_controllers" default="$(find libertech_arm_description)/config/ros2_controllers.yaml" />
-
-    <!-- initial position for simulations (Mock Hardware, Ignition) -->
-    <xacro:arg name="initial_positions_file" default="$(find libertech_arm_description)/config/initial_positions.yaml"/>
-
-    <!-- convert to property to use substitution in function -->
-    <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
       
-    <xacro:include filename="$(find libertech_arm_description)/urdf/macro.xacro"/>
-    <xacro:include filename="$(find libertech_arm_description)/urdf/arm.ros2_control.xacro" />
+    <xacro:include filename="$(find libertech_arm_description)/urdf/robot_macro.xacro"/>
 
     <link name="world"/>
 
@@ -29,23 +21,27 @@
         <child link="baseout"/>
     </joint>
 
-    <xacro:load_arm_left  
-        prefix="$(arg prefix_left)" 
-        connected_to="baseout" 
-        xyz="-0.15 0 0.0" 
-        rpy="0 0 0"/>
-
-    <xacro:load_arm_right 
-        prefix="$(arg prefix_right)" 
+    <xacro:load_robot
+        prefix="$(arg prefix)" 
         connected_to="baseout" 
         xyz="0.15 0 0.0" 
-        rpy="0 0 0"/>
-
-    <xacro:arm_ros2_control
-        name="ArmMultiInterfaceHardware" 
+        rpy="0 0 0"
+        arm="arm_right"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)"
         use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" 
-        initial_positions="${xacro.load_yaml(initial_positions_file)}" />
+        sim_ignition="$(arg sim_ignition)" />
+
+    <xacro:load_robot
+        prefix="$(arg prefix)" 
+        connected_to="baseout" 
+        xyz="-0.15 0 0.0" 
+        rpy="0 0 0"
+        arm="arm_left"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        sim_ignition="$(arg sim_ignition)" />
 
     <xacro:if value="$(arg sim_ignition)">
         <!-- Gazebo plugins -->

@@ -103,10 +103,10 @@
     <xacro:property name="L07_Izz" value="0.00016405" />
 
     <!-- joint limits -->
-    <!-- <xacro:property name="jointDamping" value="3.0"/> -->
-    <!-- <xacro:property name="jointFriction" value="2.0"/> -->
-    <xacro:property name="jointDamping" value="0.00"/>
-    <xacro:property name="jointFriction" value="0.00"/>
+    <xacro:property name="jointDamping" value="0.1"/>
+    <xacro:property name="jointFriction" value="0.01"/>
+    <!-- <xacro:property name="jointDamping" value="0.1"/>
+    <xacro:property name="jointFriction" value="0.1"/> -->
 
     <xacro:property name="torqueMax" value="10.0"/>
     <xacro:property name="velocityMax" value="3.14"/>

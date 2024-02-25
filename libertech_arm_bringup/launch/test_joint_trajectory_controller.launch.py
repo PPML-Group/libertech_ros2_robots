@@ -26,7 +26,7 @@ def generate_launch_description():
 
     position_goals = PathJoinSubstitution(
         [
-            FindPackageShare("libertech_arm_description"),
+            FindPackageShare("libertech_arm_bringup"),
             "config",
             "test_trajectory_goal_publishers_config.yaml",
         ]
