@@ -318,13 +318,57 @@
             </inertial>
         </link>
 
+        <!-- <joint name="${prefix}arm_left_rokubi_ft_joint" type="fixed">
+            <origin rpy="0.0 ${PI/2} 0.0 " xyz="0.0395 0 0"/>
+            <parent link="${prefix}arm_left_link07"/>
+            <child link="${prefix}arm_left_rokubi_ft_link"/>
+        </joint>
+        <link name="${prefix}arm_left_rokubi_ft_link" >
+            <visual>
+                <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+                <geometry>
+                <mesh
+                    filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/mounting.STL" />
+                </geometry>
+                <material
+                name="Bota_material">
+                <color
+                    rgba="0.89804 0.91765 0.92941 1" />
+                </material>
+            </visual>
+        </link>
+
+        <joint name="${prefix}arm_left_rokubi_ft_wrench_joint" type="fixed">
+            <origin rpy="0 0 0" xyz="0 0 0.032"/>
+            <parent link="${prefix}arm_left_rokubi_ft_link"/>
+            <child link="${prefix}arm_left_rokubi_ft_wrench_link"/>
+        </joint>
+        <link name="${prefix}arm_left_rokubi_ft_wrench_link">
+            <visual>
+                <origin
+                xyz="0 0 0"
+                rpy="0 0 0" />
+                <geometry>
+                <mesh
+                    filename="package://rokubimini_description/meshes/BFT_ROKS_M8/wrench.STL" />
+                </geometry>
+                <material
+                name="Bota_material">
+                <color
+                    rgba="0.6902 0.61176 0.52941 1" />
+                </material>
+            </visual>
+        </link> -->
+
         <xacro:if value="${use_hand}">
             <xacro:include filename="$(find libertech_hand_description)/urdf/hand_left_macro.xacro" />
 
             <xacro:load_hand
                 prefix="${prefix}"
                 connected_to="${prefix}arm_left_link07"
-                xyz="0.18 -0.02 0.0"
+                xyz="0.16725444 -0.025962 -0.0057386"
                 rpy="${-PI/2} 0.0 ${-PI/2}"
                 use_fake_hardware="${use_fake_hardware}"
                 sim_ignition="${sim_ignition}" />

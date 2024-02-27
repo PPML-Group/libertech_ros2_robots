@@ -42,6 +42,10 @@ def launch_setup(context, *args, **kwargs):
     use_fake_hardware = LaunchConfiguration("use_fake_hardware")
     sim_ignition = LaunchConfiguration("sim_ignition")
     sim_ignition_world = LaunchConfiguration("sim_ignition_world")
+    use_camera = LaunchConfiguration("use_camera")
+    camera_width = LaunchConfiguration("camera_width")
+    camera_height = LaunchConfiguration("camera_height")
+    camera_fps = LaunchConfiguration("camera_fps")
     
     # General arguments
     controllers_file = LaunchConfiguration("controllers_file")
@@ -87,6 +91,18 @@ def launch_setup(context, *args, **kwargs):
             " ",
             "sim_ignition:=",
             sim_ignition,
+            " ",
+            "use_camera:=",
+            use_camera,
+            " ",
+            "camera_width:=",
+            camera_width,
+            " ",
+            "camera_height:=",
+            camera_height,
+            " ",
+            "camera_fps:=",
+            camera_fps,
             " ",
             "simulation_controllers:=",
             robot_controllers,
@@ -321,8 +337,36 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_empty.sdf", # world_ycb world_box
+            default_value="world_box.sdf", # world_ycb world_box world_empty
             description="Gazebo Ignition world",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "use_camera",
+            default_value="true",
+            description="Use head camera.",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "camera_width",
+            default_value="640",
+            description="camera width",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "camera_height",
+            default_value="480",
+            description="camera height",
+        )
+    )
+    declared_arguments.append(
+        DeclareLaunchArgument(
+            "camera_fps",
+            default_value="30",
+            description="camera fps",
         )
     )
     # General arguments
@@ -372,7 +416,7 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="false", description="Launch RViz?")
+        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
     )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

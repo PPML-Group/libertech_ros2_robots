@@ -35,7 +35,7 @@
     <gui fullscreen="0">
     
     </gui>
-    <gravity>0 0 0</gravity>
+    <gravity>0 0 -9.81</gravity>
 
 
     <light type="directional" name="sun">
