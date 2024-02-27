@@ -12,7 +12,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
-# Author: Marq Rasmussen
+# Author: Jinjian Li
 
 from launch import LaunchDescription
 from launch.actions import (
@@ -337,7 +337,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_box.sdf", # world_ycb world_box world_empty
+            default_value="world_empty.sdf", # world_ycb world_box world_empty
             description="Gazebo Ignition world",
         )
     )
@@ -416,7 +416,7 @@ def generate_launch_description():
         )
     )
     declared_arguments.append(
-        DeclareLaunchArgument("launch_rviz", default_value="true", description="Launch RViz?")
+        DeclareLaunchArgument("launch_rviz", default_value="false", description="Launch RViz?")
     )
 
     return LaunchDescription(declared_arguments + [OpaqueFunction(function=launch_setup)])

@@ -106,7 +106,7 @@
     <!-- <xacro:property name="jointDamping" value="0.1"/>
     <xacro:property name="jointFriction" value="0.1"/> -->
 
-    <xacro:property name="torqueMax" value="10.0"/>
+    <xacro:property name="torqueMax" value="50.0"/>
     <xacro:property name="velocityMax" value="3.14"/>
     <xacro:property name="joint1_PositionMin" value="${-PI*2}"/>
     <xacro:property name="joint1_PositionMax" value="${PI*2}"/>
