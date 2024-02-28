@@ -373,6 +373,41 @@
                 use_fake_hardware="${use_fake_hardware}"
                 sim_ignition="${sim_ignition}" />
         </xacro:if>
+
+        <xacro:if value="${not use_hand}">
+            <joint name="${prefix}${connected_to}_hand_left_joint" type="fixed">
+                <parent link="${prefix}arm_left_link07"/>
+                <child link="${prefix}hand_left_palm"/>
+                <origin rpy="${-PI/2} 0.0 ${-PI/2}" xyz="0.16725444 -0.025962 -0.0057386"/>
+            </joint>
+
+            <link name="${prefix}hand_left_palm">
+                <inertial>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <mass value="0.91778"/>
+                    <inertia
+                        ixx="0.0018592" ixy="6.239E-05" ixz="-6.688E-05"
+                        iyy="0.0015814" iyz="3.163E-05"
+                        izz="0.00064901"/> 
+                </inertial>
+                <collision>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand_left.STL" />
+                    </geometry>
+                </collision>
+                <visual>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand_left.STL" />
+                    </geometry>
+                    <material name="hand_material">
+                        <color rgba="0.913725 0.913725 0.847059 1" />
+                    </material>
+                </visual>
+            </link>
+        </xacro:if>
+
     </xacro:macro>
 
 </robot>

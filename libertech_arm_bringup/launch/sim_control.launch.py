@@ -337,7 +337,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_empty.sdf", # world_ycb world_box world_empty
+            default_value="world_empty.sdf", # world_ycb world_box world_empty world_aruco.sdf world_iss
             description="Gazebo Ignition world",
         )
     )

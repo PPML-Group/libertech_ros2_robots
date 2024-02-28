@@ -3,7 +3,7 @@
 <robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- add arms names prefixes -->
     <xacro:arg name="prefix"  default="" />
-    <xacro:arg name="use_hand" default="true" />
+    <xacro:arg name="use_hand" default="false" />
     <xacro:arg name="use_gripper" default="false" />
     <xacro:arg name="use_fake_hardware" default="false" />
     <xacro:arg name="sim_ignition" default="false" />
@@ -15,6 +15,7 @@
       
     <xacro:include filename="$(find libertech_arm_description)/urdf/robot_macro.xacro"/>
 
+    <!-- 如果取消world则为漂浮 -->
     <link name="world"/>
 
     <link name="$(arg prefix)baseout"/>

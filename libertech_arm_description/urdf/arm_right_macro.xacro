@@ -309,17 +309,12 @@
         </joint>
         <link name="${prefix}arm_right_rokubi_ft_link" >
             <visual>
-                <origin
-                xyz="0 0 0"
-                rpy="0 0 0" />
+                <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                <mesh
-                    filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/mounting.STL" />
+                    <mesh filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/mounting.STL" />
                 </geometry>
-                <material
-                name="Bota_material">
-                <color
-                    rgba="0.89804 0.91765 0.92941 1" />
+                <material name="Bota_material">
+                    <color rgba="0.89804 0.91765 0.92941 1" />
                 </material>
             </visual>
         </link>
@@ -331,17 +326,12 @@
         </joint>
         <link name="${prefix}arm_right_rokubi_ft_wrench_link">
             <visual>
-                <origin
-                xyz="0 0 0"
-                rpy="0 0 0" />
+                <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                <mesh
-                    filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/wrench.STL" />
+                    <mesh filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/wrench.STL" />
                 </geometry>
-                <material
-                name="Bota_material">
-                <color
-                    rgba="0.6902 0.61176 0.52941 1" />
+                <material name="Bota_material">
+                    <color rgba="0.6902 0.61176 0.52941 1" />
                 </material>
             </visual>
         </link>
@@ -358,5 +348,39 @@
                 sim_ignition="${sim_ignition}" />
         </xacro:if>
 
+        <xacro:if value="${not use_hand}">
+            <joint name="${prefix}${connected_to}_hand_right_joint" type="fixed">
+                <parent link="${prefix}arm_right_link07"/>
+                <child link="${prefix}hand_right_palm"/>
+                <origin rpy="${PI/2} 0.0 ${PI/2}" xyz="0.16725444 0.025962 -0.0057386"/>
+            </joint>
+
+            <link name="${prefix}hand_right_palm">
+                <inertial>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <mass value="0.91778"/>
+                    <inertia
+                        ixx="0.0018592" ixy="6.239E-05" ixz="-6.688E-05"
+                        iyy="0.0015814" iyz="3.163E-05"
+                        izz="0.00064901"/> 
+                </inertial>
+                <collision>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand.STL" />
+                    </geometry>
+                </collision>
+                <visual>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand.STL" />
+                    </geometry>
+                    <material name="hand_material">
+                        <color rgba="0.913725 0.913725 0.847059 1" />
+                    </material>
+                </visual>
+            </link>
+        </xacro:if>
+        
     </xacro:macro>
 </robot>
