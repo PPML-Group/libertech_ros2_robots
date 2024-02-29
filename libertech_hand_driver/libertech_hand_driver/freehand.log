@@ -9915,3 +9915,342 @@
 2024-02-28 21:29:57,178 - logger - INFO - pos误差为: [-0. -0.  0.]
 2024-02-28 21:29:57,179 - logger - INFO - pos为: [0.4   1.949 0.   ]
 2024-02-28 21:29:57,180 - logger - INFO - pos误差为: [-0. -0.  0.]
+2024-02-28 23:56:42,295 - logger - INFO - Start log
+2024-02-28 23:56:42,332 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-28 23:56:42,334 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-28 23:56:42,336 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-28 23:56:42,337 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-28 23:56:42,338 - logger - INFO - Using right hand
+2024-02-28 23:56:42,339 - logger - INFO - pos为: [0.5 0. ]
+2024-02-28 23:57:19,224 - logger - INFO - Start log
+2024-02-28 23:57:19,261 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-28 23:57:19,263 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-28 23:57:19,264 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-28 23:57:19,266 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-28 23:57:19,267 - logger - INFO - Using right hand
+2024-02-28 23:57:19,267 - logger - INFO - pos为: [0.5 0. ]
+2024-02-28 23:57:29,443 - logger - INFO - Start log
+2024-02-28 23:57:29,480 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-28 23:57:29,482 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-28 23:57:29,483 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-28 23:57:29,485 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-28 23:57:29,486 - logger - INFO - Using right hand
+2024-02-28 23:57:29,486 - logger - INFO - pos为: [0.5 0. ]
+2024-02-28 23:57:45,813 - logger - INFO - Start log
+2024-02-28 23:57:45,852 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-28 23:57:45,854 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-28 23:57:45,856 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-28 23:57:45,858 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-28 23:57:45,859 - logger - INFO - Using right hand
+2024-02-28 23:57:45,860 - logger - INFO - pos为: [0.5 0. ]
+2024-02-28 23:59:44,523 - logger - INFO - Start log
+2024-02-28 23:59:44,560 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-28 23:59:44,562 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-28 23:59:44,563 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-28 23:59:44,565 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-28 23:59:44,566 - logger - INFO - Using right hand
+2024-02-28 23:59:44,566 - logger - INFO - pos为: [0.5 0. ]
+2024-02-28 23:59:44,569 - logger - INFO - ik_q2d()为: [0.08  0.576]
+2024-02-28 23:59:44,570 - logger - INFO - ik_q2d(fourth) 用时为: 3.291606903076172 ms
+2024-02-28 23:59:44,571 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,572 - logger - INFO - fk_d2q(fourth) 用时为: 0.8242130279541016 ms
+2024-02-28 23:59:44,573 - logger - INFO - pos为: [0.5 0.2]
+2024-02-28 23:59:44,576 - logger - INFO - ik_q2d()为: [0.08 2.95]
+2024-02-28 23:59:44,577 - logger - INFO - ik_q2d(fourth) 用时为: 3.9458274841308594 ms
+2024-02-28 23:59:44,578 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,580 - logger - INFO - fk_d2q(fourth) 用时为: 1.5187263488769531 ms
+2024-02-28 23:59:44,581 - logger - INFO - pos为: [0.5 0.4]
+2024-02-28 23:59:44,584 - logger - INFO - ik_q2d()为: [0.08  5.446]
+2024-02-28 23:59:44,585 - logger - INFO - ik_q2d(fourth) 用时为: 3.4177303314208984 ms
+2024-02-28 23:59:44,585 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,586 - logger - INFO - fk_d2q(fourth) 用时为: 0.8594989776611328 ms
+2024-02-28 23:59:44,587 - logger - INFO - pos为: [0.5 0.6]
+2024-02-28 23:59:44,590 - logger - INFO - ik_q2d()为: [0.08  8.068]
+2024-02-28 23:59:44,591 - logger - INFO - ik_q2d(fourth) 用时为: 3.4940242767333984 ms
+2024-02-28 23:59:44,592 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,593 - logger - INFO - fk_d2q(fourth) 用时为: 0.8075237274169922 ms
+2024-02-28 23:59:44,593 - logger - INFO - pos为: [0.5 0.8]
+2024-02-28 23:59:44,597 - logger - INFO - ik_q2d()为: [ 0.08  10.785]
+2024-02-28 23:59:44,598 - logger - INFO - ik_q2d(fourth) 用时为: 3.461122512817383 ms
+2024-02-28 23:59:44,598 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,599 - logger - INFO - fk_d2q(fourth) 用时为: 0.8106231689453125 ms
+2024-02-28 23:59:44,600 - logger - INFO - pos为: [0.5 1. ]
+2024-02-28 23:59:44,603 - logger - INFO - ik_q2d()为: [ 0.08  13.533]
+2024-02-28 23:59:44,604 - logger - INFO - ik_q2d(fourth) 用时为: 3.267049789428711 ms
+2024-02-28 23:59:44,605 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,605 - logger - INFO - fk_d2q(fourth) 用时为: 0.8070468902587891 ms
+2024-02-28 23:59:44,606 - logger - INFO - pos为: [0.5 1.2]
+2024-02-28 23:59:44,609 - logger - INFO - ik_q2d()为: [ 0.08  16.202]
+2024-02-28 23:59:44,611 - logger - INFO - ik_q2d(fourth) 用时为: 4.099130630493164 ms
+2024-02-28 23:59:44,612 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,612 - logger - INFO - fk_d2q(fourth) 用时为: 0.8473396301269531 ms
+2024-02-28 23:59:44,613 - logger - INFO - pos为: [0.5 1.4]
+2024-02-28 23:59:44,617 - logger - INFO - ik_q2d()为: [ 0.08  18.652]
+2024-02-28 23:59:44,617 - logger - INFO - ik_q2d(fourth) 用时为: 3.472566604614258 ms
+2024-02-28 23:59:44,618 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,619 - logger - INFO - fk_d2q(fourth) 用时为: 0.8034706115722656 ms
+2024-02-28 23:59:44,620 - logger - INFO - pos为: [0.5 1.6]
+2024-02-28 23:59:44,623 - logger - INFO - ik_q2d()为: [ 0.08  20.716]
+2024-02-28 23:59:44,624 - logger - INFO - ik_q2d(fourth) 用时为: 3.5903453826904297 ms
+2024-02-28 23:59:44,625 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,625 - logger - INFO - fk_d2q(fourth) 用时为: 0.8120536804199219 ms
+2024-02-28 23:59:44,626 - logger - INFO - pos为: [0.5 1.8]
+2024-02-28 23:59:44,629 - logger - INFO - ik_q2d()为: [ 0.08 22.23]
+2024-02-28 23:59:44,630 - logger - INFO - ik_q2d(fourth) 用时为: 3.181934356689453 ms
+2024-02-28 23:59:44,631 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-28 23:59:44,631 - logger - INFO - fk_d2q(fourth) 用时为: 0.7901191711425781 ms
+2024-02-29 00:03:08,506 - logger - INFO - Start log
+2024-02-29 00:03:08,543 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:03:08,545 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:03:08,546 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:03:08,548 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:03:08,549 - logger - INFO - Using right hand
+2024-02-29 00:03:08,549 - logger - INFO - pos为: [0.5 0. ]
+2024-02-29 00:03:28,438 - logger - INFO - Start log
+2024-02-29 00:03:28,478 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:03:28,480 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:03:28,482 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:03:28,483 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:03:28,484 - logger - INFO - Using right hand
+2024-02-29 00:03:28,485 - logger - INFO - pos为: [0.5 0. ]
+2024-02-29 00:03:36,486 - logger - INFO - Start log
+2024-02-29 00:03:36,525 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:03:36,527 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:03:36,528 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:03:36,529 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:03:36,530 - logger - INFO - Using right hand
+2024-02-29 00:03:36,531 - logger - INFO - pos为: [0.5 0. ]
+2024-02-29 00:03:36,534 - logger - INFO - ik_q2d()为: [0.08  0.576]
+2024-02-29 00:03:36,535 - logger - INFO - ik_q2d(fourth) 用时为: 2.95257568359375 ms
+2024-02-29 00:03:36,536 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,536 - logger - INFO - fk_d2q(fourth) 用时为: 0.8246898651123047 ms
+2024-02-29 00:03:36,537 - logger - INFO - pos为: [0.5 0.2]
+2024-02-29 00:03:36,540 - logger - INFO - ik_q2d()为: [0.08 2.95]
+2024-02-29 00:03:36,541 - logger - INFO - ik_q2d(fourth) 用时为: 2.9637813568115234 ms
+2024-02-29 00:03:36,542 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,544 - logger - INFO - fk_d2q(fourth) 用时为: 2.2487640380859375 ms
+2024-02-29 00:03:36,546 - logger - INFO - pos为: [0.5 0.4]
+2024-02-29 00:03:36,551 - logger - INFO - ik_q2d()为: [0.08  5.446]
+2024-02-29 00:03:36,552 - logger - INFO - ik_q2d(fourth) 用时为: 5.43212890625 ms
+2024-02-29 00:03:36,554 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,555 - logger - INFO - fk_d2q(fourth) 用时为: 1.367330551147461 ms
+2024-02-29 00:03:36,556 - logger - INFO - pos为: [0.5 0.6]
+2024-02-29 00:03:36,561 - logger - INFO - ik_q2d()为: [0.08  8.068]
+2024-02-29 00:03:36,563 - logger - INFO - ik_q2d(fourth) 用时为: 5.856752395629883 ms
+2024-02-29 00:03:36,564 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,565 - logger - INFO - fk_d2q(fourth) 用时为: 1.1949539184570312 ms
+2024-02-29 00:03:36,566 - logger - INFO - pos为: [0.5 0.8]
+2024-02-29 00:03:36,569 - logger - INFO - ik_q2d()为: [ 0.08  10.785]
+2024-02-29 00:03:36,569 - logger - INFO - ik_q2d(fourth) 用时为: 2.8581619262695312 ms
+2024-02-29 00:03:36,570 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,571 - logger - INFO - fk_d2q(fourth) 用时为: 0.8139610290527344 ms
+2024-02-29 00:03:36,572 - logger - INFO - pos为: [0.5 1. ]
+2024-02-29 00:03:36,575 - logger - INFO - ik_q2d()为: [ 0.08  13.533]
+2024-02-29 00:03:36,575 - logger - INFO - ik_q2d(fourth) 用时为: 2.794027328491211 ms
+2024-02-29 00:03:36,576 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,577 - logger - INFO - fk_d2q(fourth) 用时为: 0.8106231689453125 ms
+2024-02-29 00:03:36,577 - logger - INFO - pos为: [0.5 1.2]
+2024-02-29 00:03:36,581 - logger - INFO - ik_q2d()为: [ 0.08  16.202]
+2024-02-29 00:03:36,582 - logger - INFO - ik_q2d(fourth) 用时为: 3.607034683227539 ms
+2024-02-29 00:03:36,583 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,584 - logger - INFO - fk_d2q(fourth) 用时为: 0.9646415710449219 ms
+2024-02-29 00:03:36,584 - logger - INFO - pos为: [0.5 1.4]
+2024-02-29 00:03:36,588 - logger - INFO - ik_q2d()为: [ 0.08  18.652]
+2024-02-29 00:03:36,589 - logger - INFO - ik_q2d(fourth) 用时为: 4.445075988769531 ms
+2024-02-29 00:03:36,591 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,592 - logger - INFO - fk_d2q(fourth) 用时为: 1.2316703796386719 ms
+2024-02-29 00:03:36,593 - logger - INFO - pos为: [0.5 1.6]
+2024-02-29 00:03:36,597 - logger - INFO - ik_q2d()为: [ 0.08  20.716]
+2024-02-29 00:03:36,598 - logger - INFO - ik_q2d(fourth) 用时为: 3.9069652557373047 ms
+2024-02-29 00:03:36,599 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,599 - logger - INFO - fk_d2q(fourth) 用时为: 0.81634521484375 ms
+2024-02-29 00:03:36,600 - logger - INFO - pos为: [0.5 1.8]
+2024-02-29 00:03:36,603 - logger - INFO - ik_q2d()为: [ 0.08 22.23]
+2024-02-29 00:03:36,604 - logger - INFO - ik_q2d(fourth) 用时为: 2.813577651977539 ms
+2024-02-29 00:03:36,604 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:36,605 - logger - INFO - fk_d2q(fourth) 用时为: 0.8006095886230469 ms
+2024-02-29 00:03:46,040 - logger - INFO - Start log
+2024-02-29 00:03:46,076 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:03:46,079 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:03:46,080 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:03:46,081 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:03:46,082 - logger - INFO - Using right hand
+2024-02-29 00:03:46,083 - logger - INFO - pos为: [0.5 0. ]
+2024-02-29 00:03:46,086 - logger - INFO - ik_q2d()为: [0.08  0.576]
+2024-02-29 00:03:46,087 - logger - INFO - ik_q2d(fourth) 用时为: 3.0755996704101562 ms
+2024-02-29 00:03:46,088 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,088 - logger - INFO - fk_d2q(fourth) 用时为: 0.8420944213867188 ms
+2024-02-29 00:03:46,089 - logger - INFO - pos为: [0.5 0.2]
+2024-02-29 00:03:46,092 - logger - INFO - ik_q2d()为: [0.08 2.95]
+2024-02-29 00:03:46,093 - logger - INFO - ik_q2d(fourth) 用时为: 2.9647350311279297 ms
+2024-02-29 00:03:46,094 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,095 - logger - INFO - fk_d2q(fourth) 用时为: 1.3356208801269531 ms
+2024-02-29 00:03:46,096 - logger - INFO - pos为: [0.5 0.4]
+2024-02-29 00:03:46,098 - logger - INFO - ik_q2d()为: [0.08  5.446]
+2024-02-29 00:03:46,099 - logger - INFO - ik_q2d(fourth) 用时为: 2.885103225708008 ms
+2024-02-29 00:03:46,100 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,101 - logger - INFO - fk_d2q(fourth) 用时为: 0.8432865142822266 ms
+2024-02-29 00:03:46,101 - logger - INFO - pos为: [0.5 0.6]
+2024-02-29 00:03:46,104 - logger - INFO - ik_q2d()为: [0.08  8.068]
+2024-02-29 00:03:46,105 - logger - INFO - ik_q2d(fourth) 用时为: 2.7093887329101562 ms
+2024-02-29 00:03:46,106 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,106 - logger - INFO - fk_d2q(fourth) 用时为: 0.8082389831542969 ms
+2024-02-29 00:03:46,107 - logger - INFO - pos为: [0.5 0.8]
+2024-02-29 00:03:46,110 - logger - INFO - ik_q2d()为: [ 0.08  10.785]
+2024-02-29 00:03:46,111 - logger - INFO - ik_q2d(fourth) 用时为: 2.8753280639648438 ms
+2024-02-29 00:03:46,111 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,112 - logger - INFO - fk_d2q(fourth) 用时为: 0.8080005645751953 ms
+2024-02-29 00:03:46,113 - logger - INFO - pos为: [0.5 1. ]
+2024-02-29 00:03:46,116 - logger - INFO - ik_q2d()为: [ 0.08  13.533]
+2024-02-29 00:03:46,117 - logger - INFO - ik_q2d(fourth) 用时为: 3.0105113983154297 ms
+2024-02-29 00:03:46,117 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,118 - logger - INFO - fk_d2q(fourth) 用时为: 0.8020401000976562 ms
+2024-02-29 00:03:46,119 - logger - INFO - pos为: [0.5 1.2]
+2024-02-29 00:03:46,122 - logger - INFO - ik_q2d()为: [ 0.08  16.202]
+2024-02-29 00:03:46,123 - logger - INFO - ik_q2d(fourth) 用时为: 3.065347671508789 ms
+2024-02-29 00:03:46,123 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,124 - logger - INFO - fk_d2q(fourth) 用时为: 0.7979869842529297 ms
+2024-02-29 00:03:46,125 - logger - INFO - pos为: [0.5 1.4]
+2024-02-29 00:03:46,128 - logger - INFO - ik_q2d()为: [ 0.08  18.652]
+2024-02-29 00:03:46,128 - logger - INFO - ik_q2d(fourth) 用时为: 2.8471946716308594 ms
+2024-02-29 00:03:46,129 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,130 - logger - INFO - fk_d2q(fourth) 用时为: 0.81634521484375 ms
+2024-02-29 00:03:46,131 - logger - INFO - pos为: [0.5 1.6]
+2024-02-29 00:03:46,133 - logger - INFO - ik_q2d()为: [ 0.08  20.716]
+2024-02-29 00:03:46,134 - logger - INFO - ik_q2d(fourth) 用时为: 2.8541088104248047 ms
+2024-02-29 00:03:46,135 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,136 - logger - INFO - fk_d2q(fourth) 用时为: 0.8091926574707031 ms
+2024-02-29 00:03:46,136 - logger - INFO - pos为: [0.5 1.8]
+2024-02-29 00:03:46,140 - logger - INFO - ik_q2d()为: [ 0.08 22.23]
+2024-02-29 00:03:46,141 - logger - INFO - ik_q2d(fourth) 用时为: 3.973245620727539 ms
+2024-02-29 00:03:46,142 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:03:46,143 - logger - INFO - fk_d2q(fourth) 用时为: 1.2273788452148438 ms
+2024-02-29 00:04:07,995 - logger - INFO - Start log
+2024-02-29 00:04:08,032 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:04:08,034 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:04:08,035 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:04:08,036 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:04:08,037 - logger - INFO - Using right hand
+2024-02-29 00:04:08,038 - logger - INFO - pos为: [0.5 0. ]
+2024-02-29 00:04:08,041 - logger - INFO - ik_q2d()为: [0.08  0.576]
+2024-02-29 00:04:08,042 - logger - INFO - ik_q2d(fourth) 用时为: 2.921581268310547 ms
+2024-02-29 00:04:08,043 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,043 - logger - INFO - fk_d2q(fourth) 用时为: 0.8339881896972656 ms
+2024-02-29 00:04:08,044 - logger - INFO - pos为: [0.5 0.2]
+2024-02-29 00:04:08,047 - logger - INFO - ik_q2d()为: [0.08 2.95]
+2024-02-29 00:04:08,048 - logger - INFO - ik_q2d(fourth) 用时为: 2.765178680419922 ms
+2024-02-29 00:04:08,049 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,050 - logger - INFO - fk_d2q(fourth) 用时为: 1.3442039489746094 ms
+2024-02-29 00:04:08,051 - logger - INFO - pos为: [0.5 0.4]
+2024-02-29 00:04:08,053 - logger - INFO - ik_q2d()为: [0.08  5.446]
+2024-02-29 00:04:08,054 - logger - INFO - ik_q2d(fourth) 用时为: 2.7463436126708984 ms
+2024-02-29 00:04:08,055 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,055 - logger - INFO - fk_d2q(fourth) 用时为: 0.8134841918945312 ms
+2024-02-29 00:04:08,056 - logger - INFO - pos为: [0.5 0.6]
+2024-02-29 00:04:08,059 - logger - INFO - ik_q2d()为: [0.08  8.068]
+2024-02-29 00:04:08,060 - logger - INFO - ik_q2d(fourth) 用时为: 2.7060508728027344 ms
+2024-02-29 00:04:08,060 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,061 - logger - INFO - fk_d2q(fourth) 用时为: 0.8027553558349609 ms
+2024-02-29 00:04:08,062 - logger - INFO - pos为: [0.5 0.8]
+2024-02-29 00:04:08,065 - logger - INFO - ik_q2d()为: [ 0.08  10.785]
+2024-02-29 00:04:08,065 - logger - INFO - ik_q2d(fourth) 用时为: 2.908468246459961 ms
+2024-02-29 00:04:08,066 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,067 - logger - INFO - fk_d2q(fourth) 用时为: 0.8330345153808594 ms
+2024-02-29 00:04:08,068 - logger - INFO - pos为: [0.5 1. ]
+2024-02-29 00:04:08,071 - logger - INFO - ik_q2d()为: [ 0.08  13.533]
+2024-02-29 00:04:08,071 - logger - INFO - ik_q2d(fourth) 用时为: 2.783060073852539 ms
+2024-02-29 00:04:08,072 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,073 - logger - INFO - fk_d2q(fourth) 用时为: 0.8134841918945312 ms
+2024-02-29 00:04:08,074 - logger - INFO - pos为: [0.5 1.2]
+2024-02-29 00:04:08,076 - logger - INFO - ik_q2d()为: [ 0.08  16.202]
+2024-02-29 00:04:08,077 - logger - INFO - ik_q2d(fourth) 用时为: 2.7375221252441406 ms
+2024-02-29 00:04:08,078 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,079 - logger - INFO - fk_d2q(fourth) 用时为: 0.8263587951660156 ms
+2024-02-29 00:04:08,079 - logger - INFO - pos为: [0.5 1.4]
+2024-02-29 00:04:08,082 - logger - INFO - ik_q2d()为: [ 0.08  18.652]
+2024-02-29 00:04:08,083 - logger - INFO - ik_q2d(fourth) 用时为: 2.6938915252685547 ms
+2024-02-29 00:04:08,083 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,084 - logger - INFO - fk_d2q(fourth) 用时为: 0.7987022399902344 ms
+2024-02-29 00:04:08,085 - logger - INFO - pos为: [0.5 1.6]
+2024-02-29 00:04:08,089 - logger - INFO - ik_q2d()为: [ 0.08  20.716]
+2024-02-29 00:04:08,090 - logger - INFO - ik_q2d(fourth) 用时为: 4.8427581787109375 ms
+2024-02-29 00:04:08,092 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,093 - logger - INFO - fk_d2q(fourth) 用时为: 1.3141632080078125 ms
+2024-02-29 00:04:08,094 - logger - INFO - pos为: [0.5 1.8]
+2024-02-29 00:04:08,097 - logger - INFO - ik_q2d()为: [ 0.08 22.23]
+2024-02-29 00:04:08,098 - logger - INFO - ik_q2d(fourth) 用时为: 3.285646438598633 ms
+2024-02-29 00:04:08,099 - logger - INFO - fk_d2q()为: [0.5 0.  0.  0. ]
+2024-02-29 00:04:08,100 - logger - INFO - fk_d2q(fourth) 用时为: 0.9763240814208984 ms
+2024-02-29 00:04:43,386 - logger - INFO - Start log
+2024-02-29 00:04:43,424 - logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-02-29 00:04:43,426 - logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-02-29 00:04:43,427 - logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-02-29 00:04:43,428 - logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-02-29 00:04:43,430 - logger - INFO - Using right hand
+2024-02-29 00:04:43,430 - logger - INFO - pos为: [0.5 0. ]
