@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
+
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/materials.xacro"/>
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/head.xacro"/>
+    <!-- <xacro:include filename="$(find libertech_humanoid_description)/urdf/arm.xacro"/> -->
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg.xacro"/>
+    <!-- <xacro:include filename="$(find libertech_humanoid_description)/urdf/gazebo.xacro"/> -->
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/imu.xacro"/>
+
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/const.xacro"/>
+
+<!--    <xacro:property name="mesh_path" value="../meshes"/>-->
+    <xacro:property name="mesh_path" value="file://$(find libertech_humanoid_description)/meshes/"/>
+
+    <link name="base">
+        <visual>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <mesh filename="${mesh_path}/trunk.STL" scale="1 1 1"/>
+            </geometry>
+            <material name="grey" />
+        </visual>
+        <collision>
+            <origin rpy="0 0 0" xyz="0 0 0"/>
+            <geometry>
+                <box size="${trunk_length} ${trunk_width} ${trunk_height}"/>
+            </geometry>
+        </collision>
+        <inertial>
+          <origin
+            xyz="-0.024598 0.0055905 0.18286"
+            rpy="0 0 0" />
+          <mass value="10" />
+          <inertia ixx="0.049009" ixy="-2.629E-05" ixz="-0.00018492"
+                   iyy="0.037036" iyz="0.00056345"
+                   izz="0.021052" />
+        </inertial>
+    </link>
+
+    <joint
+        name="base_to_breastplate_fixed"
+        type="fixed">
+        <origin
+          xyz="0.136 0 0.21656"
+          rpy="0 1.5708 0" />
+        <parent link="base" />
+        <child link="breastplate" />
+      </joint>
+
+    <link
+        name="breastplate">
+        <inertial>
+          <origin
+            xyz="-0.000867 3.424E-05 -0.005697"
+            rpy="0 0 0" />
+          <mass
+            value="0.85" />
+          <inertia ixx="0.012172" ixy="8.0504E-07" ixz="-9.2127E-05"
+                   iyy="0.003647" iyz="5.8738E-07"
+                   izz="0.013851" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="${mesh_path}/breastplate.STL" />
+          </geometry>
+          <material name="grey" />
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <box size="${breastplate_width} ${breastplate_length} ${breastplate_height}" />
+          </geometry>
+        </collision>
+      </link>
+
+      <joint name="base_to_battery_fixed" type="fixed">
+        <origin
+          xyz="-0.108500000000001 4.2820323028811E-05 0.196560294979676"
+          rpy="0 0 0" />
+        <parent link="base" />
+        <child link="battery" />
+      </joint>
+
+      <link name="battery">
+        <inertial>
+          <origin
+            xyz="-0.00021714 -5.6877E-08 -0.00033886"
+            rpy="0 0 0" />
+          <mass value="10.346" />
+          <inertia ixx="0.10449" ixy="1.6722E-08" ixz="4.2923E-05"
+                   iyy="0.06951" iyz="-1.7277E-08"
+                   izz="0.04501" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="${mesh_path}/battery.STL" />
+          </geometry>
+          <material name="silver"/>
+        </visual>
+      </link>
+      
+      <joint name="base_to_waist_fixed" type="fixed">
+        <origin
+          xyz="0 0 -0.0176"
+          rpy="0 0 0" />
+        <parent link="base" />
+        <child link="waist_actuator" />
+      </joint>
+
+      <link name="waist_actuator">
+        <inertial>
+          <origin
+            xyz="-0.000186850869182693 -9.1956687663694E-05 0.0291785584254683"
+            rpy="0 0 0" />
+          <mass value="1.1" />
+          <inertia ixx="0.000705" ixy="-2.07140E-06" ixz="-8.785568E-08"
+                   iyy="0.000714" iyz="1.485556E-07"
+                   izz="0.001342" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh filename="${mesh_path}/waist_actuator.STL" />
+          </geometry>
+          <material name="silver" />
+        </visual>
+      </link>
+
+      <joint name="waist_yaw" type="revolute">
+          <origin xyz="0 0 0" rpy="3.1415926 0 0" />
+          <parent link="waist_actuator" />
+          <child  link="pelvis" />
+          <axis xyz="0 0 1" />
+          <limit lower="${waist_yaw_min}" upper="${waist_yaw_max}"
+                 effort="${waist_yaw_torque_max}"  velocity="${waist_yaw_velocity_max}" />
+      </joint>
+      
+      <link name="pelvis">
+          <inertial>
+            <origin
+              xyz="-0.035353 2.077E-05 0.059170"
+              rpy="0 0 0" />
+            <mass value="2.5" />
+            <inertia ixx="0.014239" ixy="1.7481E-07" ixz="0.001616"
+                     iyy="0.007796" iyz="-2.306E-07"
+                     izz="0.014610" />
+          </inertial>
+          <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+              <mesh filename="${mesh_path}/pelvis.STL" />
+            </geometry>
+            <material name="orange" />
+          </visual>
+          <collision>
+            <origin
+              xyz="0 0 0"
+              rpy="0 0 0" />
+            <geometry>
+              <box size="${pelvis_length} ${pelvis_width} ${pelvis_height}"/>
+            </geometry>
+          </collision>
+        </link>
+
+    <xacro:head connected_to="base" xyz="0.035 0 0.336" rpy="0. 0. 0."/>
+
+    <xacro:IMU connected_to="base" imu_name="base_imu" xyz="0. 0. 0." rpy="0. 0. 0."/>
+
+    <!-- prefix= right/left mirror(right=1 left=-1) mirror_stl(right=True left=False)-->
+    <xacro:leg prefix="right" connected_to="pelvis" mesh_path="${mesh_path}" mirror="1" mirror_stl="True" >
+        <origin rpy="0 -0.349066 0" xyz="-0.024112 0.066 0.110009"/>
+    </xacro:leg>
+
+    <xacro:leg prefix="left" connected_to="pelvis" mesh_path="${mesh_path}" mirror="-1" mirror_stl="False" >
+        <origin rpy="0 -0.349066 0" xyz="-0.024112 -0.066 0.110009"/>
+    </xacro:leg>
+
+</robot>

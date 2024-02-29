@@ -1,0 +1,252 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="leg" params="prefix connected_to mesh_path mirror mirror_stl *origin">
+
+        <joint name="${connected_to}_to_${prefix}_hip_fixed" type="fixed">
+            <xacro:insert_block name="origin"/>
+            <parent link="${connected_to}" />
+            <child link="${prefix}_hip_yaw" />
+        </joint>
+        
+        <link name="${prefix}_hip_yaw">
+            <inertial>
+                <origin
+                    xyz="-0.014235 0.000139 -0.032474"
+                    rpy="0 0 0" />
+                <mass value="1.2" />
+                <inertia ixx="0.001016" ixy="3.4732E-06" ixz="-0.000209"
+                        iyy="0.001137" iyz="4.4837E-08"
+                        izz="0.001612" />
+            </inertial>
+            <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/hip_yaw.STL" />
+                </geometry>
+                <material  name="silver" />
+            </visual>
+        </link>
+
+        <joint name="${prefix}_HTAA" type="revolute">
+            <origin xyz="0.0441 0 0.059" rpy="0 1.5708 0" />
+            <parent link="${prefix}_hip_yaw" />
+            <child link="${prefix}_hip_roll" />
+            <axis xyz="1 0 0" />
+            <dynamics damping="${hip_actuator_damping}" friction="${hip_actuator_friction}"/>
+            
+            <xacro:if value="${(mirror_stl == True)}">
+                <limit lower="${HTAA_min}" upper="${HTAA_max}" effort="${HTAA_torque_max}"
+                        velocity="${HTAA_velocity_max}" />
+            </xacro:if>
+            <xacro:if value="${(mirror_stl== False)}">
+                <limit lower="${-HTAA_max}" upper="${-HTAA_min}" effort="${HTAA_torque_max}"
+                        velocity="${HTAA_velocity_max}" />
+            </xacro:if>
+        </joint>
+
+        <link name="${prefix}_hip_roll">
+            <inertial>
+                <origin
+                    xyz="0.014235 -0.000139 -0.032474"
+                    rpy="0 0 0" />
+                <mass
+                    value="1.2" />
+                <inertia ixx="0.001016" ixy="3.47401E-06" ixz="0.000209"
+                        iyy="0.001137" iyz="-4.4906E-08"
+                        izz="0.001612" />
+            </inertial>
+            <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/hip_roll.STL" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="0.08" radius="0.06" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_HAA" type="revolute">
+            <origin rpy="0 0 1.5708" xyz="0 0 0"/>
+            <parent link="${prefix}_hip_roll"/>
+            <child link="${prefix}_hip_pitch"/>
+            <axis xyz="0 0 1"/>
+            <dynamics damping="${hip_actuator_damping}" friction="${hip_actuator_friction}"/>
+
+            <xacro:if value="${(mirror_stl == True)}">
+                <limit lower="${HAA_min}" upper="${HAA_max}" effort="${HAA_torque_max}"
+                        velocity="${HAA_velocity_max}" />
+            </xacro:if>
+            <xacro:if value="${(mirror_stl== False)}">
+                <limit lower="${-HAA_max}" upper="${-HAA_min}" effort="${HAA_torque_max}"
+                        velocity="${HAA_velocity_max}" />
+            </xacro:if>
+
+        </joint>
+
+        <link name="${prefix}_hip_pitch">
+            <inertial>
+                <origin rpy="0 0 0" xyz="${0.0165*mirror} -0.0001 0.0627"/>
+                <mass value="1.5"/>
+                <inertia ixx="0.009936" ixy="${3.5e-06*mirror}" ixz="${0.001933*mirror}" 
+                         iyy="0.009661" iyz="-0.000009" 
+                         izz="0.002698"/>
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/hip_pitch.STL" scale="${mirror} 1 1"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <!-- <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/hip_pitch.STL"/>
+                </geometry>
+            </collision> -->
+        </link>
+
+        <joint name="${prefix}_HFE" type="revolute">
+            <origin rpy="1.5708 -0.9627 -1.5708" xyz="${0.05075*mirror} 0 0.0815"/>
+            <parent link="${prefix}_hip_pitch"/>
+            <child link="${prefix}_thigh"/>
+            <axis xyz="0 0 1"/>
+            <dynamics damping="${thigh_actuator_damping}" friction="${thigh_actuator_friction}"/>
+
+            <limit effort="${HFE_torque_max}" velocity="${HFE_velocity_max}" lower="${HFE_min}" upper="${HFE_max}"/>
+
+        </joint>
+
+        <link name="${prefix}_thigh">
+            <inertial>
+                <origin rpy="0 0 0" xyz="0.00993 0.13926 ${-0.0423*mirror}"/>
+                <mass value="4.5"/>
+                <inertia ixx="0.1785" ixy="0.007615" ixz="${-0.001763*mirror}" 
+                         iyy="0.0210" iyz="${-0.018897*mirror}" 
+                         izz="0.1718"/>
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/thigh.STL" scale="1 1 ${mirror}"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <box size="${thigh_length} ${thigh_width} ${thigh_height}" scale="1 1 ${mirror}"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_KFE" type="revolute">
+            <origin rpy="0 0 0.2088" xyz="0 0.36 ${-0.02*mirror}"/>
+            <parent link="${prefix}_thigh"/>
+            <child link="${prefix}_shank"/>
+            <axis xyz="0 0 1"/>
+            <dynamics damping="${knee_actuator_damping}" friction="${knee_actuator_friction}"/>
+            <limit effort="${KFE_torque_max}" velocity="${KFE_velocity_max}" lower="${KFE_min}" upper="${KFE_max}" />
+        </joint>
+
+        <link name="${prefix}_shank">
+            <inertial>
+                <origin rpy="0 0 0" xyz="-0.00288 0.13248 0.00043"/>
+                <mass value="2.5"/>
+                <inertia ixx="0.067265" ixy="-0.001084" ixz="-2.5e-05" iyy="0.002590" iyz="5e-05" izz="0.066589"/>
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/shank.STL" scale="1 1 ${mirror}"/>
+                </geometry>
+                <material name="silver"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <box size="${shank_length} ${shank_width} ${shank_height}" scale="1 1 1"/>
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="${prefix}_afe" type="revolute">
+            <origin rpy="1.5708 0 0" xyz="0 0.32 0"/>
+            <parent link="${prefix}_shank"/>
+            <child link="${prefix}_foot"/>
+            <axis xyz="0 1 0"/>
+            <dynamics damping="${ankle_actuator_damping}" friction="${ankle_actuator_friction}"/>
+            <limit effort="${AFE_torque_max}" velocity="${AFE_velocity_max}" lower="${AFE_min}" upper="${AFE_max}" />
+        </joint>
+
+        <link name="${prefix}_foot">
+            <inertial>
+                <origin rpy="0 0 0" xyz="-0.03986 0.0219 0"/>
+                <mass value="0.6"/>
+                <inertia ixx="0.002366" ixy="-0.000579" ixz="3e-09" 
+                         iyy="0.001405" iyz="2e-09" 
+                         izz="0.003119"/>
+            </inertial>
+            <visual>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/line_foot.STL"/>
+                </geometry>
+                <material name="orange"/>
+            </visual>
+            <collision>
+                <origin rpy="0 0 0" xyz="0 0 0"/>
+                <geometry>
+                    <mesh filename="${mesh_path}/line_foot.STL"/>
+                    <!-- <cylinder length="foot_length" radius="foot_radius" /> -->
+                </geometry>
+            </collision>
+        </link>
+<!-- 
+        <gazebo reference="${prefix}_foot_fixed">
+            <disableFixedJointLumping>true</disableFixedJointLumping>
+        </gazebo>
+
+        <gazebo reference="${prefix}_hip">
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
+            <material>Gazebo/DarkGrey</material>
+        </gazebo>
+        <gazebo reference="${prefix}_thigh">
+            <mu1>0.2</mu1>
+            <mu2>0.2</mu2>
+            <self_collide>0</self_collide>
+            <material>Gazebo/DarkGrey</material>
+            <kp value="1000000.0"/>
+            <kd value="100.0"/>
+        </gazebo>
+        <gazebo reference="${prefix}_calf">
+            <mu1>0.6</mu1>
+            <mu2>0.6</mu2>
+            <self_collide>1</self_collide>
+        </gazebo>
+        <gazebo reference="${prefix}_FOOT">
+            <mu1>0.6</mu1>
+            <mu2>0.6</mu2>
+            <self_collide>1</self_collide>
+            <material>Gazebo/DarkGrey</material>
+            <kp value="1000000.0"/>
+            <kd value="100.0"/>
+        </gazebo>
+
+        <xacro:leg_transmission name="${prefix}"/> -->
+    </xacro:macro>
+</robot>

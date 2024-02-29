@@ -1,0 +1,140 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="head">
+
+    <xacro:macro name="head" params="connected_to xyz:='0 0 0' rpy:='0 0 0' ">
+        <!-- head_base is fixed to the base link -->
+        <joint
+            name="${connected_to}_to_head_fixed"  type="fixed">
+            <origin xyz="${xyz}" rpy="${rpy}"/>
+            <parent link="${connected_to}"/>
+            <child link="head_yaw" />
+        </joint>
+
+        <link name="head_yaw">
+            <inertial>
+                <origin
+                    xyz="-0.011285891882378 1.09617695197295E-06 -0.0312296609606463"
+                    rpy="0 0 0" />
+                <mass value="0.460000078827113" />
+                <inertia
+                    ixx="0.000479"
+                    ixy="6.05596E-08"
+                    ixz="3.15012E-08"
+                    iyy="0.000200"
+                    iyz="-5.2713E-12"
+                    izz="0.000611" />
+            </inertial>
+            <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head_yaw.STL" />
+                </geometry>
+                <material name="black"/>
+            </visual>
+            <collision>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head_yaw.STL" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="head_yaw_joint" type="revolute">
+            <origin  xyz="0 0 0" rpy="0 0 0" />
+            <parent link="head_yaw" />
+            <child  link="head_pitch" />
+            <axis  xyz="0 0 1" />
+            <limit
+            lower="${-pi}"
+            upper="${pi}"
+            effort="13"
+            velocity="15" />
+        </joint>
+
+        <link name="head_pitch">
+            <inertial>
+                <origin
+                    xyz="8.5974E-07 0.00056985 0.034522"
+                    rpy="0 0 0" />
+                <mass value="0.36" />
+                <inertia
+                    ixx="0.00011043"
+                    ixy="2.1829E-10"
+                    ixz="5.711E-08"
+                    iyy="0.00013477"
+                    iyz="-2.2161E-06"
+                    izz="0.00011092" />
+            </inertial>
+            <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head_pitch.STL" />
+                </geometry>
+                <material name="grey" />
+            </visual>
+            <collision>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head_pitch.STL" />
+                </geometry>
+            </collision>
+        </link>
+
+        <joint name="head_pitch_joint" type="revolute">
+            <origin
+            xyz="0 0 0.038"
+            rpy="-1.5708 0 0" />
+            <parent link="head_pitch" />
+            <child  link="head" />
+            <axis xyz="0 0 -1" />
+            <limit
+                lower="-3"
+                upper="3"
+                effort="1"
+                velocity="10" />
+        </joint>
+
+        <link  name="head">
+            <inertial>
+                <origin
+                    xyz="0.0154730711433543 -0.0794210361159384 0.00173387502254833"
+                    rpy="0 0 0" />
+                <mass value="0.450014140265304" />
+                <inertia
+                    ixx="0.00164440833251331"
+                    ixy="-6.52605251497062E-05"
+                    ixz="1.8986879201475E-06"
+                    iyy="0.00150474591559332"
+                    iyz="1.43185727033129E-06"
+                    izz="0.00139459077195447" />
+            </inertial>
+            <visual>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head.STL" />
+                </geometry>
+                <material name="silver" />
+            </visual>
+            <collision>
+                <origin
+                    xyz="0 0 0"
+                    rpy="0 0 0" />
+                <geometry>
+                    <mesh filename="${mesh_path}/head.STL" />
+                </geometry>
+            </collision>
+        </link>
+
+    </xacro:macro>
+</robot>
