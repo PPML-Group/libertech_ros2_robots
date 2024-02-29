@@ -138,6 +138,109 @@
         </visual>
       </link>
 
+      <joint
+        name="base_to_right_shoulder_fixed"
+        type="fixed">
+        <origin
+          xyz="0 -0.17735 0.35582"
+          rpy="1.309 0 0" />
+        <parent link="base" />
+        <child link="right_shoulder_yaw" />
+      </joint>
+
+      <link
+        name="right_shoulder_yaw">
+        <inertial>
+          <origin
+            xyz="8.18127148434142E-05 0.000117083151031178 -0.0226340244109868"
+            rpy="0 0 0" />
+          <mass
+            value="0.108648591727271" />
+          <inertia
+            ixx="9.03819083396656E-05"
+            ixy="1.37661674508313E-08"
+            ixz="3.20234631892068E-07"
+            iyy="9.05693442358569E-05"
+            iyz="-8.60847915087242E-07"
+            izz="0.000112746503594234" />
+        </inertial>
+        <visual>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="${mesh_path}/right_shoulder_yaw.STL" />
+          </geometry>
+          <material
+            name="">
+            <color
+              rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
+          </material>
+        </visual>
+        <collision>
+          <origin
+            xyz="0 0 0"
+            rpy="0 0 0" />
+          <geometry>
+            <mesh
+              filename="${mesh_path}/right_shoulder_yaw.STL" />
+          </geometry>
+        </collision>
+      </link>
+
+      <joint
+          name="based_to_left_shoulder_fixed"
+          type="fixed">
+          <origin
+            xyz="0 0.177350 0.355816"
+            rpy="-1.308997 0 0" />
+          <parent link="base" />
+          <child link="left_shoulder_yaw" />
+      </joint>
+
+      <link
+          name="left_shoulder_yaw">
+          <inertial>
+            <origin
+              xyz="0 0 0"
+              rpy="0 0 0" />
+            <mass
+              value="0" />
+            <inertia
+              ixx="0"
+              ixy="0"
+              ixz="0"
+              iyy="0"
+              iyz="0"
+              izz="0" />
+          </inertial>
+          <visual>
+            <origin
+              xyz="0 0 0"
+              rpy="0 0 0" />
+            <geometry>
+              <mesh
+                filename="${mesh_path}/left_shoulder_yaw.STL" />
+            </geometry>
+            <material
+              name="">
+              <color
+                rgba="1 1 1 1" />
+            </material>
+          </visual>
+          <collision>
+            <origin
+              xyz="0 0 0"
+              rpy="0 0 0" />
+            <geometry>
+              <mesh
+                filename="${mesh_path}/left_shoulder_yaw.STL" />
+            </geometry>
+          </collision>
+        </link>
+
+
       <joint name="waist_yaw" type="revolute">
           <origin xyz="0 0 0" rpy="3.1415926 0 0" />
           <parent link="waist_actuator" />
@@ -146,7 +249,7 @@
           <limit lower="${waist_yaw_min}" upper="${waist_yaw_max}"
                  effort="${waist_yaw_torque_max}"  velocity="${waist_yaw_velocity_max}" />
       </joint>
-      
+
       <link name="pelvis">
           <inertial>
             <origin
