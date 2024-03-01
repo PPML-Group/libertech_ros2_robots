@@ -1,0 +1,5 @@
+hip_yaw_joint: 0
+hip_roll_joint: 0
+hip_pitch_joint: 0
+knee_pitch_joint: 0
+ankle_pitch_joint: 0

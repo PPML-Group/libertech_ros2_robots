@@ -26,7 +26,7 @@ def generate_launch_description():
 
     test_params = PathJoinSubstitution(
         [
-            FindPackageShare("libertech_arm_bringup"),
+            FindPackageShare("libertech_humanoid_bringup"),
             "config",
             "test_huge_joint_space_jump_config.yaml",
         ]
@@ -35,7 +35,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             Node(
-                package="libertech_arm_bringup",
+                package="libertech_humanoid_bringup",
                 executable="test_huge_joint_space_jump.py",
                 name="test_huge_joint_space_jump",
                 parameters=[test_params],

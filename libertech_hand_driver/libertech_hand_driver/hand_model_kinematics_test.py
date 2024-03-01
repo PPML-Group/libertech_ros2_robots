@@ -348,7 +348,7 @@ class HandModelKinematics:
         theta = q[1]
         bevel = psi / (2*math.pi)
         
-        ts = time.time()
+        # ts = time.time()
         rx = np.array([[1, 0, 0],
                         [0,math.cos(psi),-math.sin(psi)],
                         [0,math.sin(psi),math.cos(psi)]])    
@@ -359,45 +359,45 @@ class HandModelKinematics:
         p1r = r @ cfg["p1"]
         p2r = r @ cfg["p2"]
         
-        # def ik_psu(x): # 求根公式太复杂
-        #     p3 = cfg["p3"]
-        #     p3[2] = -x[0] # -Z
-        #     p4 = np.array([x[1], x[2], x[3]])
-        #     eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
-            
-        #     return [np.linalg.norm(p1r - p4) - cfg["l1"],
-        #             np.linalg.norm(p3 - p4) - cfg["l2"],
-        #             np.dot(p1r - p4,p2r),
-        #             eq[0],
-        #             eq[1],
-        #             eq[2]]
-        
-        # sol_pss = fsolve(ik_psu, np.array([0, 0, 0, 0, 0, 0]))
-        # logger.debug(f"sol_pss: {sol_pss}")
-        # d = sol_pss[0] - 0.1
-        # print(d)
-        
         def ik_psu(x): # 求根公式太复杂
-            l2 = np.array([x[0], x[1], x[2]])
             p3 = cfg["p3"]
-            p3[2] = x[3]
-            l1 = p1r - p3 - l2
-            equ = l2 - np.dot(l2,p2r)*p2r - np.dot(l1,l2)*l1/cfg["l1"]
+            p3[2] = -x[0] # -Z
+            p4 = np.array([x[1], x[2], x[3]])
+            eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
             
-            return [equ[0],
-                    equ[1],
-                    equ[2],
-                    np.linalg.norm(l2)-cfg["l2"]]
-    
-        sol_psu = fsolve(ik_psu, np.array([0, 0, 0, 0]))
-        logger.debug(f"sol_psu: {sol_psu}")
-        d = sol_psu[3]-0.1
+            return [np.linalg.norm(p1r - p4) - cfg["l1"],
+                    np.linalg.norm(p3 - p4) - cfg["l2"],
+                    np.dot(p1r - p4,p2r),
+                    eq[0],
+                    eq[1],
+                    eq[2]]
+        
+        sol_pss = fsolve(ik_psu, np.array([0.01, 0.01, 0.01, 0.01, 0.01, 0.01]))
+        logger.debug(f"sol_pss: {sol_pss}")
+        d = sol_pss[0]-0.01
         print(d)
+        
+        # def ik_psu(x): # 求根公式太复杂
+        #     l2 = np.array([x[0], x[1], x[2]])
+        #     p3 = cfg["p3"]
+        #     p3[2] = x[3]
+        #     l1 = p1r - p3 - l2
+        #     equ = l2 - np.dot(l2,p2r)*p2r - np.dot(l1,l2)*l1/cfg["l1"]
+            
+        #     return [equ[0],
+        #             equ[1],
+        #             equ[2],
+        #             np.linalg.norm(l2)-cfg["l2"]]
+    
+        # sol_psu = fsolve(ik_psu, np.array([0, 0, 0, 0]))
+        # logger.debug(f"sol_psu: {sol_psu}")
+        # d = sol_psu[3]-0.1
+        # print(d)
         # logger.debug(f"d_time: {time.time() -ts}")
         
         # ts = time.time()
         d = trans2_theta_psi_D(theta,psi)/1000
-        print(d)
+        # print(d)
         # logger.debug(f"d2_time: {time.time() -ts}")
         # logger.debug(f"d: {d}")
         # print(d)
@@ -524,13 +524,42 @@ class HandModelKinematics:
         assert d.shape[0] == 2
         assert (fg_name=="fourth" or fg_name=="little")
         cfg = self.get_module_config(fg_name)
-                
+        
         q1 = d[0] * (2*math.pi)
         q2 = 0
+        
+        # rx = np.array([[1, 0, 0],
+        #                 [0,math.cos(q1),-math.sin(q1)],
+        #                 [0,math.sin(q1),math.cos(q1)]])    
+        # def fk_psu(x):
+        #     ry = np.array([[cos(x[0]),0,sin(x[0])],
+        #                     [0,1,0],
+        #                     [-sin(x[0]),0,cos(x[0])]])
+        #     r = rx @ ry
+        #     # r = ry @ rx 
+        #     p1r = r @ cfg["p1"]
+        #     p2r = r @ cfg["p2"]
             
+        #     p3 = cfg["p3"]
+        #     p3[2] = -d[1] # -Z
+            
+        #     p4 = np.array([x[1], x[2], x[3]])
+        #     eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
+            
+        #     return [np.linalg.norm(p1r - p4) - cfg["l1"],
+        #             np.linalg.norm(p3 - p4) - cfg["l2"],
+        #             np.dot(p1r - p4,p2r),
+        #             eq[0],
+        #             eq[1],
+        #             eq[2]]
+            
+        # sol_pss = fsolve(fk_psu, np.array([math.radians(0), 0,0,0,0,0]))
+        # logger.debug(f"sol_pss: {sol_pss}")
+        # q2 = sol_pss[0]
+    
         pip = self.four_bar_mcp2pip(q2, fg_name)    
         dip = self.four_bar_pip2dip(pip, fg_name)
-        
+
         q = np.array([q1, q2, pip, dip])
         return q
         
@@ -709,40 +738,37 @@ if __name__ == '__main__':
     q2_sequence = np.arange(0, 1.95, 0.2)
     print(q2_sequence)
     
-    # pos = np.array([0.4, 0.0, 0.0])
-    # n_error = 0
-    # for q2 in q2_sequence:
-    #     pos[1] = q2
-    #     logger.info(f"pos为: {pos}")
-        
-    #     ts = time.time()
-    #     d = model.ik_q2d(pos, "index")
-    #     # logger.info(f"ik_q2d()为: {d}")
-    #     # logger.info(f"ik_q2d(index) 用时为: {1000*(time.time()-ts)} ms")
-        
-    #     ts = time.time()
-    #     pos_fk = model.fk_d2q(d, "index")
-    #     # logger.info(f"fk_d2q()为: {pos_fk}")
-    #     # logger.info(f"fk_d2q(index) 用时为: {1000*(time.time()-ts)} ms")
-        
-    #     logger.info(f"pos误差为: {pos - pos_fk[:3]}")
-    #     if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
-    #         n_error += 1
-            
-    # print(n_error)
-        
-    pos = np.array([0.5, 0.0])
+    pos = np.array([0.4, 0.0, 0.0])
+    n_error = 0
     for q2 in q2_sequence:
         pos[1] = q2
         logger.info(f"pos为: {pos}")
         
         ts = time.time()
-        d = model.ik_q2d(pos, "fourth")
-        logger.info(f"ik_q2d()为: {d}")
-        logger.info(f"ik_q2d(fourth) 用时为: {1000*(time.time()-ts)} ms")
+        d = model.ik_q2d(pos, "index")
+        logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
         
         ts = time.time()
-        pos_fk = model.fk_d2q(d, "fourth")
-        logger.info(f"fk_d2q()为: {pos_fk}")
-        logger.info(f"fk_d2q(fourth) 用时为: {1000*(time.time()-ts)} ms")
+        pos_fk = model.fk_d2q(d, "index")
+        logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+        
+        logger.info(f"pos误差为: {pos - pos_fk[:3]}")
+        if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
+            n_error += 1
+            
+    print(n_error)
+        
+    # pos = np.array([0.0, 0.0])
+    # for q2 in q2_sequence:
+    #     pos[1] = q2
+    #     logger.info(f"pos为: {pos}")
+        
+    #     ts = time.time()
+    #     d = model.ik_q2d(pos, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
+        
+    #     ts = time.time()
+    #     pos_fk = model.fk_d2q(d, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+        
     

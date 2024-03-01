@@ -1,0 +1,35 @@
+ros2 topic pub /hand_right_effort_controller/commands std_msgs/msg/Float64MultiArray "data:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0 
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0 
+        - 0.0"
+    
+ros2 topic pub /arm_right_velocity_controller/commands std_msgs/msg/Float64MultiArray "data:
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0
+        - 0.0"
+
+
+ros2 topic pub /head_velocity_controller/commands std_msgs/msg/Float64MultiArray "data:
+        - 0.0
+        - 0.0"

@@ -2,15 +2,41 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="leg" params="prefix connected_to mesh_path mirror mirror_stl *origin">
+    <xacro:macro name="load_leg" params="
+        prefix:='' 
+        connected_to:='' 
+        mirror:=False
+        use_fake_hardware:=False
+        sim_ignition:=False
+        *origin ">
 
-        <joint name="${connected_to}_to_${prefix}_hip_fixed" type="fixed">
+        <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg.ros2_control.xacro" />
+        <xacro:arg name="initial_positions_file_leg" default="$(find libertech_humanoid_description)/config/initial_positions_leg.yaml"/>
+        <xacro:property name="initial_positions_file_leg" default="$(arg initial_positions_file_leg)"/>
+
+        <xacro:if value="${(mirror == False)}">
+            <xacro:property name="leg" value="leg_right"/>
+            <xacro:property name="leg_mirror_factor" value="1"/>
+        </xacro:if>
+        <xacro:if value="${(mirror == True)}">
+            <xacro:property name="leg" value="leg_left"/>
+            <xacro:property name="leg_mirror_factor" value="-1"/>
+        </xacro:if>
+
+        <xacro:leg_ros2_control
+            prefix="${prefix}"
+            name="${leg}" 
+            use_fake_hardware="${use_fake_hardware}"
+            sim_ignition="${sim_ignition}"
+            initial_positions="${xacro.load_yaml(initial_positions_file_leg)}" />
+
+        <joint name="${connected_to}_to_${leg}_hip_fixed" type="fixed">
             <xacro:insert_block name="origin"/>
             <parent link="${connected_to}" />
-            <child link="${prefix}_hip_yaw" />
+            <child link="${prefix}${leg}_hip_yaw" />
         </joint>
         
-        <link name="${prefix}_hip_yaw">
+        <link name="${prefix}${leg}_hip_yaw">
             <inertial>
                 <origin
                     xyz="-0.014235 0.000139 -0.032474"
@@ -31,24 +57,24 @@
             </visual>
         </link>
 
-        <joint name="${prefix}_HTAA" type="revolute">
+        <joint name="${prefix}${leg}_hip_yaw_joint" type="revolute">
             <origin xyz="0.0441 0 0.059" rpy="0 1.5708 0" />
-            <parent link="${prefix}_hip_yaw" />
-            <child link="${prefix}_hip_roll" />
+            <parent link="${prefix}${leg}_hip_yaw" />
+            <child link="${prefix}${leg}_hip_roll" />
             <axis xyz="1 0 0" />
             <dynamics damping="${hip_actuator_damping}" friction="${hip_actuator_friction}"/>
             
-            <xacro:if value="${(mirror_stl == True)}">
+            <xacro:if value="${(mirror == False)}">
                 <limit lower="${HTAA_min}" upper="${HTAA_max}" effort="${HTAA_torque_max}"
                         velocity="${HTAA_velocity_max}" />
             </xacro:if>
-            <xacro:if value="${(mirror_stl== False)}">
+            <xacro:if value="${(mirror == True)}">
                 <limit lower="${-HTAA_max}" upper="${-HTAA_min}" effort="${HTAA_torque_max}"
                         velocity="${HTAA_velocity_max}" />
             </xacro:if>
         </joint>
 
-        <link name="${prefix}_hip_roll">
+        <link name="${prefix}${leg}_hip_roll">
             <inertial>
                 <origin
                     xyz="0.014235 -0.000139 -0.032474"
@@ -78,36 +104,36 @@
             </collision>
         </link>
 
-        <joint name="${prefix}_HAA" type="revolute">
+        <joint name="${prefix}${leg}_hip_roll_joint" type="revolute">
             <origin rpy="0 0 1.5708" xyz="0 0 0"/>
-            <parent link="${prefix}_hip_roll"/>
-            <child link="${prefix}_hip_pitch"/>
+            <parent link="${prefix}${leg}_hip_roll"/>
+            <child link="${prefix}${leg}_hip_pitch"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${hip_actuator_damping}" friction="${hip_actuator_friction}"/>
 
-            <xacro:if value="${(mirror_stl == True)}">
+            <xacro:if value="${(mirror == False)}">
                 <limit lower="${HAA_min}" upper="${HAA_max}" effort="${HAA_torque_max}"
                         velocity="${HAA_velocity_max}" />
             </xacro:if>
-            <xacro:if value="${(mirror_stl== False)}">
+            <xacro:if value="${(mirror == True)}">
                 <limit lower="${-HAA_max}" upper="${-HAA_min}" effort="${HAA_torque_max}"
                         velocity="${HAA_velocity_max}" />
             </xacro:if>
 
         </joint>
 
-        <link name="${prefix}_hip_pitch">
+        <link name="${prefix}${leg}_hip_pitch">
             <inertial>
-                <origin rpy="0 0 0" xyz="${0.0165*mirror} -0.0001 0.0627"/>
+                <origin rpy="0 0 0" xyz="${0.0165*leg_mirror_factor} -0.0001 0.0627"/>
                 <mass value="1.5"/>
-                <inertia ixx="0.009936" ixy="${3.5e-06*mirror}" ixz="${0.001933*mirror}" 
+                <inertia ixx="0.009936" ixy="${3.5e-06*leg_mirror_factor}" ixz="${0.001933*leg_mirror_factor}" 
                          iyy="0.009661" iyz="-0.000009" 
                          izz="0.002698"/>
             </inertial>
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="${mesh_path}/hip_pitch.STL" scale="${mirror} 1 1"/>
+                    <mesh filename="${mesh_path}/hip_pitch.STL" scale="${leg_mirror_factor} 1 1"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
@@ -119,10 +145,10 @@
             </collision> -->
         </link>
 
-        <joint name="${prefix}_HFE" type="revolute">
-            <origin rpy="1.5708 -0.9627 -1.5708" xyz="${0.05075*mirror} 0 0.0815"/>
-            <parent link="${prefix}_hip_pitch"/>
-            <child link="${prefix}_thigh"/>
+        <joint name="${prefix}${leg}_hip_pitch_joint" type="revolute">
+            <origin rpy="1.5708 -0.9627 -1.5708" xyz="${0.05075*leg_mirror_factor} 0 0.0815"/>
+            <parent link="${prefix}${leg}_hip_pitch"/>
+            <child link="${prefix}${leg}_thigh"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${thigh_actuator_damping}" friction="${thigh_actuator_friction}"/>
 
@@ -130,39 +156,39 @@
 
         </joint>
 
-        <link name="${prefix}_thigh">
+        <link name="${prefix}${leg}_thigh">
             <inertial>
-                <origin rpy="0 0 0" xyz="0.00993 0.13926 ${-0.0423*mirror}"/>
+                <origin rpy="0 0 0" xyz="0.00993 0.13926 ${-0.0423*leg_mirror_factor}"/>
                 <mass value="4.5"/>
-                <inertia ixx="0.1785" ixy="0.007615" ixz="${-0.001763*mirror}" 
-                         iyy="0.0210" iyz="${-0.018897*mirror}" 
+                <inertia ixx="0.1785" ixy="0.007615" ixz="${-0.001763*leg_mirror_factor}" 
+                         iyy="0.0210" iyz="${-0.018897*leg_mirror_factor}" 
                          izz="0.1718"/>
             </inertial>
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="${mesh_path}/thigh.STL" scale="1 1 ${mirror}"/>
+                    <mesh filename="${mesh_path}/thigh.STL" scale="1 1 ${leg_mirror_factor}"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
             <collision>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <box size="${thigh_length} ${thigh_width} ${thigh_height}" scale="1 1 ${mirror}"/>
+                    <box size="${thigh_length} ${thigh_width} ${thigh_height}" scale="1 1 ${leg_mirror_factor}"/>
                 </geometry>
             </collision>
         </link>
 
-        <joint name="${prefix}_KFE" type="revolute">
-            <origin rpy="0 0 0.2088" xyz="0 0.36 ${-0.02*mirror}"/>
-            <parent link="${prefix}_thigh"/>
-            <child link="${prefix}_shank"/>
+        <joint name="${prefix}${leg}_knee_pitch_joint" type="revolute">
+            <origin rpy="0 0 0.2088" xyz="0 0.36 ${-0.02*leg_mirror_factor}"/>
+            <parent link="${prefix}${leg}_thigh"/>
+            <child link="${prefix}${leg}_shank"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${knee_actuator_damping}" friction="${knee_actuator_friction}"/>
             <limit effort="${KFE_torque_max}" velocity="${KFE_velocity_max}" lower="${KFE_min}" upper="${KFE_max}" />
         </joint>
 
-        <link name="${prefix}_shank">
+        <link name="${prefix}${leg}_shank">
             <inertial>
                 <origin rpy="0 0 0" xyz="-0.00288 0.13248 0.00043"/>
                 <mass value="2.5"/>
@@ -171,7 +197,7 @@
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
-                    <mesh filename="${mesh_path}/shank.STL" scale="1 1 ${mirror}"/>
+                    <mesh filename="${mesh_path}/shank.STL" scale="1 1 ${leg_mirror_factor}"/>
                 </geometry>
                 <material name="silver"/>
             </visual>
@@ -183,16 +209,16 @@
             </collision>
         </link>
 
-        <joint name="${prefix}_afe" type="revolute">
+        <joint name="${prefix}${leg}_ankle_pitch_joint" type="revolute">
             <origin rpy="1.5708 0 0" xyz="0 0.32 0"/>
-            <parent link="${prefix}_shank"/>
-            <child link="${prefix}_foot"/>
+            <parent link="${prefix}${leg}_shank"/>
+            <child link="${prefix}${leg}_foot"/>
             <axis xyz="0 1 0"/>
             <dynamics damping="${ankle_actuator_damping}" friction="${ankle_actuator_friction}"/>
             <limit effort="${AFE_torque_max}" velocity="${AFE_velocity_max}" lower="${AFE_min}" upper="${AFE_max}" />
         </joint>
 
-        <link name="${prefix}_foot">
+        <link name="${prefix}${leg}_foot">
             <inertial>
                 <origin rpy="0 0 0" xyz="-0.03986 0.0219 0"/>
                 <mass value="0.6"/>
@@ -216,16 +242,16 @@
             </collision>
         </link>
 <!-- 
-        <gazebo reference="${prefix}_foot_fixed">
-            <disableFixedJointLumping>true</disableFixedJointLumping>
+        <gazebo reference="${prefix}${leg}_foot_fixed">
+            <disableFixedJointLumping>True</disableFixedJointLumping>
         </gazebo>
 
-        <gazebo reference="${prefix}_hip">
+        <gazebo reference="${prefix}${leg}_hip">
             <mu1>0.2</mu1>
             <mu2>0.2</mu2>
             <material>Gazebo/DarkGrey</material>
         </gazebo>
-        <gazebo reference="${prefix}_thigh">
+        <gazebo reference="${prefix}${leg}_thigh">
             <mu1>0.2</mu1>
             <mu2>0.2</mu2>
             <self_collide>0</self_collide>
@@ -233,12 +259,12 @@
             <kp value="1000000.0"/>
             <kd value="100.0"/>
         </gazebo>
-        <gazebo reference="${prefix}_calf">
+        <gazebo reference="${prefix}${leg}_calf">
             <mu1>0.6</mu1>
             <mu2>0.6</mu2>
             <self_collide>1</self_collide>
         </gazebo>
-        <gazebo reference="${prefix}_FOOT">
+        <gazebo reference="${prefix}${leg}_FOOT">
             <mu1>0.6</mu1>
             <mu2>0.6</mu2>
             <self_collide>1</self_collide>
@@ -247,6 +273,6 @@
             <kd value="100.0"/>
         </gazebo>
 
-        <xacro:leg_transmission name="${prefix}"/> -->
+        <xacro:leg_transmission name="${prefix}${leg}"/> -->
     </xacro:macro>
 </robot>

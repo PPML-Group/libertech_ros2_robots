@@ -52,7 +52,6 @@ def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
-    robot_traj_controller = LaunchConfiguration("robot_controller")
     launch_rviz = LaunchConfiguration("launch_rviz")
     use_sim_time = LaunchConfiguration("use_sim_time")
 
@@ -159,6 +158,19 @@ def launch_setup(context, *args, **kwargs):
         arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
     )
     
+    movement_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["movement_trajectory_controller", "-c", "/controller_manager"],
+    )
+    
+    head_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["head_trajectory_controller", "-c", "/controller_manager"],
+    )
+
+    
     hand_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -186,8 +198,10 @@ def launch_setup(context, *args, **kwargs):
         executable="create",
         output="screen",
         arguments=[
-            "-string",
-            robot_description_content,
+            # "-string",
+            # robot_description_content,
+            '-topic', 
+            'robot_description',
             "-name",
             "arm",
             "-allow_renaming",
@@ -197,20 +211,20 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "0.35",
+            "1.0",
             "-R",
             "0.0",
             "-P",
             "0.0",
             "-Y",
-            "-1.57",
+            "0.0",
         ],
         condition=IfCondition(sim_ignition),
     )
     
     ignition_world = PathJoinSubstitution(
         [
-            FindPackageShare("libertech_arm_bringup"),
+            FindPackageShare("libertech_humanoid_bringup"),
             "world",
             sim_ignition_world,
         ]
@@ -221,7 +235,7 @@ def launch_setup(context, *args, **kwargs):
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
         # launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
-        launch_arguments={"ign_args": f" -r -v 3 {ignition_world.perform(context)}"}.items(),
+        launch_arguments={"ign_args": f" -r -v 1 {ignition_world.perform(context)}"}.items(),
         condition=IfCondition(sim_ignition),
     )
 
@@ -262,6 +276,20 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[arm_left_traj_controller_spawner],
             )
         ),
+        
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[movement_traj_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[head_traj_controller_spawner],
+            )
+        ),
+        
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
@@ -309,7 +337,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_hand",
-            default_value="true",
+            default_value="false",
             description="Use hand.",
         )
     )
@@ -337,7 +365,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_ycb.sdf", # world_ycb world_box world_empty
+            default_value="world_empty.sdf", # world_ycb world_box world_empty
             description="Gazebo Ignition world",
         )
     )

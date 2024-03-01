@@ -2,19 +2,37 @@
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robot">
 
-    <xacro:include filename="$(find libertech_humanoid_description)/urdf/materials.xacro"/>
-    <xacro:include filename="$(find libertech_humanoid_description)/urdf/head.xacro"/>
-    <!-- <xacro:include filename="$(find libertech_humanoid_description)/urdf/arm.xacro"/> -->
-    <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg.xacro"/>
-    <!-- <xacro:include filename="$(find libertech_humanoid_description)/urdf/gazebo.xacro"/> -->
-    <xacro:include filename="$(find libertech_humanoid_description)/urdf/imu.xacro"/>
+    <xacro:arg name="prefix"  default="r1_" />
+    <xacro:arg name="use_hand" default="false" />
+    <xacro:arg name="use_gripper" default="false" />
+    <xacro:arg name="use_fake_hardware" default="false" />
+    <xacro:arg name="sim_ignition" default="false" />
+    <xacro:arg name="use_camera" default="true" /> 
+    <xacro:arg name="camera_width" default="640"/>
+    <xacro:arg name="camera_height" default="480"/>
+    <xacro:arg name="camera_fps" default="30"/>
+    <!-- <xacro:arg name="simulation_controllers" default="$(find libertech_humanoid_description)/config/ros2_controllers.yaml" /> -->
 
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/const.xacro"/>
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/materials.xacro"/>
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/imu_macro.xacro"/>
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/head_macro.xacro"/>
 
-<!--    <xacro:property name="mesh_path" value="../meshes"/>-->
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg_macro.xacro"/>
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_hand_macro.xacro"/>
+
     <xacro:property name="mesh_path" value="file://$(find libertech_humanoid_description)/meshes/"/>
 
-    <link name="base">
+    <!-- 如果取消world则为漂浮 -->
+    <link name="world"/>
+
+    <joint name="$(arg prefix)base_static_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="world"/>
+        <child link="$(arg prefix)base"/>
+    </joint>
+
+    <link name="$(arg prefix)base">
         <visual>
             <origin rpy="0 0 0" xyz="0 0 0"/>
             <geometry>
@@ -40,17 +58,17 @@
     </link>
 
     <joint
-        name="base_to_breastplate_fixed"
+        name="$(arg prefix)base_to_breastplate_fixed"
         type="fixed">
         <origin
           xyz="0.136 0 0.21656"
           rpy="0 1.5708 0" />
-        <parent link="base" />
-        <child link="breastplate" />
+        <parent link="$(arg prefix)base" />
+        <child link="$(arg prefix)breastplate" />
       </joint>
 
     <link
-        name="breastplate">
+        name="$(arg prefix)breastplate">
         <inertial>
           <origin
             xyz="-0.000867 3.424E-05 -0.005697"
@@ -80,15 +98,15 @@
         </collision>
       </link>
 
-      <joint name="base_to_battery_fixed" type="fixed">
+      <joint name="$(arg prefix)base_to_battery_fixed" type="fixed">
         <origin
           xyz="-0.108500000000001 4.2820323028811E-05 0.196560294979676"
           rpy="0 0 0" />
-        <parent link="base" />
-        <child link="battery" />
+        <parent link="$(arg prefix)base" />
+        <child link="$(arg prefix)battery" />
       </joint>
 
-      <link name="battery">
+      <link name="$(arg prefix)battery">
         <inertial>
           <origin
             xyz="-0.00021714 -5.6877E-08 -0.00033886"
@@ -109,15 +127,15 @@
         </visual>
       </link>
       
-      <joint name="base_to_waist_fixed" type="fixed">
+      <joint name="$(arg prefix)base_to_waist_fixed" type="fixed">
         <origin
           xyz="0 0 -0.0176"
           rpy="0 0 0" />
-        <parent link="base" />
-        <child link="waist_actuator" />
+        <parent link="$(arg prefix)base" />
+        <child link="$(arg prefix)waist_actuator" />
       </joint>
 
-      <link name="waist_actuator">
+      <link name="$(arg prefix)waist_actuator">
         <inertial>
           <origin
             xyz="-0.000186850869182693 -9.1956687663694E-05 0.0291785584254683"
@@ -138,119 +156,16 @@
         </visual>
       </link>
 
-      <joint
-        name="base_to_right_shoulder_fixed"
-        type="fixed">
-        <origin
-          xyz="0 -0.17735 0.35582"
-          rpy="1.309 0 0" />
-        <parent link="base" />
-        <child link="right_shoulder_yaw" />
-      </joint>
-
-      <link
-        name="right_shoulder_yaw">
-        <inertial>
-          <origin
-            xyz="8.18127148434142E-05 0.000117083151031178 -0.0226340244109868"
-            rpy="0 0 0" />
-          <mass
-            value="0.108648591727271" />
-          <inertia
-            ixx="9.03819083396656E-05"
-            ixy="1.37661674508313E-08"
-            ixz="3.20234631892068E-07"
-            iyy="9.05693442358569E-05"
-            iyz="-8.60847915087242E-07"
-            izz="0.000112746503594234" />
-        </inertial>
-        <visual>
-          <origin
-            xyz="0 0 0"
-            rpy="0 0 0" />
-          <geometry>
-            <mesh
-              filename="${mesh_path}/right_shoulder_yaw.STL" />
-          </geometry>
-          <material
-            name="">
-            <color
-              rgba="0.792156862745098 0.819607843137255 0.933333333333333 1" />
-          </material>
-        </visual>
-        <collision>
-          <origin
-            xyz="0 0 0"
-            rpy="0 0 0" />
-          <geometry>
-            <mesh
-              filename="${mesh_path}/right_shoulder_yaw.STL" />
-          </geometry>
-        </collision>
-      </link>
-
-      <joint
-          name="based_to_left_shoulder_fixed"
-          type="fixed">
-          <origin
-            xyz="0 0.177350 0.355816"
-            rpy="-1.308997 0 0" />
-          <parent link="base" />
-          <child link="left_shoulder_yaw" />
-      </joint>
-
-      <link
-          name="left_shoulder_yaw">
-          <inertial>
-            <origin
-              xyz="0 0 0"
-              rpy="0 0 0" />
-            <mass
-              value="0" />
-            <inertia
-              ixx="0"
-              ixy="0"
-              ixz="0"
-              iyy="0"
-              iyz="0"
-              izz="0" />
-          </inertial>
-          <visual>
-            <origin
-              xyz="0 0 0"
-              rpy="0 0 0" />
-            <geometry>
-              <mesh
-                filename="${mesh_path}/left_shoulder_yaw.STL" />
-            </geometry>
-            <material
-              name="">
-              <color
-                rgba="1 1 1 1" />
-            </material>
-          </visual>
-          <collision>
-            <origin
-              xyz="0 0 0"
-              rpy="0 0 0" />
-            <geometry>
-              <mesh
-                filename="${mesh_path}/left_shoulder_yaw.STL" />
-            </geometry>
-          </collision>
-        </link>
-
-
-      <joint name="waist_yaw" type="revolute">
+      <joint name="$(arg prefix)waist_yaw_joint" type="revolute">
           <origin xyz="0 0 0" rpy="3.1415926 0 0" />
-          <parent link="waist_actuator" />
-          <child  link="pelvis" />
+          <parent link="$(arg prefix)waist_actuator" />
+          <child  link="$(arg prefix)pelvis" />
           <axis xyz="0 0 1" />
           <limit lower="${waist_yaw_min}" upper="${waist_yaw_max}"
                  effort="${waist_yaw_torque_max}"  velocity="${waist_yaw_velocity_max}" />
       </joint>
 
-      <link name="pelvis">
+      <link name="$(arg prefix)pelvis">
           <inertial>
             <origin
               xyz="-0.035353 2.077E-05 0.059170"
@@ -277,17 +192,57 @@
           </collision>
         </link>
 
-    <xacro:head connected_to="base" xyz="0.035 0 0.336" rpy="0. 0. 0."/>
+    <xacro:load_arm_hand
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)base" 
+        xyz="0 -0.17735 0.35582"
+        rpy="1.309 0 0"
+        arm="arm_right"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        sim_ignition="$(arg sim_ignition)" />
 
-    <xacro:IMU connected_to="base" imu_name="base_imu" xyz="0. 0. 0." rpy="0. 0. 0."/>
+    <xacro:load_arm_hand
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)base" 
+        xyz="0 0.177350 0.355816"
+        rpy="-1.308997 0 0"
+        arm="arm_left"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        sim_ignition="$(arg sim_ignition)" />
 
-    <!-- prefix= right/left mirror(right=1 left=-1) mirror_stl(right=True left=False)-->
-    <xacro:leg prefix="right" connected_to="pelvis" mesh_path="${mesh_path}" mirror="1" mirror_stl="True" >
-        <origin rpy="0 -0.349066 0" xyz="-0.024112 0.066 0.110009"/>
-    </xacro:leg>
+    <xacro:load_head
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)base"  
+        xyz="0.035 0 0.336" 
+        rpy="0. 0. 0."/>
 
-    <xacro:leg prefix="left" connected_to="pelvis" mesh_path="${mesh_path}" mirror="-1" mirror_stl="False" >
+    <xacro:load_imu 
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)base"  
+        xyz="0. 0. 0." 
+        rpy="0. 0. 0."
+        imu_name="base_imu" />
+
+    <xacro:load_leg
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)pelvis"
+        mirror="false"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        sim_ignition="$(arg sim_ignition)" >
+          <origin rpy="0 -0.349066 0" xyz="-0.024112 0.066 0.110009"/>
+    </xacro:load_leg>
+
+    <xacro:load_leg
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)pelvis"
+        mirror="true"
+        use_fake_hardware="$(arg use_fake_hardware)" 
+        sim_ignition="$(arg sim_ignition)" >
         <origin rpy="0 -0.349066 0" xyz="-0.024112 -0.066 0.110009"/>
-    </xacro:leg>
+    </xacro:load_leg>
 
 </robot>

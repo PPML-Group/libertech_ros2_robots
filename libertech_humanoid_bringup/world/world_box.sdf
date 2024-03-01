@@ -35,7 +35,7 @@
     <gui fullscreen="0">
     
     </gui>
-    <gravity>0 0 0</gravity>
+    <gravity>0 0 -9.81</gravity>
 
 
     <light type="directional" name="sun">
@@ -131,12 +131,21 @@
       <pose>-0.4 0. 0.075 0 0 0</pose>
     </include> -->
 
+
+    <include>
+      <static>true</static>
+      <uri>
+        model://Table
+      </uri>
+      <pose>0.7 0.0 -0.1 0 0 1.57</pose>
+    </include>
+
     <include>
       <static>false</static>
       <uri>
         model://Cardboard Aruco box
       </uri>
-      <pose>0.4 0.0 0.075 1.57 0 3.14</pose>
+      <pose>0.6 0.0 1.2 1.57 0 3.14</pose>
     </include>
 
     <!-- ign topic -t "/world/empty/wrench/persistent" -m ignition.msgs.EntityWrench  -p "entity: {name: 'cardboard_box', type: MODEL}, wrench: {force: {x:0, y: 0.1, z: 0}}" -->

@@ -30,7 +30,7 @@ from launch_ros.substitutions import FindPackageShare
 
 def launch_setup(context, *args, **kwargs):    
     rviz_config_file = PathJoinSubstitution(
-        [FindPackageShare("libertech_humanoid_description"), "rviz", "robot.rviz"]
+        [FindPackageShare("libertech_humanoid_description"), "rviz", "view_robot.rviz"]
     )
 
     robot_description_content = Command(
@@ -38,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("libertech_humanoid_description"), "urdf", "robot.xacro"]
+                [FindPackageShare("libertech_humanoid_description"), "urdf", "humanoid_fixed.xacro"]
             ),
         ]
     )
@@ -69,7 +69,7 @@ def launch_setup(context, *args, **kwargs):
         cmd=[
             FindExecutable(name="bash"),
             PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'scripts', 'generate_urdf.sh']),
-            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'robot.xacro']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro']),
             PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'freeman.urdf']),
         ],
         shell=True

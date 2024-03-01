@@ -1,15 +1,20 @@
 <?xml version="1.0"?>
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="imu">
-    <xacro:macro name="IMU" params="connected_to imu_name xyz:='0 0 0' rpy:='0 0 0' ">
+    <xacro:macro name="load_imu" params="
+        prefix:='' 
+        connected_to:=''
+        xyz:='0 0 0' 
+        rpy:='0 0 0'
+        imu_name ">
         <!-- Imu is fixed to the base link -->
-        <joint name="${imu_name}_joint" type="fixed">
+        <joint name="${prefix}${imu_name}_joint" type="fixed">
             <origin xyz="${xyz}" rpy="${rpy}"/>
             <parent link="${connected_to}"/>
-            <child link="${imu_name}"/>
+            <child link="${prefix}${imu_name}"/>
         </joint>
         <!-- Imu link -->
-        <link name="${imu_name}">
+        <link name="${prefix}${imu_name}">
             <inertial>
                 <mass value="0.01"/>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
@@ -25,10 +30,10 @@
                 <color rgba="255 108 10 255"/>
             </material>
         </link>
-        <gazebo reference="${imu_name}">
+        <gazebo reference="${prefix}${imu_name}">
             <material>Gazebo/Orange</material>
         </gazebo>
-        <gazebo reference="${imu_name}_joint">
+        <gazebo reference="${prefix}${imu_name}_joint">
             <disableFixedJointLumping>true</disableFixedJointLumping>
         </gazebo>
     </xacro:macro>

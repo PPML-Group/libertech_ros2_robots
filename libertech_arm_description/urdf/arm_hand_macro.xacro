@@ -2,7 +2,7 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro">
 
-  <xacro:macro name="load_robot" params="
+  <xacro:macro name="load_arm_hand" params="
     prefix:='' 
     connected_to:=''
     xyz:='0 0 0' 

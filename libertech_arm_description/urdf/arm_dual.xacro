@@ -7,13 +7,13 @@
     <xacro:arg name="use_gripper" default="false" />
     <xacro:arg name="use_fake_hardware" default="false" />
     <xacro:arg name="sim_ignition" default="false" />
-    <xacro:arg name="use_camera" default="true" /> 
+    <xacro:arg name="use_camera" default="false" /> 
     <xacro:arg name="camera_width" default="640"/>
     <xacro:arg name="camera_height" default="480"/>
     <xacro:arg name="camera_fps" default="30"/>
     <xacro:arg name="simulation_controllers" default="$(find libertech_arm_description)/config/ros2_controllers.yaml" />
       
-    <xacro:include filename="$(find libertech_arm_description)/urdf/robot_macro.xacro"/>
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_hand_macro.xacro"/>
 
     <!-- 如果取消world则为漂浮 -->
     <link name="world"/>
@@ -26,22 +26,22 @@
         <child link="$(arg prefix)baseout"/>
     </joint>
 
-    <xacro:load_robot
+    <xacro:load_arm_hand
         prefix="$(arg prefix)" 
         connected_to="$(arg prefix)baseout" 
-        xyz="0.15 0 0.0" 
-        rpy="0 0 0"
+        xyz="0 -0.17735 0.35582"
+        rpy="1.309 0 0"
         arm="arm_right"
         use_hand="$(arg use_hand)"
         use_gripper="$(arg use_gripper)"
         use_fake_hardware="$(arg use_fake_hardware)" 
         sim_ignition="$(arg sim_ignition)" />
 
-    <xacro:load_robot
+    <xacro:load_arm_hand
         prefix="$(arg prefix)" 
         connected_to="$(arg prefix)baseout" 
-        xyz="-0.15 0 0.0" 
-        rpy="0 0 0"
+        xyz="0 0.177350 0.355816"
+        rpy="-1.308997 0 0"
         arm="arm_left"
         use_hand="$(arg use_hand)"
         use_gripper="$(arg use_gripper)"
@@ -77,7 +77,7 @@
             prefix="$(arg prefix)" 
             connected_to="$(arg prefix)baseout" 
             xyz="0.0 0.0 0.0" 
-            rpy="0 0.5 ${pi/2}"
+            rpy="0 0.0 0"
             name="$(arg camera_name)" 
             model="$(arg camera_model)" />        
 
