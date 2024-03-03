@@ -193,6 +193,14 @@ def launch_setup(context, *args, **kwargs):
         output="screen",
     )
 
+    initial_head_joint_config = PathJoinSubstitution(
+        [
+            FindPackageShare(description_package),
+            "config",
+            "initial_positions_head.yaml",
+        ]
+    )
+    
     ignition_spawn_entity = Node(
         package="ros_gz_sim",
         executable="create",

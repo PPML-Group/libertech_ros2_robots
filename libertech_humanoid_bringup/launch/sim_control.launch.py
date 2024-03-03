@@ -184,7 +184,26 @@ def launch_setup(context, *args, **kwargs):
         arguments=["hand_left_trajectory_controller", "-c", "/controller_manager"],
         condition=IfCondition(use_hand),
     )
-        
+    
+    #### velocity
+    arm_right_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_right_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+    
+    arm_left_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_left_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+       
+    head_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["head_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+
     # Bridge
     bridge = Node(
         package="ros_gz_bridge",
@@ -218,6 +237,7 @@ def launch_setup(context, *args, **kwargs):
             "0.0",
             "-Y",
             "0.0",
+            # '-J', 'head_pitch_joint -0.5',
         ],
         condition=IfCondition(sim_ignition),
     )
@@ -240,18 +260,18 @@ def launch_setup(context, *args, **kwargs):
     )
 
     # Bridge
-    # gazebo_bridge = Node(
-    #     package="ros_gz_bridge",
-    #     executable="parameter_bridge",
-    #     parameters=[{"use_sim_time": use_sim_time}],
-    #     arguments=[
-    #         "/wrist_mounted_camera/image@sensor_msgs/msg/Image[ignition.msgs.Image",
-    #         "/wrist_mounted_camera/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
-    #         "/wrist_mounted_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
-    #         "/wrist_mounted_camera/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
-    #     ],
-    #     output="screen",
-    # )
+    ignition_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        parameters=[{"use_sim_time": use_sim_time}],
+        arguments=[
+            "/zedm/image@sensor_msgs/msg/Image[ignition.msgs.Image",
+            "/zedm/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
+            "/zedm/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
+            "/zedm/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
+        ],
+        output="screen",
+    )
 
     nodes_to_start = [
         bridge,
@@ -302,8 +322,28 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[hand_left_traj_controller_spawner],
             )
         ),
-        delay_rviz_after_joint_state_broadcaster_spawner
-        # gazebo_bridge,
+        #### velocity
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_right_vel_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_left_vel_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[head_vel_controller_spawner],
+            )
+        ),
+        
+        delay_rviz_after_joint_state_broadcaster_spawner,
+        ignition_bridge,
     ]
 
     return nodes_to_start

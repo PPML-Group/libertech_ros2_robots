@@ -1,9 +1,6 @@
 from roboticstoolbox.robot.ERobot import ERobot
 import numpy as np
 from spatialmath import SO3, SE3, UnitQuaternion
-import matplotlib.pyplot as plt
-import matplotlib
-from mpl_toolkits.mplot3d import Axes3D
 import math
 import time
 from sko.PSO import PSO
@@ -11,9 +8,6 @@ from sko.PSO import PSO
 from pyswarm import pso
 from hand_cfg import *
 from hand_model_cal import trans2_theta_psi_D    
-import asyncio
-import threading
-from typing import Tuple
 from logger import logger
 import urdf_parser_py.urdf as urdf
 from math import cos, sin
@@ -108,6 +102,7 @@ class HandModelKinematics:
         # finger_name = "thumb"
         # finger_number = self.get_finger_number(finger_name)
         # logger.info(f"手指名字为'{finger_name}'，对应的编号为'{finger_number}'")
+        self.n_e = 0
         
     def get_finger_number(self, finger_name: str):
         return self.finger_mapping.get(finger_name.lower(), "Invalid finger name")
@@ -348,7 +343,6 @@ class HandModelKinematics:
         theta = q[1]
         bevel = psi / (2*math.pi)
         
-        # ts = time.time()
         rx = np.array([[1, 0, 0],
                         [0,math.cos(psi),-math.sin(psi)],
                         [0,math.sin(psi),math.cos(psi)]])    
@@ -372,32 +366,16 @@ class HandModelKinematics:
                     eq[1],
                     eq[2]]
         
-        sol_pss = fsolve(ik_psu, np.array([0.01, 0.01, 0.01, 0.01, 0.01, 0.01]))
+        sol_pss = fsolve(ik_psu, np.array([0.04, 0.02, 0.0, -0.02, 0.0, -3.10]))
         logger.debug(f"sol_pss: {sol_pss}")
-        d = sol_pss[0]-0.01
-        print(d)
-        
-        # def ik_psu(x): # 求根公式太复杂
-        #     l2 = np.array([x[0], x[1], x[2]])
-        #     p3 = cfg["p3"]
-        #     p3[2] = x[3]
-        #     l1 = p1r - p3 - l2
-        #     equ = l2 - np.dot(l2,p2r)*p2r - np.dot(l1,l2)*l1/cfg["l1"]
-            
-        #     return [equ[0],
-        #             equ[1],
-        #             equ[2],
-        #             np.linalg.norm(l2)-cfg["l2"]]
-    
-        # sol_psu = fsolve(ik_psu, np.array([0, 0, 0, 0]))
-        # logger.debug(f"sol_psu: {sol_psu}")
-        # d = sol_psu[3]-0.1
-        # print(d)
-        # logger.debug(f"d_time: {time.time() -ts}")
+        d1 = sol_pss[0]-0.01
+        # print(d1)
         
         # ts = time.time()
         d = trans2_theta_psi_D(theta,psi)/1000
-        # print(d)
+        if np.linalg.norm(d-d1) > 0.01:
+            self.n_e+=1
+        print(d-d1)
         # logger.debug(f"d2_time: {time.time() -ts}")
         # logger.debug(f"d: {d}")
         # print(d)
@@ -526,36 +504,36 @@ class HandModelKinematics:
         cfg = self.get_module_config(fg_name)
         
         q1 = d[0] * (2*math.pi)
-        q2 = 0
+        d = d[1] + 0.01
         
-        # rx = np.array([[1, 0, 0],
-        #                 [0,math.cos(q1),-math.sin(q1)],
-        #                 [0,math.sin(q1),math.cos(q1)]])    
-        # def fk_psu(x):
-        #     ry = np.array([[cos(x[0]),0,sin(x[0])],
-        #                     [0,1,0],
-        #                     [-sin(x[0]),0,cos(x[0])]])
-        #     r = rx @ ry
-        #     # r = ry @ rx 
-        #     p1r = r @ cfg["p1"]
-        #     p2r = r @ cfg["p2"]
+        rx = np.array([[1, 0, 0],
+                        [0,math.cos(q1),-math.sin(q1)],
+                        [0,math.sin(q1),math.cos(q1)]])    
+        def fk_psu(x):
+            ry = np.array([[cos(x[0]),0,sin(x[0])],
+                            [0,1,0],
+                            [-sin(x[0]),0,cos(x[0])]])
+            r = rx @ ry
+            # r = ry @ rx 
+            p1r = r @ cfg["p1"]
+            p2r = r @ cfg["p2"]
             
-        #     p3 = cfg["p3"]
-        #     p3[2] = -d[1] # -Z
+            p3 = cfg["p3"]
+            p3[2] = -d # -Z
             
-        #     p4 = np.array([x[1], x[2], x[3]])
-        #     eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
+            p4 = np.array([x[1], x[2], x[3]])
+            eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
             
-        #     return [np.linalg.norm(p1r - p4) - cfg["l1"],
-        #             np.linalg.norm(p3 - p4) - cfg["l2"],
-        #             np.dot(p1r - p4,p2r),
-        #             eq[0],
-        #             eq[1],
-        #             eq[2]]
+            return [np.linalg.norm(p1r - p4) - cfg["l1"],
+                    np.linalg.norm(p3 - p4) - cfg["l2"],
+                    np.dot(p1r - p4,p2r),
+                    eq[0],
+                    eq[1],
+                    eq[2]]
             
-        # sol_pss = fsolve(fk_psu, np.array([math.radians(0), 0,0,0,0,0]))
-        # logger.debug(f"sol_pss: {sol_pss}")
-        # q2 = sol_pss[0]
+        sol_pss = fsolve(fk_psu, np.array([math.radians(50), 0.02, 0.0, -0.02, 0.0, -3.10]))
+        logger.debug(f"sol_pss: {sol_pss}")
+        q2 = sol_pss[0]
     
         pip = self.four_bar_mcp2pip(q2, fg_name)    
         dip = self.four_bar_pip2dip(pip, fg_name)
@@ -735,40 +713,47 @@ if __name__ == '__main__':
     #                                  0,1,1]))
     # logger.info(f"ik_q2d_all() 用时为: {1000*(time.time()-ts)/N} ms")
     
-    q2_sequence = np.arange(0, 1.95, 0.2)
+    q2_sequence = np.arange(0, 1.75, 0.01)
     print(q2_sequence)
     
-    pos = np.array([0.4, 0.0, 0.0])
-    n_error = 0
-    for q2 in q2_sequence:
-        pos[1] = q2
-        logger.info(f"pos为: {pos}")
-        
-        ts = time.time()
-        d = model.ik_q2d(pos, "index")
-        logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
-        
-        ts = time.time()
-        pos_fk = model.fk_d2q(d, "index")
-        logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
-        
-        logger.info(f"pos误差为: {pos - pos_fk[:3]}")
-        if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
-            n_error += 1
-            
-    print(n_error)
-        
-    # pos = np.array([0.0, 0.0])
+    # pos = np.array([0.4, 0.0, 0.0])
+    # n_error = 0
     # for q2 in q2_sequence:
     #     pos[1] = q2
     #     logger.info(f"pos为: {pos}")
         
     #     ts = time.time()
-    #     d = model.ik_q2d(pos, "fourth")
+    #     d = model.ik_q2d(pos, "index")
     #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
         
     #     ts = time.time()
-    #     pos_fk = model.fk_d2q(d, "fourth")
+    #     pos_fk = model.fk_d2q(d, "index")
     #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
         
+    #     logger.info(f"pos误差为: {pos - pos_fk[:3]}")
+    #     if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
+    #         n_error += 1
+            
+    # print(n_error)
+        
+    n_error = 0
+    pos = np.array([-0.0, 0.0])
+    for q2 in q2_sequence:
+        pos[1] = q2
+        logger.info(f"pos为: {pos}")
+        
+        ts = time.time()
+        d = model.ik_q2d(pos, "fourth")
+        logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
+        
+        ts = time.time()
+        pos_fk = model.fk_d2q(d, "fourth")
+        logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+        print(np.linalg.norm(pos - pos_fk[:2]))
+        if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
+            n_error += 1
+            
+    print(n_error)
+        
+    print(model.n_e)
     
