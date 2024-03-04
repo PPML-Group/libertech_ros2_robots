@@ -11,7 +11,7 @@ from hand_model_cal import trans2_theta_psi_D
 from logger import logger
 import urdf_parser_py.urdf as urdf
 from math import cos, sin
-from scipy.optimize import root, fsolve
+from scipy.optimize import root, fsolve, basinhopping, differential_evolution
 
 np.set_printoptions(precision=3, suppress=True)
 
@@ -368,14 +368,13 @@ class HandModelKinematics:
         
         sol_pss = fsolve(ik_psu, np.array([0.04, 0.02, 0.0, -0.02, 0.0, -3.10]))
         logger.debug(f"sol_pss: {sol_pss}")
-        d1 = sol_pss[0]-0.01
-        # print(d1)
+        d = sol_pss[0]-0.01
         
         # ts = time.time()
-        d = trans2_theta_psi_D(theta,psi)/1000
+        d1 = trans2_theta_psi_D(theta,psi)/1000
         if np.linalg.norm(d-d1) > 0.01:
             self.n_e+=1
-        print(d-d1)
+        # print(d-d1)
         # logger.debug(f"d2_time: {time.time() -ts}")
         # logger.debug(f"d: {d}")
         # print(d)
@@ -504,7 +503,9 @@ class HandModelKinematics:
         cfg = self.get_module_config(fg_name)
         
         q1 = d[0] * (2*math.pi)
-        d = d[1] + 0.01
+        d = d[1] 
+        d *= cfg["h"]
+        d += 0.01
         
         rx = np.array([[1, 0, 0],
                         [0,math.cos(q1),-math.sin(q1)],
@@ -514,13 +515,11 @@ class HandModelKinematics:
                             [0,1,0],
                             [-sin(x[0]),0,cos(x[0])]])
             r = rx @ ry
-            # r = ry @ rx 
             p1r = r @ cfg["p1"]
             p2r = r @ cfg["p2"]
             
             p3 = cfg["p3"]
             p3[2] = -d # -Z
-            
             p4 = np.array([x[1], x[2], x[3]])
             eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
             
@@ -530,10 +529,16 @@ class HandModelKinematics:
                     eq[0],
                     eq[1],
                     eq[2]]
-            
-        sol_pss = fsolve(fk_psu, np.array([math.radians(50), 0.02, 0.0, -0.02, 0.0, -3.10]))
-        logger.debug(f"sol_pss: {sol_pss}")
-        q2 = sol_pss[0]
+        
+        x0 = np.array([math.radians(0), 0.00, 0.0, 0.000, 0.0, -3.10])
+        sol_psu = fsolve(fk_psu, x0)
+        
+        logger.debug(f"sol_psu: {sol_psu}")
+        print(sol_psu[0])
+        # q2 = math.atan2(sol_psu.x[1],sol_psu.x[0])
+        # print(q2)
+        
+        q2 = sol_psu[0]
     
         pip = self.four_bar_mcp2pip(q2, fg_name)    
         dip = self.four_bar_pip2dip(pip, fg_name)
@@ -737,7 +742,7 @@ if __name__ == '__main__':
     # print(n_error)
         
     n_error = 0
-    pos = np.array([-0.0, 0.0])
+    pos = np.array([-0.4, 0.0])
     for q2 in q2_sequence:
         pos[1] = q2
         logger.info(f"pos为: {pos}")
