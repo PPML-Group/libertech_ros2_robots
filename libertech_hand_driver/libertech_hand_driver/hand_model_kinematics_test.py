@@ -530,7 +530,7 @@ class HandModelKinematics:
                     eq[1],
                     eq[2]]
         
-        x0 = np.array([math.radians(0), 0.00, 0.0, 0.000, 0.0, -3.10])
+        x0 = np.array([math.radians(50), 0.02, 0.0, 0.001, 0.0, -3.10])
         sol_psu = fsolve(fk_psu, x0)
         
         logger.debug(f"sol_psu: {sol_psu}")
@@ -719,7 +719,7 @@ if __name__ == '__main__':
     # logger.info(f"ik_q2d_all() 用时为: {1000*(time.time()-ts)/N} ms")
     
     q2_sequence = np.arange(0, 1.75, 0.01)
-    print(q2_sequence)
+    # print(q2_sequence)
     
     # pos = np.array([0.4, 0.0, 0.0])
     # n_error = 0
@@ -741,24 +741,82 @@ if __name__ == '__main__':
             
     # print(n_error)
         
-    n_error = 0
-    pos = np.array([-0.4, 0.0])
-    for q2 in q2_sequence:
-        pos[1] = q2
-        logger.info(f"pos为: {pos}")
+    # n_error = 0
+    # pos = np.array([-0.4, 0.0])
+    # for q2 in q2_sequence:
+    #     pos[1] = q2
+    #     logger.info(f"pos为: {pos}")
         
-        ts = time.time()
-        d = model.ik_q2d(pos, "fourth")
-        logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
+    #     ts = time.time()
+    #     d = model.ik_q2d(pos, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
         
-        ts = time.time()
-        pos_fk = model.fk_d2q(d, "fourth")
-        logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
-        print(np.linalg.norm(pos - pos_fk[:2]))
-        if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
-            n_error += 1
+    #     ts = time.time()
+    #     pos_fk = model.fk_d2q(d, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+    #     print(np.linalg.norm(pos - pos_fk[:2]))
+    #     if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
+    #         n_error += 1
             
-    print(n_error)
+    # print(n_error)
         
-    print(model.n_e)
+    # # print(model.n_e)
+    
+    
+    q1_sequence = np.arange(-0.4, 0.4, 0.05)
+    q2_sequence = np.arange(0, 1.75, 0.05)
+    
+    print(f'---------------测试食指、中指---------------')
+    n_error = 0
+    pos = np.array([0.0, 0.0, 0.4])
+    for q1 in q1_sequence:
+        for q2 in q2_sequence:
+            pos[0] = q1
+            pos[1] = q2
+            # print(f"设定的关节角为: {pos}")
+            
+            ts = time.time()
+            d = model.ik_q2d(pos, "index")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver3()为: {d}")
+            
+            ts = time.time()
+            pos_fk = model.fk_d2q(d, "index")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver3()为: {pos_fk}")
+            
+            # print(f"pos误差为: {pos - pos_fk[:3]}")
+            if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
+                n_error += 1
+          
+    print(f"ik求解错误次数为: {n_error}")  
+    
+    print(f'---------------测试无名指、小拇指---------------')
+    n_error = 0
+    
+    q1_sequence = np.arange(-0.4, 0.4, 0.05)
+    q2_sequence = np.arange(0, 1.75, 0.05)
+    
+    pos = np.array([0.0, 0.0])
+    for q1 in q1_sequence:
+        for q2 in q2_sequence:
+            pos[0] = q1
+            pos[1] = q2
+            # print(f"设定的关节角为: {pos}")
+            
+            ts = time.time()
+            d = model.ik_q2d(pos, "fourth")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver2()为: {d}")
+            
+            ts = time.time()
+            pos_fk = model.fk_d2q(d, "fourth")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver2()为: {pos_fk}")
+            
+            # print(f"pos误差为: {pos - pos_fk[:2]}")
+            if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
+                print(f"设定的关节角为: {pos}")
+                print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver2()为: {d}")
+                print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver2()为: {pos_fk}")
+                print(f"pos误差为: {pos - pos_fk[:2]}")
+                n_error += 1
+                
+    print(f"ik求解错误次数为: {n_error}")
     
