@@ -70,7 +70,7 @@ def launch_setup(context, *args, **kwargs):
             FindExecutable(name="bash"),
             PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'scripts', 'generate_urdf.sh']),
             PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro']),
-            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'freeman.urdf']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro.urdf']),
         ],
         shell=True
     )
