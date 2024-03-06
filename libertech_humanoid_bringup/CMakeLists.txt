@@ -6,17 +6,53 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
 endif()
 
 # find dependencies
-find_package(ament_cmake REQUIRED)
-find_package(ament_cmake_python REQUIRED)
-# uncomment the following section in order to fill in
-# further dependencies manually.
-# find_package(<dependency> REQUIRED)
+set(THIS_PACKAGE_INCLUDE_DEPENDS
+  ament_cmake
+  ament_cmake_python
+  Boost
+  control_msgs
+  Eigen3
+  interactive_markers
+  moveit_core
+  moveit_msgs
+  moveit_ros_planning
+  moveit_ros_planning_interface
+  moveit_servo
+  # moveit_task_constructor_core
+  moveit_visual_tools
+  pluginlib
+  rclcpp
+  rclcpp_action
+  rviz_visual_tools
+  tf2_geometry_msgs
+  tf2_geometry_msgs
+  tf2_ros
+)
+
+# find dependencies
+foreach(Dependency IN ITEMS ${THIS_PACKAGE_INCLUDE_DEPENDS})
+  find_package(${Dependency} REQUIRED)
+endforeach()
+
+include_directories(
+    include
+    ${THIS_PACKAGE_INCLUDE_DIRS}
+    ${EIGEN3_INCLUDE_DIRS}
+)
+
+add_executable(move_group_interface_tutorial
+    src/move_group_interface_tutorial.cpp)
+target_include_directories(move_group_interface_tutorial
+    PUBLIC include)
+ament_target_dependencies(move_group_interface_tutorial
+    ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+install(TARGETS move_group_interface_tutorial
+DESTINATION lib/${PROJECT_NAME}
+)
 
 install(PROGRAMS
   scripts/test_huge_joint_space_jump.py
-  scripts/totural.py
-  scripts/ex_joint_goal.py
-  scripts/ex_pose_goal.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
