@@ -14,6 +14,9 @@ find_package(ament_cmake_python REQUIRED)
 
 install(PROGRAMS
   scripts/test_huge_joint_space_jump.py
+  scripts/totural.py
+  scripts/ex_joint_goal.py
+  scripts/ex_pose_goal.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

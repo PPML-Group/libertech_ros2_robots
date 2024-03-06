@@ -108,6 +108,16 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
     robot_description = {"robot_description": robot_description_content.perform(context)}
+    
+    generate_urdf = ExecuteProcess(
+        cmd=[
+            FindExecutable(name="bash"),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'scripts', 'generate_urdf.sh']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro.urdf']),
+        ],
+        shell=True
+    )
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -275,6 +285,7 @@ def launch_setup(context, *args, **kwargs):
 
     nodes_to_start = [
         bridge,
+        generate_urdf,
         robot_state_publisher_node,
         ignition_launch_description,
         ignition_spawn_entity,
