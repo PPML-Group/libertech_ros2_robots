@@ -27,6 +27,7 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   tf2_geometry_msgs
   tf2_geometry_msgs
   tf2_ros
+  tf2
 )
 
 # find dependencies
@@ -40,14 +41,40 @@ include_directories(
     ${EIGEN3_INCLUDE_DIRS}
 )
 
-add_executable(move_group_interface_tutorial
-    src/move_group_interface_tutorial.cpp)
-target_include_directories(move_group_interface_tutorial
+add_executable(move_group_interface_direct
+    src/move_group_interface_direct.cpp)
+target_include_directories(move_group_interface_direct
     PUBLIC include)
-ament_target_dependencies(move_group_interface_tutorial
+ament_target_dependencies(move_group_interface_direct
     ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
 
-install(TARGETS move_group_interface_tutorial
+add_executable(move_group_interface_joint
+    src/move_group_interface_joint.cpp)
+target_include_directories(move_group_interface_joint
+    PUBLIC include)
+ament_target_dependencies(move_group_interface_joint
+    ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+add_executable(move_group_interface_cartesian
+    src/move_group_interface_cartesian.cpp)
+target_include_directories(move_group_interface_cartesian
+    PUBLIC include)
+ament_target_dependencies(move_group_interface_cartesian
+    ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+add_executable(move_group_interface_direct_dual
+    src/move_group_interface_direct_dual.cpp)
+target_include_directories(move_group_interface_direct_dual
+    PUBLIC include)
+ament_target_dependencies(move_group_interface_direct_dual
+    ${THIS_PACKAGE_INCLUDE_DEPENDS} Boost)
+
+
+install(TARGETS 
+move_group_interface_direct
+move_group_interface_joint
+move_group_interface_cartesian
+move_group_interface_direct_dual
 DESTINATION lib/${PROJECT_NAME}
 )
 

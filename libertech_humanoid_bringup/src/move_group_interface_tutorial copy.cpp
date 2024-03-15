@@ -347,17 +347,17 @@ int main(int argc, char** argv)
   // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
   //
   // First, let's plan to another simple goal with no objects in the way.
-  // move_group.setStartState(*move_group.getCurrentState());
-  // geometry_msgs::msg::Pose another_pose;
-  // another_pose.orientation.w = 0;
-  // another_pose.orientation.x = -1.0;
-  // another_pose.position.x = 0.7;
-  // another_pose.position.y = 0.0;
-  // another_pose.position.z = 0.59;
-  // move_group.setPoseTarget(another_pose);
+  move_group.setStartState(*move_group.getCurrentState());
+  geometry_msgs::msg::Pose another_pose;
+  another_pose.orientation.w = 0;
+  another_pose.orientation.x = -1.0;
+  another_pose.position.x = 0.7;
+  another_pose.position.y = 0.0;
+  another_pose.position.z = 0.59;
+  move_group.setPoseTarget(another_pose);
 
-  // success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
-  // RCLCPP_INFO(LOGGER, "Visualizing plan 5 (with no obstacles) %s", success ? "" : "FAILED");
+  success = (move_group.plan(my_plan) == moveit::core::MoveItErrorCode::SUCCESS);
+  RCLCPP_INFO(LOGGER, "Visualizing plan 5 (with no obstacles) %s", success ? "" : "FAILED");
 
   // visual_tools.deleteAllMarkers();
   // visual_tools.publishText(text_pose, "Clear_Goal", rvt::WHITE, rvt::XLARGE);

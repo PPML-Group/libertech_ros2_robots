@@ -108,16 +108,16 @@
 
     <xacro:property name="torqueMax" value="50.0"/>
     <xacro:property name="velocityMax" value="3.14"/>
-    <xacro:property name="joint1_PositionMin" value="${-PI*2}"/>
-    <xacro:property name="joint1_PositionMax" value="${PI*2}"/>
+    <xacro:property name="joint1_PositionMin" value="${-PI}"/>
+    <xacro:property name="joint1_PositionMax" value="${PI}"/>
     <xacro:property name="joint2_PositionMin" value="-0.6"/>
     <xacro:property name="joint2_PositionMax" value="1.6"/>
-    <xacro:property name="joint3_PositionMin" value="${-PI*2}"/>
-    <xacro:property name="joint3_PositionMax" value="${PI*2}"/>
+    <xacro:property name="joint3_PositionMin" value="${-PI}"/>
+    <xacro:property name="joint3_PositionMax" value="${PI}"/>
     <xacro:property name="joint4_PositionMin" value="-1.3"/>
     <xacro:property name="joint4_PositionMax" value="0.7"/>
-    <xacro:property name="joint5_PositionMin" value="${-PI*2}"/>
-    <xacro:property name="joint5_PositionMax" value="${PI*2}"/>
+    <xacro:property name="joint5_PositionMin" value="${-PI}"/>
+    <xacro:property name="joint5_PositionMax" value="${PI}"/>
     <xacro:property name="joint6_PositionMin" value="${-PI*0.5}"/>
     <xacro:property name="joint6_PositionMax" value="${PI*0.5}"/>
     <xacro:property name="joint7_PositionMin" value="${-PI*0.5}"/>

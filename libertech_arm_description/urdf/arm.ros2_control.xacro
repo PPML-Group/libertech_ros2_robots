@@ -41,8 +41,8 @@
       <!-- TODO: command_interface velocity effort -->
       <joint name="${prefix}${name}_shoulder_pitch_joint">
         <command_interface name="position">
-          <param name="min">{-2*pi}</param>
-          <param name="max">{2*pi}</param>
+          <param name="min">{-pi}</param>
+          <param name="max">{pi}</param>
         </command_interface>
         <command_interface name="velocity">
           <param name="min">-3.14</param>
@@ -79,8 +79,8 @@
       </joint>
       <joint name="${prefix}${name}_shoulder_yaw_joint">
         <command_interface name="position">
-          <param name="min">{-2*pi}</param>
-          <param name="max">{2*pi}</param>
+          <param name="min">{-pi}</param>
+          <param name="max">{pi}</param>
         </command_interface>
         <command_interface name="velocity">
           <param name="min">-3.14</param>
@@ -117,8 +117,8 @@
       </joint>
       <joint name="${prefix}${name}_elbow_roll_joint">
         <command_interface name="position">
-          <param name="min">{-2*pi}</param>
-          <param name="max">{2*pi}</param>
+          <param name="min">{-pi}</param>
+          <param name="max">{pi}</param>
         </command_interface>
         <command_interface name="velocity">
           <param name="min">-3.14</param>
