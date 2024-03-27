@@ -1,17 +1,19 @@
 from roboticstoolbox.robot.ERobot import ERobot
 import numpy as np
 from spatialmath import SO3, SE3, UnitQuaternion
+import matplotlib.pyplot as plt
+import matplotlib
+from mpl_toolkits.mplot3d import Axes3D
 import math
 import time
 from sko.PSO import PSO
-# from sko.GA import GA
-from pyswarm import pso
-from hand_cfg import *
-from hand_model_cal import trans2_theta_psi_D    
-from logger import logger
+# from pyswarm import pso
+from scipy.optimize import fsolve, minimize
 import urdf_parser_py.urdf as urdf
 from math import cos, sin
-from scipy.optimize import root, fsolve, basinhopping, differential_evolution
+
+from libertech_hand_driver.hand_cfg import *
+from libertech_hand_driver.logger import logger
 
 np.set_printoptions(precision=3, suppress=True)
 
@@ -69,7 +71,7 @@ class HandModelKinematics:
         self.qname_act_ = []
         for i in range(5):
             self.qlim_act_.append(self.qlim_[:, 4*i:4*i+list(self.finger_driver_num.items())[i][1]])
-            self.qname_act_.extend(self.qname_[4*i:4*i+list(self.finger_driver_num.items())[i][1]])
+            self.qname_act_.extend(self.qname_[5*i:5*i+list(self.finger_driver_num.items())[i][1]]) # end多了一个
         self.qlim_act_ = np.hstack(self.qlim_act_)
         
         self.display_ = display
@@ -102,7 +104,6 @@ class HandModelKinematics:
         # finger_name = "thumb"
         # finger_number = self.get_finger_number(finger_name)
         # logger.info(f"手指名字为'{finger_name}'，对应的编号为'{finger_number}'")
-        self.n_e = 0
         
     def get_finger_number(self, finger_name: str):
         return self.finger_mapping.get(finger_name.lower(), "Invalid finger name")
@@ -177,7 +178,7 @@ class HandModelKinematics:
             # logger.debug(f"{fg_name}: qi4 is {qi4}")
             
         fg_num = self.get_finger_number(fg_name)
-        end_name = f"{self.hand_name_}_f{fg_num}4"
+        end_name = f"hand_{self.hand_name_}_f{fg_num}4_end"
         # logger.debug(f"end name is {end_name}")
         qa[4*(fg_num-1):4*fg_num] = qi
         # logger.debug(f"{fg_name}: qa is {qa}")
@@ -185,9 +186,26 @@ class HandModelKinematics:
         fk = self.model_rtb_.fkine(qa, end=self.model_rtb_.link_dict[end_name])
         return fk
     
+    def fk_q2q_all(self, q: np.ndarray):
+        assert q.shape[0] == MOTOR_NUM
+        
+        qa = np.zeros(20)
+        qa[:4] = np.append(q[:3], self.four_bar_pip2dip(q[2], "index"))
+        qa[4:8] = np.append(q[3:6], self.four_bar_pip2dip(q[5], "middle"))
+        q33 = self.four_bar_mcp2pip(q[7], "fourth")
+        q34 = self.four_bar_pip2dip(q33, "fourth")
+        qa[8:12] = np.append(q[6:8], [q33, q34])
+        q43 = self.four_bar_mcp2pip(q[7], "little")
+        q44 = self.four_bar_pip2dip(q43, "little")
+        qa[12:16] = np.append(q[8:10], [q43, q44])
+        qa[16:] = np.append(q[10:], self.four_bar_pip2dip(q[12], "thumb"))
+        
+        return qa
+    
     def fk_q2e_all(self, q: np.ndarray): #  -> list[SE3]
         assert q.shape[0] == MOTOR_NUM
         
+        # TODO: 这样写多求了4次运动学
         return [self.fk_q2e(q[:3], "index"), 
             self.fk_q2e(q[3:6], "middle"), 
             self.fk_q2e(q[6:8], "fourth"), 
@@ -227,7 +245,8 @@ class HandModelKinematics:
         # ga = GA(func=func, n_dim=n_dim, size_pop=20, max_iter=40, prob_mut=0.001, lb=lb, ub=ub, precision=1e-7)
         # best_x, best_y = ga.run()
 
-        pso = PSO(func=func, n_dim=n_dim, pop=20, max_iter=40, lb=lb, ub=ub)
+        # pso = PSO(func=func, dim=n_dim, pop=30, max_iter=80, lb=lb, ub=ub)
+        pso = PSO(func=func, dim=n_dim, pop=20, max_iter=40, lb=lb, ub=+ub)
         best_x, best_y = pso.run()
         
         # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
@@ -277,6 +296,119 @@ class HandModelKinematics:
     def ik_e2q_all_free(self, pos_list: list[np.ndarray]):
         # TODO: 手掌具有六自由度，计算合适的位姿与所有关节，避免不同手指的工作空间冲突
         pass
+    
+    def get_direction(self, pa, ph):            
+            # 计算机械手手指之间的方向向量并归一化
+            direction_vectors_robot = []
+            for i in range(len(pa)):
+                for j in range(i+1, len(pa)):
+                    direction_vector = pa[j] - pa[i]
+                    normalized_direction_vector = direction_vector / np.linalg.norm(direction_vector)
+                    direction_vectors_robot.append(normalized_direction_vector)
+
+            # 计算人手位置之间的方向向量并归一化
+            direction_vectors_human = []
+            for i in range(len(ph)):
+                for j in range(i+1, len(ph)):
+                    direction_vector = ph[j] - ph[i]
+                    normalized_direction_vector = direction_vector / np.linalg.norm(direction_vector)
+                    direction_vectors_human.append(normalized_direction_vector)
+            return direction_vectors_robot, direction_vectors_human
+        
+    def get_directions_distances(p):
+        results = {}
+
+        # Task 1: Compute directions and distances from origin to each point in p
+        origin_directions = []
+        origin_distances = []
+        for point in p:
+            direction = point
+            distance = np.linalg.norm(direction)
+            origin_directions.append(direction)
+            origin_distances.append(distance)
+        
+        results['origin_directions'] = origin_directions
+        results['origin_distances'] = origin_distances
+
+        # Task 2: Compute directions and distances from each finger tip to the thumb
+        finger_positions = p[:4]  # Finger tip positions
+        thumb_position = p[4]  # Thumb position
+
+        finger_to_thumb_directions = []
+        finger_to_thumb_distances = []
+        for finger_tip in finger_positions:
+            direction = thumb_position - finger_tip
+            distance = np.linalg.norm(direction)
+            finger_to_thumb_directions.append(direction)
+            finger_to_thumb_distances.append(distance)
+
+        results['finger_to_thumb_directions'] = finger_to_thumb_directions
+        results['finger_to_thumb_distances'] = finger_to_thumb_distances
+
+        # Task 3: Compute directions and distances between finger tips
+        finger_to_finger_directions = []
+        finger_to_finger_distances = []
+        for i in range(4):
+            for j in range(i + 1, 4):
+                direction = finger_positions[j] - finger_positions[i]
+                distance = np.linalg.norm(direction)
+                finger_to_finger_directions.append(direction)
+                finger_to_finger_distances.append(distance)
+        
+        results['finger_to_finger_directions'] = finger_to_finger_directions
+        results['finger_to_finger_distances'] = finger_to_finger_distances
+
+        return results
+        
+    def ik_e2q_retarget(self, ph: list[np.ndarray], q_last=None):
+        
+        def func(q):
+            fk_all = self.fk_q2e_all(q)
+            pa = [fk.t for fk in fk_all]
+            direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
+                        
+            # loss1
+            # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(q)
+            # loss2 不行
+            # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2)
+            # loss3 只加侧摆
+            # qy = np.array([q[0],q[3],[6],[8]])
+            qy = q[[0, 3, 6, 8]]
+            return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(qy)
+            
+            # loss = 0
+            # for i in range(len(direction_vectors_human)):
+            #     loss += np.sum((np.array(direction_vectors_robot[i]) - np.array(direction_vectors_human[i]))** 2)
+        
+        # lb = self.qlim_act_[0]
+        # ub = self.qlim_act_[1]
+        # logger.debug(f"lb is {lb}")
+        # logger.debug(f"ub is {ub}")
+
+        # pso = PSO(func=func, dim=MOTOR_NUM, pop=30, max_iter=100, lb=lb, ub=ub)
+        # # pso.X = 
+        # # pso.cal_y()
+        # best_x, best_y = pso.run()
+        
+        # # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
+         
+        # # logger.info(f"{fg_name}: time is {time.time()-ts}")
+        # logger.debug('best_x:', best_x, '\n', 'best_y:', best_y)
+        # return best_x
+        if q_last is not None:
+            x0 = q_last
+        else:
+            x0 = np.zeros((MOTOR_NUM))
+        lower_bounds = self.qlim_act_[0]
+        upper_bounds = self.qlim_act_[1]
+        # 将上下限转换为 bounds 格式
+        bounds = list(zip(lower_bounds, upper_bounds))
+        # print(bounds)
+        sol_psu = minimize(func, x0, method='SLSQP', bounds=bounds)
+        if sol_psu.success:
+            return sol_psu.x
+        else:
+            return None
      
     # %% 用于计算驱动空间与关节空间的运动学映射  
     def ik_q2d_m1(self, q: np.ndarray, fg_name: str) -> np.ndarray:
@@ -371,9 +503,9 @@ class HandModelKinematics:
         d = sol_pss[0]-0.01
         
         # ts = time.time()
-        d1 = trans2_theta_psi_D(theta,psi)/1000
-        if np.linalg.norm(d-d1) > 0.01:
-            self.n_e+=1
+        # d1 = trans2_theta_psi_D(theta,psi)/1000
+        # if np.linalg.norm(d-d1) > 0.001:
+        #     print("error")
         # print(d-d1)
         # logger.debug(f"d2_time: {time.time() -ts}")
         # logger.debug(f"d: {d}")
@@ -534,7 +666,7 @@ class HandModelKinematics:
         sol_psu = fsolve(fk_psu, x0)
         
         logger.debug(f"sol_psu: {sol_psu}")
-        print(sol_psu[0])
+        # print(sol_psu[0])
         # q2 = math.atan2(sol_psu.x[1],sol_psu.x[0])
         # print(q2)
         
@@ -545,7 +677,6 @@ class HandModelKinematics:
 
         q = np.array([q1, q2, pip, dip])
         return q
-        
         
     def fk_d2q_m3(self, d: np.ndarray, fg_name: str) -> np.ndarray:
         pass      
@@ -610,45 +741,43 @@ class HandModelKinematics:
     def plan_in_dspace_w_ptraj(self, ptraj):
         # TODO: 驱动空间规划,使其趋近于给定的末端空间
         pass
-        
+            
 # %% main  
 if __name__ == '__main__':
     hand_file = '/home/ccs/ros2/libertech_ws/src/libertech_ros2_robots/libertech_hand_description/urdf/hand_right.xacro.urdf'
     
     model = HandModelKinematics(hand_file)
 
-    # print(model.fk_q2e(np.array([0,1,1]), "index"))
+    print(model.fk_q2e(np.array([0,1,1]), "index"))
     
-    # # print(model.fk_q2e_all(np.zeros(13)))
+    # print(model.fk_q2e_all(np.zeros(13)))
     
-    # pos = np.array([0.03841,0.02866,0.08211])
-    # # p = model.fk_q2e(np.array([0,0,1]), "index").o
-    # # print(np.linalg.norm(p - pos))
+    pos = np.array([0.03841,0.02866,0.08211])
+    # p = model.fk_q2e(np.array([0,0,1]), "index").o
+    # print(np.linalg.norm(p - pos))
     
-    # # q = model.ik_e2q(pos, "index")
+    # q = model.ik_e2q(pos, "index")
     
-    # # print(model.fk_q2e(np.asarray(q), "index"))
-    # # print(model.fk_q2e(np.asarray(q), "index").t)
-    # # print(model.fk_q2e(np.array([0.309643, 2.055571, 1.472229]), "index").a)
+    # print(model.fk_q2e(np.asarray(q), "index"))
+    # print(model.fk_q2e(np.asarray(q), "index").t)
+    # print(model.fk_q2e(np.array([0.309643, 2.055571, 1.472229]), "index").a)
     
-    # print('='*30)
+    print('='*30)
     
-    # se3_all = model.fk_q2e_all(np.array([0,1,1,
-    #                                  0,1,1,
-    #                                  0,1,
-    #                                  0,1,
-    #                                  0,1,1]))
-    # print(se3_all)
+    se3_all = model.fk_q2e_all(np.array([0,1,1,
+                                     0,1,1,
+                                     0,1,
+                                     0,1,
+                                     0,1,1]))
+    print(se3_all)
     
-    # p_all = []
-    # for se3 in se3_all:
-    #     p_all.append(se3.t)
-    # # p_all = np.concatenate(p_all) 
-    # # print(p_all)
+    p_all = [se3.t for se3 in se3_all]
+    # p_all = np.concatenate(p_all) 
+    # print(p_all)
     
-    # ts = time.time()
-    # print(model.ik_e2q_all(p_all))
-    # logger.info(f"time is {time.time()-ts}")
+    ts = time.time()
+    print(model.ik_e2q_all(p_all))
+    logger.info(f"time is {time.time()-ts}")
     
     # q = np.array([0.0, 0.3, 0.0, 0.0, 1.7, 1.5, 0.0, 1.3, 0.0, 1.3, 1.2, 0.1, 0.9])
     # logger.info(f"q is {q}")
@@ -819,4 +948,3 @@ if __name__ == '__main__':
                 n_error += 1
                 
     print(f"ik求解错误次数为: {n_error}")
-    

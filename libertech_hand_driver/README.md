@@ -154,6 +154,9 @@ motor_mapping = {
 * 左手不能超过1000的力
 * 左右手由于装配不同，kp不一样
 * 轨迹规划还可以优化
+* urdfpy依赖networkx-2.2，可能和networkx 3.2.1有冲突
+* pyrender依赖pyopengl 3.1.0 但mujcoco需要3.1.7
+* pk依赖pip install "pyglet<2"
 
 ## Change Log
 

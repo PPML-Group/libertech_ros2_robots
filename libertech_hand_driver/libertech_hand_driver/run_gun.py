@@ -11,7 +11,7 @@ import asyncio
 import traceback
 from rich.traceback import Traceback
 from scipy.optimize import root
-from hand_model_cal import trans2_theta_psi_D
+from libertech_ros2_robots.libertech_hand_driver.libertech_hand_driver.old.hand_model_cal import trans2_theta_psi_D
 from hand_cfg import *
 import TinyFrame as TF
 from CommProtocol import *
