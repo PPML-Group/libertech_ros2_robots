@@ -22,11 +22,10 @@ ament_python_install_package(${PROJECT_NAME})
  
 # Install Python executables
 install(PROGRAMS
-  scripts/test_ik.py
   scripts/hand_ros_driver.py
+  scripts/hand_dynamic_joints.py
   scripts/hand_demo.py
   scripts/hand_retarget_mediapipe.py
-
   DESTINATION lib/${PROJECT_NAME}
 )
 

@@ -202,7 +202,7 @@ class HandModelKinematics:
         q33 = self.four_bar_mcp2pip(q[7], "fourth")
         q34 = self.four_bar_pip2dip(q33, "fourth")
         qa[8:12] = np.append(q[6:8], [q33, q34])
-        q43 = self.four_bar_mcp2pip(q[7], "little")
+        q43 = self.four_bar_mcp2pip(q[9], "little")
         q44 = self.four_bar_pip2dip(q43, "little")
         qa[12:16] = np.append(q[8:10], [q43, q44])
         qa[16:] = np.append(q[10:], self.four_bar_pip2dip(q[12], "thumb"))
@@ -384,7 +384,7 @@ class HandModelKinematics:
         def func(q):
             fk_all = self.fk_q2e_all(q)
             pa = [fk.t for fk in fk_all]
-            pa = [fk.t - np.array([0., 0., 0.05]) for fk in fk_all] # 对齐人手mediapipe与机械手原点
+            pa = [fk.t - np.array([0., 0.00, 0.1]) for fk in fk_all] # 对齐人手mediapipe与机械手原点
             # direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
             ret_a = self.compute_directions_distances(pa, is_unit=False)
             ret_h = self.compute_directions_distances(ph, is_unit=True)

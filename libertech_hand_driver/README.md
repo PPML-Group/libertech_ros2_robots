@@ -20,11 +20,13 @@ FreeHand机械手使用说明文档
 * Python3
 * numpy
 * scipy
-* kso
+* scikit-opt (optional)
 * yaml
 * rich
+* mediapipe (optional)
+* plotly trimesh torch opencv-python pytorch_kinematics matplotlib (optional)
 
-关于ros2安装：可以使用鱼香ros安装,版本为rolling
+关于ros2安装：可以使用鱼香ros安装,版本为Humble
 ```
 wget http://fishros.com/install -O fishros && . fishros 
 ```
