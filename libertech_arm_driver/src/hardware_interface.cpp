@@ -43,10 +43,24 @@ LibertechArmInterfaceHardware::LibertechArmInterfaceHardware()
 
 hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const hardware_interface::HardwareInfo& info)
 {
+  RCLCPP_INFO(LOGGER, "Configuring Hardware Interface");
   if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS)
   {
     return hardware_interface::CallbackReturn::ERROR;
   }
+  
+  info_ = info;
+  // // The robot's param.
+  // std::string xxxx = info_.hardware_parameters["xxxx"];
+  // if (xxxx.empty())
+  // {
+  //   RCLCPP_ERROR(LOGGER, "Robot ip is empty!");
+  //   return CallbackReturn::ERROR;
+  // }
+  // else
+  // {
+  //   RCLCPP_INFO(LOGGER, "Robot ip is '%s'", xxxx.c_str());
+  // }
 
   // // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   // hw_start_sec_ = stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -55,45 +69,6 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
   // // END: This part here is for exemplary purposes - Please do not copy to your production code
   // hw_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
   // hw_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-
-  // TODO：7自由度或14自由度的初始化，当前默认14
-  for (const hardware_interface::ComponentInfo& joint : info_.joints)
-  {
-    // has exactly one command interface on each joint
-    if (joint.command_interfaces.size() != 1)
-    {
-      RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
-                   "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
-                   joint.command_interfaces.size());
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-
-    if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
-    {
-      RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
-                   "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
-                   joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-
-    // 假设只反馈位置
-    if (joint.state_interfaces.size() != 1)
-    {
-      RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
-                   "Joint '%s' has %zu state interface. 1 expected.", joint.name.c_str(),
-                   joint.state_interfaces.size());
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-
-    if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
-    {
-      RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
-                   "Joint '%s' have %s state interface. '%s' expected.", joint.name.c_str(),
-                   joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
-      return hardware_interface::CallbackReturn::ERROR;
-    }
-  }
-
   arm_positions_.resize(actuator_count_, std::numeric_limits<double>::quiet_NaN());
   arm_velocities_.resize(actuator_count_, std::numeric_limits<double>::quiet_NaN());
   arm_efforts_.resize(actuator_count_, std::numeric_limits<double>::quiet_NaN());
@@ -101,11 +76,91 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
   arm_commands_velocities_.resize(actuator_count_, std::numeric_limits<double>::quiet_NaN());
   arm_commands_efforts_.resize(actuator_count_, std::numeric_limits<double>::quiet_NaN());
 
+  for (const hardware_interface::ComponentInfo & joint : info_.joints)
+  {
+    // if (joint.command_interfaces.size() != 1)
+    // {
+    //   RCLCPP_FATAL(LOGGER, "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
+    //                joint.command_interfaces.size());
+    //   return CallbackReturn::ERROR;
+    // }
+
+    if (!(joint.command_interfaces[0].name == hardware_interface::HW_IF_POSITION ||
+          joint.command_interfaces[0].name == hardware_interface::HW_IF_VELOCITY ||
+          joint.command_interfaces[0].name == hardware_interface::HW_IF_EFFORT))
+    {
+      RCLCPP_FATAL(
+        LOGGER, "Joint '%s' has %s command interface. Expected %s, %s, or %s.", joint.name.c_str(),
+        joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION,
+        hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_EFFORT);
+      return CallbackReturn::ERROR;
+    }
+
+    // if (joint.state_interfaces.size() != 1)
+    // {
+    //   RCLCPP_FATAL(LOGGER,
+    //                "Joint '%s' has %zu state interface. 7 expected.", joint.name.c_str(),
+    //                joint.state_interfaces.size());
+    //   return CallbackReturn::ERROR;
+    // }
+
+    if (!(joint.state_interfaces[0].name == hardware_interface::HW_IF_POSITION ||
+          joint.state_interfaces[0].name == hardware_interface::HW_IF_VELOCITY ||
+          joint.state_interfaces[0].name == hardware_interface::HW_IF_EFFORT))
+    {
+      RCLCPP_FATAL(
+        LOGGER, "Joint '%s' has %s state interface. Expected %s, %s, or %s.", joint.name.c_str(),
+        joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION,
+        hardware_interface::HW_IF_VELOCITY, hardware_interface::HW_IF_EFFORT);
+      return CallbackReturn::ERROR;
+    }
+  }
+
+  // // TODO：7自由度或14自由度的初始化，当前默认14 ????
+  // for (const hardware_interface::ComponentInfo& joint : info_.joints)
+  // {
+  //   // has exactly one command interface on each joint
+  //   if (joint.command_interfaces.size() != 7)
+  //   {
+  //     RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
+  //                  "Joint '%s' has %zu command interfaces found. 7 expected.", joint.name.c_str(),
+  //                  joint.command_interfaces.size());
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
+
+  //   if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+  //   {
+  //     RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
+  //                  "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
+  //                  joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
+
+  //   // 假设只反馈位置
+  //   if (joint.state_interfaces.size() != 7)
+  //   {
+  //     RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
+  //                  "Joint '%s' has %zu state interface. 7 expected.", joint.name.c_str(),
+  //                  joint.state_interfaces.size());
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
+
+  //   if (joint.state_interfaces[0].name != hardware_interface::HW_IF_POSITION)
+  //   {
+  //     RCLCPP_FATAL(rclcpp::get_logger("LibertechArmInterfaceHardware"),
+  //                  "Joint '%s' have %s state interface. '%s' expected.", joint.name.c_str(),
+  //                  joint.state_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
+  //     return hardware_interface::CallbackReturn::ERROR;
+  //   }
+  // }
+
   // 初始化
   armDriver_ = new ArmDriver;
+  armDriver_->init();
   armDriver_->runSendReceiveThread();  // 放在这里吗
 
-  return hardware_interface::CallbackReturn::SUCCESS;
+  RCLCPP_INFO(LOGGER, "Hardware Interface successfully configured");
+  return CallbackReturn::SUCCESS;
 }
 
 hardware_interface::CallbackReturn
@@ -142,11 +197,11 @@ std::vector<hardware_interface::StateInterface> LibertechArmInterfaceHardware::e
   for (uint i = 0; i < info_.joints.size(); i++)
   {
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        info_.joints[i].name, hardware_interface::HW_IF_POSITION, &arm_positions_[i]));
+      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &arm_positions_[i]));
     state_interfaces.emplace_back(hardware_interface::StateInterface(
-        info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &arm_velocities_[i]));
-    state_interfaces.emplace_back(
-        hardware_interface::StateInterface(info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &arm_efforts_[i]));
+      info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &arm_velocities_[i]));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
+      info_.joints[i].name, hardware_interface::HW_IF_EFFORT, &arm_efforts_[i]));
   }
 
   return state_interfaces;

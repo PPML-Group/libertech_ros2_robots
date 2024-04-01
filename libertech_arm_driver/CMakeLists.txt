@@ -5,7 +5,6 @@ if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
-
 # find dependencies
 set(THIS_PACKAGE_INCLUDE_DEPENDS
   hardware_interface
@@ -26,7 +25,13 @@ include_directories(
     include
     ${EIGEN3_INCLUDE_DIRS}
 )
-link_directories(libs)
+# link_directories(libs)
+# 判断当前系统架构是 ARM64 还是 x86_64
+if(CMAKE_SYSTEM_PROCESSOR MATCHES "aarch64")  # 如果是 ARM64 架构
+    link_directories(libs/arm64)               # 指定 ARM64 架构下的库目录
+else()                                         # 否则（如果是 x86_64 架构）
+    link_directories(libs/x86_64)             # 指定 x86_64 架构下的库目录
+endif()
 
 # 外部导出给其他功能包用
 add_library(arm_driver SHARED
@@ -35,20 +40,28 @@ add_library(arm_driver SHARED
 target_link_libraries(arm_driver controlcan.so pthread)
 
 ############# ros control ####################
-
 add_library(
-  arm_hardware_interface
+  ${PROJECT_NAME}
   SHARED
   src/hardware_interface.cpp
 )
-target_compile_features(arm_hardware_interface PUBLIC cxx_std_17)
-# target_link_libraries(arm_hardware_interface arm_driver)
-ament_target_dependencies(
-  arm_hardware_interface
-  ${THIS_PACKAGE_INCLUDE_DEPENDS}
+target_link_libraries(${PROJECT_NAME} arm_driver)
+target_include_directories(
+  ${PROJECT_NAME}
+  PRIVATE
+  include
 )
-target_link_libraries(arm_hardware_interface arm_driver)
-
+ament_target_dependencies(
+  ${PROJECT_NAME}
+  hardware_interface
+  pluginlib
+  rclcpp
+)
+# ament_target_dependencies(
+#   arm_hardware_interface
+#   ${THIS_PACKAGE_INCLUDE_DEPENDS}
+# )
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_17)
 pluginlib_export_plugin_description_file(hardware_interface hardware_interface_plugin.xml)
 
 #############################
@@ -67,25 +80,25 @@ target_link_libraries(demo_arm_hello arm_driver)
 
 add_executable(test_hex src/test_hex.cpp)
 
-install(TARGETS
-  arm_driver
-  ARCHIVE DESTINATION lib
-  LIBRARY DESTINATION lib
-  RUNTIME DESTINATION bin
-)
-
-# install(TARGETS arm_hardware_interface
-#   EXPORT export_arm_hardware_interface
+# install(TARGETS
+#   arm_driver
 #   ARCHIVE DESTINATION lib
 #   LIBRARY DESTINATION lib
 #   RUNTIME DESTINATION bin
 # )
 
-install(TARGETS
-  demo_arm_driver
-  test_hex
-  demo_arm_hello
-  demo_arm_calibration
+# INSTALL
+install(
+  TARGETS ${PROJECT_NAME} arm_driver
+  DESTINATION lib
+)
+install(
+  DIRECTORY include/
+  DESTINATION include
+)
+
+install(
+  TARGETS demo_arm_driver test_hex demo_arm_hello demo_arm_calibration
   DESTINATION lib/${PROJECT_NAME}
 )
 
@@ -110,4 +123,18 @@ endif()
 # )
 # ament_export_targets(export_arm_hardware_interface HAS_LIBRARY_TARGET)
 # ament_export_dependencies(${THIS_PACKAGE_INCLUDE_DEPENDS} arm_driver)
+
+## EXPORTS
+ament_export_include_directories(
+  include
+)
+ament_export_libraries(
+  ${PROJECT_NAME}
+)
+ament_export_dependencies(
+  hardware_interface
+  arm_driver
+  pluginlib
+  rclcpp
+)
 ament_package()

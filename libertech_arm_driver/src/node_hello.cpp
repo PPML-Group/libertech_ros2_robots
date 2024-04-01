@@ -54,10 +54,10 @@ private:
   }
 
   rclcpp::Subscription<sensor_msgs::msg::JointState>::SharedPtr subscription_;
-  ArmDriver* armDriver_;
+  ArmDriver *armDriver_;
 };
 
-int main(int argc, char* argv[])
+int main(int argc, char *argv[])
 {
   rclcpp::init(argc, argv);
   rclcpp::spin(std::make_shared<ArmSimpleSubscriber>());

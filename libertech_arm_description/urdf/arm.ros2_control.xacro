@@ -22,9 +22,9 @@
         <xacro:if value="${use_fake_hardware}">
           <plugin>mock_components/GenericSystem</plugin>
         </xacro:if>
-        <!-- <xacro:unless value="${use_fake_hardware or sim_ignition}">
-          <plugin>kortex_driver/KortexMultiInterfaceHardware</plugin>
-          <param name="robot_ip">${robot_ip}</param>
+        <xacro:unless value="${use_fake_hardware or sim_ignition}">
+          <plugin>libertech_arm_driver/LibertechArmInterfaceHardware</plugin>
+          <!-- <param name="robot_ip">${robot_ip}</param>
           <param name="username">${username}</param>
           <param name="password">${password}</param>
           <param name="port">${port}</param>
@@ -35,8 +35,8 @@
           <param name="use_internal_bus_gripper_comm">${use_internal_bus_gripper_comm}</param>
           <param name="gripper_joint_name">${gripper_joint_name}</param>
           <param name="gripper_max_velocity">${gripper_max_velocity}</param>
-          <param name="gripper_max_force">${gripper_max_force}</param>
-        </xacro:unless> -->
+          <param name="gripper_max_force">${gripper_max_force}</param> -->
+        </xacro:unless>
       </hardware>
       <!-- TODO: command_interface velocity effort -->
       <joint name="${prefix}${name}_shoulder_pitch_joint">

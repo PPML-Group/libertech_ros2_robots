@@ -383,26 +383,28 @@ class HandModelKinematics:
         
         def func(q):
             fk_all = self.fk_q2e_all(q)
-            pa = [fk.t for fk in fk_all]
-            pa = [fk.t - np.array([0., 0.00, 0.1]) for fk in fk_all] # 对齐人手mediapipe与机械手原点
+            # pa = [fk.t for fk in fk_all]
+            pa = [fk.t - np.array([-0.02, 0.00, 0.05]) for fk in fk_all] # 对齐人手mediapipe与机械手原点
             # direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
             ret_a = self.compute_directions_distances(pa, is_unit=False)
             ret_h = self.compute_directions_distances(ph, is_unit=True)
             
+            scale = 1.
+            
             fd = ret_h['origin_distances']
-            loss_o = np.sum((ret_a['origin_directions'] - fd[:, np.newaxis] * ret_h['origin_directions'])**2)
+            loss_o = np.sum((ret_a['origin_directions'] - scale * fd[:, np.newaxis] * ret_h['origin_directions'])**2)
             
             fd = ret_h['finger_to_thumb_distances']
             sd = np.ones_like(ret_h['finger_to_thumb_distances'])
             # fd[ret_h['finger_to_thumb_distances'] < 0.02] = 0.001
             # sd[ret_h['finger_to_thumb_distances'] < 0.02] = 200
-            loss_t = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
+            loss_t = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
             
             fd = ret_h['finger_to_finger_distances']
             sd = np.ones_like(ret_h['finger_to_finger_distances'])
             # fd[ret_h['finger_to_finger_distances'] < 0.03] = 0.03
             # sd[ret_h['finger_to_finger_distances'] < 0.02] = 400
-            loss_f = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_finger_directions'] - fd[:, np.newaxis] * ret_h['finger_to_finger_directions'])**2)
+            loss_f = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_finger_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_finger_directions'])**2)
             
             loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9,11,12]])
             loss_qy = 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]])

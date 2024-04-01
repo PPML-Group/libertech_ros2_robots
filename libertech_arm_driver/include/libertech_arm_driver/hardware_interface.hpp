@@ -36,7 +36,7 @@ class LibertechArmInterfaceHardware : public hardware_interface::SystemInterface
 public:
   LibertechArmInterfaceHardware();
 
-  RCLCPP_SHARED_PTR_DEFINITIONS(LibertechArmInterfaceHardware);
+  RCLCPP_SHARED_PTR_DEFINITIONS(LibertechArmInterfaceHardware)
 
   LIBERTECH_ARM_DRIVER_PUBLIC
   hardware_interface::CallbackReturn on_init(const hardware_interface::HardwareInfo& info) override;
