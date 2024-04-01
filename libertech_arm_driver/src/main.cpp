@@ -31,8 +31,8 @@ int main()
   v0.setZero();
   a0.setZero();
 
-  qf << 15, -15, 10, 30, 15, 0, 10, -15, 15, -10, -30, 15, 0, 10;
-
+  // qf << 15, -15, 10, 30, 15, 0, 10, -15, 15, -10, -30, 15, 0, 10;
+  qf << 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
   qf = qf * M_PI / 180;
   vf.setZero();
   af.setZero();
@@ -115,14 +115,14 @@ int main()
     for (auto q : q_traj){
       armDriver.setQ(q);
       usleep(dt*1000000);
-      std::cout << "q:" << q.transpose() << std::endl;
+      // std::cout << "q:" << q.transpose() << std::endl;
     }
 
 
     for (auto q : q_traj_inv){
       armDriver.setQ(q);
       usleep(dt*1000000);
-      std::cout << "q:" << q.transpose() << std::endl;
+      // std::cout << "q:" << q.transpose() << std::endl;
     }
   }
 

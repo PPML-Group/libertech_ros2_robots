@@ -24,6 +24,7 @@
         </xacro:if>
         <xacro:unless value="${use_fake_hardware or sim_ignition}">
           <plugin>libertech_arm_driver/LibertechArmInterfaceHardware</plugin>
+          <param name="arm_type">${name}</param>
           <!-- <param name="robot_ip">${robot_ip}</param>
           <param name="username">${username}</param>
           <param name="password">${password}</param>

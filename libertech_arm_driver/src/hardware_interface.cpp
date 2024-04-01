@@ -50,17 +50,17 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
   }
   
   info_ = info;
-  // // The robot's param.
-  // std::string xxxx = info_.hardware_parameters["xxxx"];
-  // if (xxxx.empty())
-  // {
-  //   RCLCPP_ERROR(LOGGER, "Robot ip is empty!");
-  //   return CallbackReturn::ERROR;
-  // }
-  // else
-  // {
-  //   RCLCPP_INFO(LOGGER, "Robot ip is '%s'", xxxx.c_str());
-  // }
+  // The robot's param.
+  std::string arm_type = info_.hardware_parameters["arm_type"];
+  if (arm_type.empty())
+  {
+    RCLCPP_ERROR(LOGGER, "Arm type is empty!");
+    return CallbackReturn::ERROR;
+  }
+  else
+  {
+    RCLCPP_INFO(LOGGER, "Arm type is '%s'", arm_type.c_str());
+  }
 
   // // BEGIN: This part here is for exemplary purposes - Please do not copy to your production code
   // hw_start_sec_ = stod(info_.hardware_parameters["example_param_hw_start_duration_sec"]);
@@ -154,10 +154,13 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
   //   }
   // }
 
+  // if (arm_type) {
+
+  // }
   // 初始化
-  armDriver_ = new ArmDriver;
-  armDriver_->init();
-  armDriver_->runSendReceiveThread();  // 放在这里吗
+  armSDK_ = new ArmSDK(0);
+  armSDK_->init();
+  armSDK_->runSendReceiveThread();  // 放在这里吗
 
   RCLCPP_INFO(LOGGER, "Hardware Interface successfully configured");
   return CallbackReturn::SUCCESS;
@@ -240,7 +243,7 @@ LibertechArmInterfaceHardware::on_deactivate(const rclcpp_lifecycle::State& /*pr
 {
   RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Deactivating ...please wait...");
 
-  armDriver_->pause();
+  armSDK_->pause();
 
   RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Successfully deactivated!");
   // END: This part here is for exemplary purposes - Please do not copy to your production code
@@ -265,10 +268,10 @@ hardware_interface::return_type LibertechArmInterfaceHardware::read(const rclcpp
   // RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Joints successfully read!");
   // // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-  Vec14 pos, vel, tau;
-  armDriver_->getQ(pos);
-  armDriver_->getQd(vel);
-  armDriver_->getTau(tau);
+  Vec7 pos, vel, tau;
+  armSDK_->getQ(pos);
+  armSDK_->getQd(vel);
+  armSDK_->getTau(tau);
 
   for (std::size_t i = 0; i < info_.joints.size(); i++)
   {
@@ -321,13 +324,13 @@ hardware_interface::return_type LibertechArmInterfaceHardware::write(const rclcp
   //   // refresh feedback
   //   feedback_ = base_cyclic_.RefreshFeedback();
   // }
-  Vec14 pos;
+  Vec7 pos;
   for (std::size_t i = 0; i < info_.joints.size(); i++)
   {
     pos[i] = arm_commands_positions_[i];  // rad
   }
 
-  armDriver_->setQ(pos);
+  armSDK_->setQ(pos);
 
   return hardware_interface::return_type::OK;
 }

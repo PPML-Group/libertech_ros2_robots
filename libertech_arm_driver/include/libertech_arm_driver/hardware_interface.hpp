@@ -27,7 +27,7 @@
 #include "rclcpp_lifecycle/node_interfaces/lifecycle_node_interface.hpp"
 #include "rclcpp_lifecycle/state.hpp"
 #include "libertech_arm_driver/visibility_control.h"
-#include "libertech_arm_driver/ArmDriver.hpp"
+#include "libertech_arm_driver/ArmSDK.hpp"
 
 namespace libertech_arm_driver
 {
@@ -89,8 +89,8 @@ private:
   // first pass flag
   bool first_pass_;
 
-  int actuator_count_ = 14;
-  ArmDriver* armDriver_;
+  int actuator_count_ = 7;
+  ArmSDK* armSDK_;
 };
 
 }  // namespace libertech_arm_driver

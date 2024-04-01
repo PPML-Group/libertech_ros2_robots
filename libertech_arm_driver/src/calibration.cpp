@@ -1,15 +1,32 @@
-#include "libertech_arm_driver/ArmDriver.hpp"
+#include "libertech_arm_driver/ArmSDK.hpp"
 
 int main()
 {
-  ArmDriver armDriver;
-  armDriver.init();
+  ArmSDK arm(0);
+  arm.init();
   sleep(2);
 
   // 零位
-  armDriver.setZero();
+  arm.setZero();
 
-  armDriver.save();
+  arm.save();
 
   return 0;
 }
+
+
+// #include "libertech_arm_driver/arm.hpp"
+
+// int main()
+// {
+//   arm arm;
+//   arm.init();
+//   sleep(2);
+
+//   // 零位
+//   arm.setZero();
+
+//   arm.save();
+
+//   return 0;
+// }

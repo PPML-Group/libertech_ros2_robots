@@ -180,7 +180,7 @@ int ArmSDK::doSendReceive()
   if (mode_ == "position")
   {
     // 先设置kp,kdstd
-    // ret = sendKp();
+    ret = sendKp();
     // ret = sendKd();
     ret = sendQ();
     // std::cout<<"sendQ"<<std::endl;
@@ -249,59 +249,54 @@ int ArmSDK::doSendReceive()
   // }
 
   // //   std::cout << "reclen: " << reclen << std::endl;
-  	// std::cout<<"Debug: doSendReceive -- ret"<<ret<<std::endl;
+  // std::cout<<"Debug: doSendReceive -- ret"<<ret<<std::endl;
   // std::cout<<"ret: "<<ret<<std::endl;
-  usleep(100);
+  usleep(200);
 
-//   for (int idCAN = 0; idCAN < numCAN_; idCAN++)
-//   {
-// 	VCI_CAN_OBJ rec[3000];
-// 	int reclen = 0;
-// 	// 总是获取电流速度位置，在使用线程时
-// 	if ((reclen = VCI_Receive(VCI_USBCAN2, 0, idCAN, rec, 3000, 100)) > 0)	//调用接收函数，如果有数据，进行数据处理显示。
-// 	{
-// 		for (int j = 0; j < reclen; j++)
-// 		{
-// 		// printf("CAN%d RX ID:0x%08X ", idCAN + 1, rec[j].ID);  // ID
+  VCI_CAN_OBJ rec[3000];
+  int reclen = 0;
+  // 总是获取电流速度位置，在使用线程时
+  if ((reclen = VCI_Receive(VCI_USBCAN2, 0, canID_, rec, 3000, 100)) > 0) // 调用接收函数，如果有数据，进行数据处理显示。
+  {
+    for (int j = 0; j < reclen; j++)
+    {
+      // printf("CAN%d RX ID:0x%08X ", idCAN + 1, rec[j].ID);  // ID
 
-// 		// 解析电流（前两个字节）
-// 		int32_t cur_int =
-// 			static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]);	 // TODO: 2字节怎么转
-// 		// data_->tau[rec[j].ID-1];
-// 		// 解析速度（中间两个字节）
-// 		int32_t qd_int =
-// 			static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]);	 // TODO: 2字节怎么转
-// 		// data_->tau[rec[j].ID-1];
-// 		// 解析位置（最后四个字节）
-// 		uint8_t bytes[4];
-// 		std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
-// 		// swapEndianness(bytes);
+      // 解析电流（前两个字节）
+      int32_t cur_int =
+          static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]); // TODO: 2字节怎么转
+      // data_->tau[rec[j].ID-1];
+      // 解析速度（中间两个字节）
+      int32_t qd_int =
+          static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]); // TODO: 2字节怎么转
+      // data_->tau[rec[j].ID-1];
+      // 解析位置（最后四个字节）
+      uint8_t bytes[4];
+      std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
+      // swapEndianness(bytes);
 
-// 		{
-// 			std::lock_guard<std::mutex> lock(mtx_);
-// 			data_->q[7*idCAN + rec[j].ID - 1] = convertHexBytesToPosition(bytes);
-// 			// data_->qd
+      {
+        std::lock_guard<std::mutex> lock(mtx_);
+        data_->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
+        // data_->qd
 
-// 			// std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
-// 		}
-// 		}
-// 	}
+        // std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
+      }
+    }
+  }
 
-//   }
+  auto finish = std::chrono::high_resolution_clock::now();
+  auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+  // std::cout << "time: " << elapsed.count() << "ms" << std::endl;
 
-auto finish = std::chrono::high_resolution_clock::now();
-auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
-std::cout << "time: " << elapsed.count() << "ms" << std::endl;
-
-
-// // 	std::cout << "qm: ";
-// //   {
-// // 	for (auto q: data_->q)
-// // 	{
-// // 		std::cout << q << " ";
-// // 	}
-// //   }
-// // std::cout << std::endl;
+  std::cout << "qm: ";
+  {
+    for (auto q : data_->q)
+    {
+      std::cout << q << " ";
+    }
+  }
+  std::cout << std::endl;
 
   return ret;
 }
@@ -405,9 +400,9 @@ int ArmSDK::sendKp()
     {
       std::lock_guard<std::mutex> lock(mtx_);
       convertFloatToHexBytes(cmd_->kpDes[i], u8); //
+      std::cout << "kp["<< i<<"]: " << cmd_->kpDes[i] << std::endl;
     }
 
-    // swapEndianness(u8);
     for (size_t j = 1; j < 5; j++)
     {
       send[i].Data[j] = u8[j - 1];
@@ -463,14 +458,13 @@ int ArmSDK::sendQ()
     send[i].ExternFlag = 0;
     send[i].ID = id;
     send[i].DataLen = 5;
-    send[i].Data[0] = 0x44; // 44好像不需要大小端转换
+    send[i].Data[0] = 0x44;
 
     uint8_t u8[4];
 
     {
       std::lock_guard<std::mutex> lock(mtx_);
       convertPositionToHexBytes(cmd_->qDes[i], u8);
-      // convertPositionToHexBytes(-M_PI,u8); // cmd是弧度
     }
     for (size_t j = 1; j < 5; j++)
     {
@@ -502,8 +496,6 @@ int ArmSDK::sendQd()
       std::lock_guard<std::mutex> lock(mtx_);
       convertVelocityToHexBytes(cmd_->qdDes[i], u8); // 弧度制
     }
-
-    // swapEndianness(u8);
     for (size_t j = 1; j < 5; j++)
     {
       send[i].Data[j] = u8[j - 1];
@@ -882,7 +874,7 @@ int ArmSDK::clearCmd()
       cmd_->qDes[i] = 0.0f;
       cmd_->qdDes[i] = 0.0f;
       cmd_->tauDes[i] = 0.0f;
-      cmd_->kpDes[i] = 10.0f;
+      cmd_->kpDes[i] = 800.0f;
       cmd_->kdDes[i] = 1.0f;
     }
   }
@@ -936,35 +928,8 @@ int ArmSDK::setKp(const Vec7 &kp)
 
   for (int i = 0; i < NUM; i++)
   {
-    cmd_->qdDes[i] = kp[i];
+    cmd_->kpDes[i] = kp[i];
   }
-  // for (int canID_=0; canID_<numCAN_; canID_++) {
-  // VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
-
-  // for(int i=0;i<numJoints_;i++) {
-
-  //     int id = i+1;
-  // 	send[i].SendType=0;
-  //     send[i].RemoteFlag=0;
-  //     send[i].ExternFlag=0;
-  //     send[i].ID=id;
-  //     send[i].DataLen=5;
-  //     send[i].Data[0]=0x2b;
-
-  // 	uint8_t u8[4];
-  // 	convertFloatToHexBytes(kp(i+1),u8);//忘记角度转换下发位置
-  // 	printHexBytes(u8);
-  // 	//	swapEndianness(u8);//此处不需要转换大小端
-
-  // 	for (size_t b = 0; b < 4; b++)
-  // 	{
-  // 		send[i].Data[b+1]=u8[b];
-  // 	}
-
-  // }
-  // int ret=VCI_Transmit(VCI_USBCAN2, 0, 0, send, numJoints_);
-  // std::cout<<"ret: "<<ret<<std::endl;
-  // }
   return 1;
 }
 
@@ -974,35 +939,8 @@ int ArmSDK::setKd(const Vec7 &kd)
 
   for (int i = 0; i < NUM; i++)
   {
-    cmd_->qdDes[i] = kd[i];
+    cmd_->kdDes[i] = kd[i];
   }
-  // VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
-  // for(int i=0;i<numJoints_;i++) {
-
-  //     int id = i+1;
-  // 	send[i].SendType=0;
-  //     send[i].RemoteFlag=0;
-  //     send[i].ExternFlag=0;
-  //     send[i].ID=id;
-  //     send[i].DataLen=5;
-  //     send[i].Data[0]=0x2d;
-  // 	uint8_t u8[4];
-
-  // 	convertFloatToHexBytes(kd(i+1),u8);//忘记角度转换下发位置
-  // 	printHexBytes(u8);
-  // 	//	swapEndianness(u8);//此处不需要转换大小端
-
-  // 	for (size_t b = 0; b < 4; b++)
-  // 	{
-
-  // 		send[i].Data[b+1]=u8[b];
-  // 		/* code */
-  // 	}
-
-  // }
-
-  // int ret=VCI_Transmit(VCI_USBCAN2, 0, 0, send, numJoints_);
-  // std::cout<<"ret: "<<ret<<std::endl;
   return 1;
 }
 
@@ -1074,39 +1012,43 @@ int ArmSDK::getKp(Vec7 &kpm)
   {
     // return 0; // 发送失败，返回0
   }
+  usleep(200);
   ////////////////////////////////////////////////////////////////////////////////////////////
   VCI_CAN_OBJ rec[3000]; // 接收缓存，设为3000为佳。
   int reclen = 0;
 
-  int32_t int_q[numJoints_] = {0};
+  // int32_t int_q[numJoints_] = {0};
   if ((reclen = VCI_Receive(VCI_USBCAN2, 0, canID_, rec, 3000, 100)) >
       0) // 调用接收函数，如果有数据，进行数据处理显示。
   {
     for (int j = 0; j < reclen; j++)
     {
-      printf("CAN%d RX ID:0x%08X", canID_, rec[j].ID); // ID
-      if (rec[j].ExternFlag == 0)
-        printf(" Standard "); // 帧格式：标准帧
-      if (rec[j].ExternFlag == 1)
-        printf(" Extend   "); // 帧格式：扩展帧
-      if (rec[j].RemoteFlag == 0)
-        printf(" Data   "); // 帧类型：数据帧
-      if (rec[j].RemoteFlag == 1)
-        printf(" Remote ");                 // 帧类型：远程帧
-      printf("DLC:0x%02X", rec[j].DataLen); // 帧长度
-      printf(" data:0x");                   // 数据
-      for (int i = 0; i < rec[j].DataLen; i++)
-      {
-        printf(" %02X", rec[j].Data[i]);
-      }
+      // printf("CAN%d RX ID:0x%08X", canID_, rec[j].ID); // ID
+      // if (rec[j].ExternFlag == 0)
+      //   printf(" Standard "); // 帧格式：标准帧
+      // if (rec[j].ExternFlag == 1)
+      //   printf(" Extend   "); // 帧格式：扩展帧
+      // if (rec[j].RemoteFlag == 0)
+      //   printf(" Data   "); // 帧类型：数据帧
+      // if (rec[j].RemoteFlag == 1)
+      //   printf(" Remote ");                 // 帧类型：远程帧
+      // printf("DLC:0x%02X", rec[j].DataLen); // 帧长度
+      // printf(" data:0x");                   // 数据
+      // for (int i = 0; i < rec[j].DataLen; i++)
+      // {
+      //   printf(" %02X", rec[j].Data[i]);
+      // }
 
-      int_q[rec[j].ID - 1] = (int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
-                             (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24);
+      // printf(" !TimeStamp:0x%08X\n", rec[j].TimeStamp); // 时间标识。
 
-      printf(" !TimeStamp:0x%08X\n", rec[j].TimeStamp); // 时间标识。
-      printf("位置环kp%08X\n", int_q[rec[j].ID - 1]);   // 时间标识。
+      // printf("\n");
 
-      printf("\n");
+      // uint8_t bytes[4];
+      // std::copy(rec[j].Data + 1, rec[j].Data + 5, bytes);
+      // kpm[rec[j].ID - 1] = convertHexBytesToFloat(bytes);
+
+      kpm[rec[j].ID - 1] = static_cast<float>((int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
+                             (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24));
     }
   }
   return 1;
@@ -1261,13 +1203,7 @@ void ArmSDK::printHexBytes(const uint8_t (&bytes)[4])
 
 int ArmSDK::setZero()
 {
-
-  int32_t buff_ff[numJoints_];
-  int32_t buff[numJoints_];
-  int32_t int_q[numJoints_] = {0};
-
-  printf("获取位置\n");
-  // 获取
+  // 获取position
   VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
   for (int i = 0; i < numJoints_; i++)
   {
@@ -1283,11 +1219,23 @@ int ArmSDK::setZero()
   {
     // return 0; // 发送失败，返回0
   }
+  usleep(500);
 
   VCI_CAN_OBJ rec[3000]; // 接收缓存，设为3000为佳。
   int reclen = 0;
+  // int32_t int_q[numJoints_] = { 0 };
+  // std::map<int, std::array<uint8_t, 4>> u8Position;
+  // // 补全键值对
+  // for (int i = 0; i < numJoints_; ++i)
+  // {
+  //   if (u8Position.find(i) == u8Position.end())
+  //   { // 如果键不存在
+  //     std::array<uint8_t, 4> u8Default = {0, 0, 0, 0};
+  //     u8Position[i] = u8Default;
+  //   }
+  // }
+  int32_t position[numJoints_] = {0};
 
-  // while (!reclen) {
   if ((reclen = VCI_Receive(VCI_USBCAN2, 0, canID_, rec, 3000, 100)) >
       0) // 调用接收函数，如果有数据，进行数据处理显示。
   {
@@ -1308,23 +1256,25 @@ int ArmSDK::setZero()
       {
         printf(" %02X", rec[j].Data[i]);
       }
-
-      // 已经变成正常顺序，第一位被放在个位
-      int_q[rec[j].ID - 1] = (int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
-                             (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24);
-
-      printf(" !TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
+      printf(" TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
       printf("\n");
+
+      if (rec[j].DataLen == 5)
+      {
+        // std::array<uint8_t, 4> u8;
+        // std::memcpy(u8.data(), rec[j].Data + 1, 4);
+        // u8Position[rec[j].ID - 1] = u8;
+        // std::cout << "q now [" << rec[j].ID - 1 << "]: " << convertHexBytesToPosition(reinterpret_cast<uint8_t(&)[4]>(u8)) << std::endl;
+        uint8_t u8[4];
+        std::copy(rec[j].Data + 1, rec[j].Data + 5, u8);
+        position[rec[j].ID - 1] = (int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
+                                  (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24);
+        std::cout << "q now [" << rec[j].ID - 1 << "]: " << convertHexBytesToPosition(u8) << std::endl;
+      }
     }
   }
 
-  for (size_t i = 0; i < numJoints_; i++)
-  {
-    printf("位置!!!!!!!!!!!%08x\n", int_q[i]);
-    buff[i] = int_q[i];
-  }
   ///////////////////////////////////////////////////////////////////////////////////////////////////////
-
   for (int i = 0; i < numJoints_; i++)
   {
     int id = i + 1;
@@ -1339,6 +1289,19 @@ int ArmSDK::setZero()
   {
     // return 0; // 发送失败，返回0
   }
+  usleep(500);
+
+  // std::map<int, std::array<uint8_t, 4>> u8Bias;
+  // // 补全键值对
+  // for (int i = 0; i < numJoints_; ++i)
+  // {
+  //   if (u8Bias.find(i) == u8Bias.end())
+  //   { // 如果键不存在
+  //     std::array<uint8_t, 4> u8Default = {0, 0, 0, 0};
+  //     u8Bias[i] = u8Default;
+  //   }
+  // }
+  int32_t bias[numJoints_] = {0};
 
   if ((reclen = VCI_Receive(VCI_USBCAN2, 0, canID_, rec, 3000, 100)) >
       0) // 调用接收函数，如果有数据，进行数据处理显示。
@@ -1360,50 +1323,78 @@ int ArmSDK::setZero()
       {
         printf(" %02X", rec[j].Data[i]);
       }
-
-      int_q[rec[j].ID - 1] = (int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
-                             (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24);
-
-      printf(" !TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
+      printf(" TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
       printf("\n");
+
+      if (rec[j].DataLen == 5)
+      {
+        // std::array<uint8_t, 4> u8;
+        // std::memcpy(u8.data(), rec[j].Data + 1, 4);
+        // u8Bias[rec[j].ID - 1] = u8;
+        // std::cout << " bias now [" << rec[j].ID - 1 << "]: " << convertHexBytesToPosition(reinterpret_cast<uint8_t(&)[4]>(u8)) << std::endl;
+        uint8_t u8[4];
+        std::copy(rec[j].Data + 1, rec[j].Data + 5, u8);
+        bias[rec[j].ID - 1] = (int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
+                              (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24);
+        std::cout << "bias now [" << rec[j].ID - 1 << "]: " << convertHexBytesToPosition(u8) << std::endl;
+      }
     }
   }
+
+  /////////////////////////////////////////////////////////////////////
+  // std::map<int, std::array<uint8_t, 4>> u8BiasNew;
+  int32_t biasNew[numJoints_] = {0};
+
   for (size_t i = 0; i < numJoints_; i++)
   {
-    printf("偏移!!!!!!!!!!!%08x\n", int_q[i]);
-    fflush(stdout);
-  }
-  fflush(stdout);
+    biasNew[i] = position[i] + bias[i];
+    // for (size_t j = 0; j < 4; j++)
+    // {
+    //   int32_t intPosition = (int32_t(u8Position[i][0])) | (int32_t(u8Position[i][1]) << 8) |
+    //                         (int32_t(u8Position[i][2]) << 16) | (int32_t(u8Position[i][3]) << 24);
+    //   int32_t intBias = (int32_t(u8Bias[i][0])) | (int32_t(u8Bias[i][1]) << 8) |
+    //                     (int32_t(u8Bias[i][2]) << 16) | (int32_t(u8Bias[i][3]) << 24);
+    //   int32_t intBiasNew = intPosition + intBias;
 
-  for (size_t x = 0; x < numJoints_; x++)
-  {
-    buff_ff[x] = buff[x] + int_q[x];
-    printf("新偏移!!!!!!!!!!!!!!%08x", buff_ff[x]);
-    fflush(stdout);
+    //   u8BiasNew[i][j] = u8Position[i][j] + u8Bias[i][j];
+    // }
   }
 
-  ////////////////////////////////////////////////////////////////////////////////////
-  for (int s = 0; s < numJoints_; s++)
+  for (int i = 0; i < numJoints_; i++)
   {
-    int id = s + 1;
-    send[s].SendType = 0;
-    send[s].RemoteFlag = 0;
-    send[s].ExternFlag = 0;
-    send[s].ID = id;
-    send[s].DataLen = 5;
-    send[s].Data[0] = 0x53;
+    int id = i + 1;
+    send[i].SendType = 0;
+    send[i].RemoteFlag = 0;
+    send[i].ExternFlag = 0;
+    send[i].ID = id;
+    send[i].DataLen = 5;
+    send[i].Data[0] = 0x53;
+
     uint8_t u8[4];
-    convertFloatToHexBytes(buff_ff[s], u8);
+    convertFloatToHexBytes(biasNew[i], u8);
     // swapEndianness(u8);//加上大小端反了, 感觉得加上
     for (size_t t = 0; t < 4; t++)
     {
-      send[s].Data[t + 1] = u8[t];
+      send[i].Data[t + 1] = u8[t];
+    }
+
+    std::cout << " bias new [" << i << "]: " << convertHexBytesToPosition(u8) << std::endl;
+
+    for (size_t j = 1; j < 5; j++)
+    {
+      send[i].Data[j] = u8[j - 1]; // 0
     }
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
     // return 0; // 发送失败，返回0
   }
+
+  usleep(100000);
+  save();
+  usleep(100000);
+  printf("Set Bias Success\n");
+
   return 1;
 }
 

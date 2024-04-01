@@ -31,7 +31,8 @@ int main()
   v0.setZero();
   a0.setZero();
 
-  qf << 15, -15, 10, 30, 15, 0, 10;
+  qf << 0, -0, 0, 0, 0, 0, 0;
+  // qf << 15, -15, 10, 30, 15, 0, 10;
   // qf <<-15, 15, -10, -30, 15, 0, 10;
 
   qf = qf * M_PI / 180;
@@ -95,8 +96,29 @@ int main()
 
   arm.init();
   sleep(2);
+
+  ///////////////////////////////////////
+
+  // kp kd
+  Vec7 kpm;
+  arm.getKp(kpm);
+  std::cout << "kpm:" << kpm.transpose() << std::endl;
+
+  ///////////////////////////////////////
+
   arm.runSendReceiveThread();
+
+  Vec7 kp;
+  kp << 1000., 800, 800, 1000, 800, 800, 800;
+  arm.setKp(kp);
   sleep(2);
+  // arm.pause();
+  // arm.getKp(kpm);
+  // std::cout << "kpm:" << kpm.transpose() << std::endl;
+  // while (1)
+  // {
+  //   sleep(1);
+  // }
 
   // Vec7 q = Vec7::Zero();
   // // q[0] = 15 * M_PI / 180;
@@ -117,14 +139,14 @@ int main()
     {
       arm.setQ(q);
       usleep(dt * 1000000);
-      std::cout << "q:" << q.transpose() << std::endl;
+      // std::cout << "q:" << q.transpose() << std::endl;
     }
 
     for (auto q : q_traj_inv)
     {
       arm.setQ(q);
       usleep(dt * 1000000);
-      std::cout << "q:" << q.transpose() << std::endl;
+      // std::cout << "q:" << q.transpose() << std::endl;
     }
   }
 
@@ -244,10 +266,6 @@ int main()
   // arm.stop();
   // 	sleep(5);
   // std::cout<<"arm.stop();"<<std::endl;
-  //  while (1)
-  //  {
-  // 	/* code */
-  //  }
 
   // 设置位置指令
   // Vec7 q;

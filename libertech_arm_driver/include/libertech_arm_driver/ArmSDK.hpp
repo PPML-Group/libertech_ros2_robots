@@ -80,9 +80,6 @@ public:
   int setId(int id, int setID);
   int setZero();
   int save();
-  //  int setOffset();
-
-  int test();
 
   // 恢复与清除错误
   int resetToDefault();
