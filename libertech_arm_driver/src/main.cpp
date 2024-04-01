@@ -30,19 +30,18 @@ int main()
   q0.setZero();
   v0.setZero();
   a0.setZero();
-  // qf.setOnes();
-  // qf << 1, 2, 3, 4, 5, 6, 7, 7, 6, 5, 4, 3, 2, 1;
-  qf << 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0;
+  qf << 15, -15, 10, 30, 15, 0, 10, -15, 15, -10, -30, 15, 0, 10;
   qf = qf * M_PI / 180;
   vf.setZero();
   af.setZero();
-  double T = 1;
+  double T = 2;
+  double dt = 0.001;
 
   std::vector<Vec6> coeffs = planQuinticPolynomialTrajectory(q0, v0, a0, qf, vf, af, T);
 
   std::vector<Vec14> q_traj;
 
-  for (double t = 0; t <= T + 1e-6; t += 0.01)
+  for (double t = 0; t <= T + 1e-6; t += dt)
   {
     // std::cout << t << std::endl;
     Vec14 q;
@@ -80,7 +79,6 @@ int main()
   }
   ////////////////////////////////////////////////////////////////////
   ArmDriver armDriver;
-  
 
   float pos = 360 * M_PI / 180;
   std::cout << "pos:" << pos << std::endl;
@@ -95,37 +93,60 @@ int main()
   armDriver.init();
   sleep(2);
   armDriver.runSendReceiveThread();
+	sleep(2);
 
-  std::vector<int> loop_indices(2);
+  // Vec14 q = Vec14::Zero();
+  // // q[0] = 15 * M_PI / 180;
+  // // q[7] = 15 * M_PI / 180;
+  // q[3] = 40 * M_PI / 180;
+  // // q[2] = 10 * M_PI / 180;
+
+  // q[10] = -40 * M_PI / 180;
+	// armDriver.setQ(q);
+
+  std::vector<int> loop_indices(5);
   std::iota(loop_indices.begin(), loop_indices.end(), 0);
+  std::vector<Vec14> q_traj_inv(q_traj.rbegin(),q_traj.rend());
 
   for (auto _ : loop_indices)
   {
-    for (double t = 0; t <= T + 1e-6; t += 0.01)
-    {
-      Vec14 q;
-      for (int i = 0; i < num_joints; ++i)
-      {
-        q[i] = coeffs[i](0) + coeffs[i](1) * t + coeffs[i](2) * pow(t, 2) + coeffs[i](3) * pow(t, 3) +
-               coeffs[i](4) * pow(t, 4) + coeffs[i](5) * pow(t, 5);
-      }
+    for (auto q : q_traj){
       armDriver.setQ(q);
-      sleep(0.01);
+      usleep(dt*1000000);
+      std::cout << "q:" << q.transpose() << std::endl;
     }
 
-    for (double t = T; t >= 0 - 1e-6; t -= 0.01)
-    {
-      Vec14 q;
-      for (int i = 0; i < num_joints; ++i)
-      {
-        q[i] = coeffs[i](0) + coeffs[i](1) * t + coeffs[i](2) * pow(t, 2) + coeffs[i](3) * pow(t, 3) +
-               coeffs[i](4) * pow(t, 4) + coeffs[i](5) * pow(t, 5);
-      }
+
+    for (auto q : q_traj_inv){
       armDriver.setQ(q);
-      sleep(0.01);
+      usleep(dt*1000000);
+      std::cout << "q:" << q.transpose() << std::endl;
     }
   }
 
+    // for (double t = 0; t <= T + 1e-6; t += 0.1)
+    // {
+    //   Vec14 q;
+    //   for (int i = 0; i < num_joints; ++i)
+    //   {
+    //     q[i] = coeffs[i](0) + coeffs[i](1) * t + coeffs[i](2) * pow(t, 2) + coeffs[i](3) * pow(t, 3) +
+    //            coeffs[i](4) * pow(t, 4) + coeffs[i](5) * pow(t, 5);
+    //   }
+    //   armDriver.setQ(q);
+    //   sleep(0.1);
+    // }
+
+    // for (double t = T; t >= 0 - 1e-6; t -= 0.1)
+    // {
+    //   Vec14 q;
+    //   for (int i = 0; i < num_joints; ++i)
+    //   {
+    //     q[i] = coeffs[i](0) + coeffs[i](1) * t + coeffs[i](2) * pow(t, 2) + coeffs[i](3) * pow(t, 3) +
+    //            coeffs[i](4) * pow(t, 4) + coeffs[i](5) * pow(t, 5);
+    //   }
+    //   armDriver.setQ(q);
+    //   sleep(0.1);
+    // }
 
   //   Vec14 q;
   //   // q[0] = 15 * M_PI / 180;

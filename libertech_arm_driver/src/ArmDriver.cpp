@@ -1,4 +1,5 @@
 #include "libertech_arm_driver/ArmDriver.hpp"
+#include <chrono>
 
 ArmDriver::ArmDriver()
 {
@@ -186,6 +187,7 @@ int ArmDriver::init()
 
 int ArmDriver::doSendReceive()
 {
+	auto start = std::chrono::high_resolution_clock::now();
   int ret;
   // TODO: 线程锁
 
@@ -210,58 +212,60 @@ int ArmDriver::doSendReceive()
   {
 	// 处理未知模式的情况
   }
-
+	// std::cout<<"Debug: doSendReceive -- ret"<<ret<<std::endl;
   // std::cout<<"ret: "<<ret<<std::endl;
-  usleep(500);
+  usleep(100);
 
-  VCI_CAN_OBJ rec[3000];
-  int reclen = 0;
-  int ind = 0;
-  // 总是获取电流速度位置，在使用线程时
-  if ((reclen = VCI_Receive(VCI_USBCAN2, 0, ind, rec, 3000, 100)) > 0)	//调用接收函数，如果有数据，进行数据处理显示。
-  {
-	for (int j = 0; j < reclen; j++)
-	{
-	  // printf("CAN%d RX ID:0x%08X", ind+1, rec[j].ID);//ID
-	  // if(rec[j].ExternFlag==0) printf(" Standard ");//帧格式：标准帧
-	  // if(rec[j].ExternFlag==1) printf(" Extend   ");//帧格式：扩展帧
-	  // if(rec[j].RemoteFlag==0) printf(" Data   ");//帧类型：数据帧
-	  // if(rec[j].RemoteFlag==1) printf(" Remote ");//帧类型：远程帧
-	  // printf("DLC:0x%02X",rec[j].DataLen);//帧长度
-	  // printf(" data:0x");	//数据
-	  // for(int i = 0; i < rec[j].DataLen; i++)
-	  // {
-	  // 	printf(" %02X", rec[j].Data[i]);
-	  // }
-	  printf("CAN%d RX ID:0x%08X ", ind + 1, rec[j].ID);  // ID
+//   for (int idCAN = 0; idCAN < numCAN_; idCAN++)
+//   {
+// 	VCI_CAN_OBJ rec[3000];
+// 	int reclen = 0;
+// 	// 总是获取电流速度位置，在使用线程时
+// 	if ((reclen = VCI_Receive(VCI_USBCAN2, 0, idCAN, rec, 3000, 100)) > 0)	//调用接收函数，如果有数据，进行数据处理显示。
+// 	{
+// 		for (int j = 0; j < reclen; j++)
+// 		{
+// 		// printf("CAN%d RX ID:0x%08X ", idCAN + 1, rec[j].ID);  // ID
 
-	  // 解析电流（前两个字节）
-	  int32_t cur_int =
-		  static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]);	 // TODO: 2字节怎么转
-	  // data_->tau[rec[j].ID-1];
-	  // 解析速度（中间两个字节）
-	  int32_t qd_int =
-		  static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]);	 // TODO: 2字节怎么转
-	  // data_->tau[rec[j].ID-1];
-	  // 解析位置（最后四个字节）
-	  uint8_t bytes[4];
-	  std::copy(rec[j].Data + 5, rec[j].Data + 9, bytes);
+// 		// 解析电流（前两个字节）
+// 		int32_t cur_int =
+// 			static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]);	 // TODO: 2字节怎么转
+// 		// data_->tau[rec[j].ID-1];
+// 		// 解析速度（中间两个字节）
+// 		int32_t qd_int =
+// 			static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]);	 // TODO: 2字节怎么转
+// 		// data_->tau[rec[j].ID-1];
+// 		// 解析位置（最后四个字节）
+// 		uint8_t bytes[4];
+// 		std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
+// 		// swapEndianness(bytes);
 
-	  {
-		std::lock_guard<std::mutex> lock(mtx_);
-		data_->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
-		// data_->qd
+// 		{
+// 			std::lock_guard<std::mutex> lock(mtx_);
+// 			data_->q[7*idCAN + rec[j].ID - 1] = convertHexBytesToPosition(bytes);
+// 			// data_->qd
 
-		std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
-	  }
+// 			// std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
+// 		}
+// 		}
+// 	}
 
-	  // printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
-	  // printf("\n");
-	}
-  }
+//   }
 
-  //   std::cout << "reclen: " << reclen << std::endl;
+auto finish = std::chrono::high_resolution_clock::now();
+auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+std::cout << "time: " << elapsed.count() << "ms" << std::endl;
 
+
+// // 	std::cout << "qm: ";
+// //   {
+// // 	for (auto q: data_->q)
+// // 	{
+// // 		std::cout << q << " ";
+// // 	}
+// //   }
+// // std::cout << std::endl;
+  
   return ret;
 }
 
@@ -308,7 +312,7 @@ int ArmDriver::stop()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -376,7 +380,7 @@ int ArmDriver::sendKp()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -411,7 +415,7 @@ int ArmDriver::sendKd()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -444,9 +448,11 @@ int ArmDriver::sendQ()
 		send[i].Data[j] = u8[j - 1];
 	  }
 	}
+	// std::cout<<"Debug: sendQ -- idCAN: "<<idCAN<<std::endl;
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+		// std::cout<<"Debug: sendQ -- error idCAN: "<<idCAN<<std::endl;
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -481,7 +487,7 @@ int ArmDriver::sendQd()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -517,7 +523,7 @@ int ArmDriver::sendTau()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -526,8 +532,10 @@ int ArmDriver::sendTau()
 int ArmDriver::setModePosition()
 {
   printf("Set Mode: Position\n");
+//   std::cout<<"Debug: Set Position Mode -- numCAN_: "<<numCAN_<<std::endl;
   for (int idCAN = 0; idCAN < numCAN_; idCAN++)
   {
+	std::cout<<"Debug: Set Position Mode -- idCAN: "<<idCAN<<std::endl;
 	// 获取
 	VCI_CAN_OBJ send[numJoints_];  // 使用局部变量send
 	for (int i = 0; i < numJoints_; i++)
@@ -540,12 +548,22 @@ int ArmDriver::setModePosition()
 	  send[i].DataLen = 1;
 	  send[i].Data[0] = 0x08;
 	}
+
+	// while (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
+	// {
+	// 	/* code */
+	// 	std::cout<<"Debug: Set Position Mode -- send error and continue send"<<std::endl;
+	// }
+	
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+		// std::cout<<"Debug: Set Position Mode -- send error"<<std::endl;
+	  	// return 0;	 // 发送失败，返回0
 	}
-	usleep(500);
-	// std::cout<<"ret: "<<ret<<std::endl;
+	usleep(1000);
+	
+	std::cout<<"Debug: Set Position Mode -- send over"<<std::endl;
+
 
 	VCI_CAN_OBJ rec[3000];	//接收缓存，设为3000为佳。
 	int reclen = 0;
@@ -603,7 +621,7 @@ int ArmDriver::setModePosition()
 	  }
 	}
 
-	// std::cout << "reclen: " << reclen << std::endl;
+	std::cout << "Debug: Set Position Mode -- reclen: " << reclen << std::endl;
 	// }
 
 	// 设置电机运行模式为位置模式 ，并设置目标位置
@@ -646,7 +664,7 @@ int ArmDriver::setModePosition()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   usleep(100000);
@@ -673,7 +691,7 @@ int ArmDriver::setModeVelocity()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   usleep(100000);
@@ -700,7 +718,7 @@ int ArmDriver::setModeTorque()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   usleep(100000);
@@ -752,7 +770,7 @@ int ArmDriver::resetToDefault()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   usleep(100000);
@@ -776,7 +794,7 @@ int ArmDriver::clearError()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   usleep(100000);
@@ -813,7 +831,7 @@ int ArmDriver::setMinMaxPos(const Vec14& qmin, const Vec14& qmax)
 
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
 	////////////////////////////////////////////////////////////////////////////////////////
 	for (int i = 0; i < numJoints_; i++)
@@ -838,7 +856,7 @@ int ArmDriver::setMinMaxPos(const Vec14& qmin, const Vec14& qmax)
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -1047,7 +1065,7 @@ int ArmDriver::getKp(Vec14& kpm)
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
 	////////////////////////////////////////////////////////////////////////////////////////////
 	VCI_CAN_OBJ rec[3000];	//接收缓存，设为3000为佳。
@@ -1106,7 +1124,7 @@ int ArmDriver::getKd(Vec14& kdm)
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
 
 	////////////////////////////////////////////////////////////////////////////////////////////
@@ -1260,7 +1278,7 @@ int ArmDriver::setZero()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
 
 	VCI_CAN_OBJ rec[3000];	//接收缓存，设为3000为佳。
@@ -1316,7 +1334,7 @@ int ArmDriver::setZero()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
 
 	if ((reclen = VCI_Receive(VCI_USBCAN2, 0, idCAN, rec, 3000, 100)) >
@@ -1381,7 +1399,7 @@ int ArmDriver::setZero()
 	}
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
@@ -1405,7 +1423,7 @@ int ArmDriver::save()
 
 	if (VCI_Transmit(VCI_USBCAN2, 0, idCAN, send, numJoints_) != 1)
 	{
-	  return 0;	 // 发送失败，返回0
+	//   return 0;	 // 发送失败，返回0
 	}
   }
   return 1;
