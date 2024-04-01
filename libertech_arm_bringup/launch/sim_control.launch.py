@@ -221,7 +221,7 @@ def launch_setup(context, *args, **kwargs):
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
         # launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
-        launch_arguments={"ign_args": f" -r -v 3 {ignition_world.perform(context)}"}.items(),
+        launch_arguments={"ign_args": f" -r -v 1 {ignition_world.perform(context)}"}.items(),
         condition=IfCondition(sim_ignition),
     )
 
@@ -337,14 +337,14 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_empty.sdf", # world_ycb world_box world_empty
+            default_value="world_empty.sdf", # world_ycb world_box world_empty world_aruco.sdf world_iss
             description="Gazebo Ignition world",
         )
     )
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_camera",
-            default_value="true",
+            default_value="false",
             description="Use head camera.",
         )
     )

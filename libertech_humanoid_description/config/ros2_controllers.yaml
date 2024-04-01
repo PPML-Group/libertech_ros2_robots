@@ -1,0 +1,271 @@
+# This config file is used by ros2_control
+controller_manager:
+  ros__parameters:
+    update_rate: 1000  # Hz
+
+    arm_right_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    arm_left_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+    
+    arm_right_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+
+    arm_left_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+
+    movement_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    head_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController 
+
+
+    head_velocity_controller:
+      type: velocity_controllers/JointGroupVelocityController
+
+      
+    hand_right_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    hand_left_trajectory_controller:
+      type: joint_trajectory_controller/JointTrajectoryController
+
+
+    joint_state_broadcaster:
+      type: joint_state_broadcaster/JointStateBroadcaster
+
+arm_right_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_right_shoulder_pitch_joint
+      - arm_right_shoulder_roll_joint
+      - arm_right_shoulder_yaw_joint
+      - arm_right_elbow_pitch_joint
+      - arm_right_elbow_roll_joint
+      - arm_right_wrist_pitch_joint
+      - arm_right_wrist_yaw_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+    # action_monitor_rate: 20.0
+    # allow_integration_in_goal_trajectories: false
+    # allow_nonzero_velocity_at_trajectory_end: false
+    allow_partial_joints_goal: true
+    constraints:
+      goal_time: 0.0
+      stopped_velocity_tolerance: 0.01
+    # 力限制改大一点就行
+    # gains:
+    #   arm_right_shoulder_pitch_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 1.0
+    #   arm_right_shoulder_roll_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    #   arm_right_shoulder_yaw_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    #   arm_right_elbow_pitch_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    #   arm_right_elbow_roll_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    #   arm_right_wrist_pitch_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    #   arm_right_wrist_yaw_joint:
+    #     angle_wraparound: false
+    #     d: 100.0
+    #     i: 10.0
+    #     i_clamp: 0.0
+    #     p: 100.0
+    # interpolation_method: splines
+    # open_loop_control: false
+    # state_publish_rate: 1000.0
+
+
+arm_left_trajectory_controller:
+  ros__parameters:
+    joints:
+      - arm_left_shoulder_pitch_joint
+      - arm_left_shoulder_roll_joint
+      - arm_left_shoulder_yaw_joint
+      - arm_left_elbow_pitch_joint
+      - arm_left_elbow_roll_joint
+      - arm_left_wrist_pitch_joint
+      - arm_left_wrist_yaw_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+    allow_partial_joints_goal: true
+
+arm_right_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_right_shoulder_pitch_joint
+      - arm_right_shoulder_roll_joint
+      - arm_right_shoulder_yaw_joint
+      - arm_right_elbow_pitch_joint
+      - arm_right_elbow_roll_joint
+      - arm_right_wrist_pitch_joint
+      - arm_right_wrist_yaw_joint
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+
+arm_left_velocity_controller:
+  ros__parameters:
+    joints:
+      - arm_left_shoulder_pitch_joint
+      - arm_left_shoulder_roll_joint
+      - arm_left_shoulder_yaw_joint
+      - arm_left_elbow_pitch_joint
+      - arm_left_elbow_roll_joint
+      - arm_left_wrist_pitch_joint
+      - arm_left_wrist_yaw_joint
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+
+movement_trajectory_controller:
+  ros__parameters:
+    joints:
+      - leg_right_hip_yaw_joint
+      - leg_right_hip_roll_joint
+      - leg_right_hip_pitch_joint
+      - leg_right_knee_pitch_joint
+      - leg_right_ankle_pitch_joint
+      - leg_left_hip_yaw_joint
+      - leg_left_hip_roll_joint
+      - leg_left_hip_pitch_joint
+      - leg_left_knee_pitch_joint
+      - leg_left_ankle_pitch_joint
+      - waist_yaw_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+    allow_partial_joints_goal: true
+
+head_trajectory_controller:
+  ros__parameters:
+    joints:
+      - head_yaw_joint
+      - head_pitch_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+      - velocity
+
+head_velocity_controller:
+  ros__parameters:
+    joints:
+      - head_yaw_joint
+      - head_pitch_joint
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity
+
+hand_right_trajectory_controller:
+  ros__parameters:
+    joints:
+      - hand_right_f11_joint
+      - hand_right_f12_joint
+      - hand_right_f13_joint
+      - hand_right_f14_joint
+      - hand_right_f21_joint
+      - hand_right_f22_joint
+      - hand_right_f23_joint
+      - hand_right_f24_joint
+      - hand_right_f31_joint
+      - hand_right_f32_joint
+      - hand_right_f33_joint
+      - hand_right_f34_joint
+      - hand_right_f41_joint
+      - hand_right_f42_joint
+      - hand_right_f43_joint
+      - hand_right_f44_joint
+      - hand_right_f51_joint
+      - hand_right_f52_joint
+      - hand_right_f53_joint
+      - hand_right_f54_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position
+
+
+    # interpolation_method: splines
+    open_loop_control: false
+    # state_publish_rate: 500.0
+    
+
+hand_left_trajectory_controller:
+  ros__parameters:
+    joints:
+      - hand_left_f11_joint
+      - hand_left_f12_joint
+      - hand_left_f13_joint
+      - hand_left_f14_joint
+      - hand_left_f21_joint
+      - hand_left_f22_joint
+      - hand_left_f23_joint
+      - hand_left_f24_joint
+      - hand_left_f31_joint
+      - hand_left_f32_joint
+      - hand_left_f33_joint
+      - hand_left_f34_joint
+      - hand_left_f41_joint
+      - hand_left_f42_joint
+      - hand_left_f43_joint
+      - hand_left_f44_joint
+      - hand_left_f51_joint
+      - hand_left_f52_joint
+      - hand_left_f53_joint
+      - hand_left_f54_joint
+    command_interfaces:
+      - position
+    state_interfaces:
+      - position

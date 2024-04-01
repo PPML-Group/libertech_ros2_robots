@@ -13,30 +13,30 @@
         use_fake_hardware:=false
         sim_ignition:=false" >
         <xacro:unless value="${not connected_to}">
-            <joint name="${prefix}${connected_to}_arm_left_joint" type="fixed">
+            <joint name="${connected_to}_arm_left_joint" type="fixed">
                 <parent link="${connected_to}"/>
-                <child link="${prefix}arm_left_base"/>
+                <child link="${prefix}arm_left_shoulder_pitch"/>
                 <origin rpy="${rpy}" xyz="${xyz}"/>
             </joint>
         </xacro:unless>
 
         <xacro:include filename="$(find libertech_arm_description)/urdf/arm.ros2_control.xacro" />
-        <xacro:arg name="initial_positions_file" default="$(find libertech_arm_description)/config/initial_positions.yaml"/>
-        <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
+        <xacro:arg name="initial_positions_file_arm" default="$(find libertech_arm_description)/config/initial_positions_arm.yaml"/>
+        <xacro:property name="initial_positions_file_arm" default="$(arg initial_positions_file_arm)"/>
 
         <xacro:arm_ros2_control
             prefix="${prefix}"
             name="arm_left" 
             use_fake_hardware="${use_fake_hardware}"
             sim_ignition="${sim_ignition}"
-            initial_positions="${xacro.load_yaml(initial_positions_file)}" />
+            initial_positions="${xacro.load_yaml(initial_positions_file_arm)}" />
        
-       <link name="${prefix}arm_left_base">
+       <link name="${prefix}arm_left_shoulder_pitch">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL"  scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/base_left.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_pitch.STL" />
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -45,7 +45,7 @@
             <collision>
                 <geometry>
                    <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL" scale="-1 1 1"/> -->
-                   <mesh filename="file://$(find libertech_arm_description)/meshes/base_left.STL"  scale="1 1 1"/>
+                   <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_pitch.STL" />
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>   
             </collision>
@@ -59,21 +59,22 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint1" type="revolute">
-            <origin rpy="1.5708 0 1.5708" xyz="-0.068 0 0"/>
-            <parent link="${prefix}arm_left_base"/>
-            <child link="${prefix}arm_left_link01"/>
+        <joint name="${prefix}arm_left_shoulder_pitch_joint" type="revolute">
+            <origin rpy="0 ${PI} ${PI}" xyz=" 0 0 ${0.068-0.01}"/>
+            <!-- <origin rpy="${PI/2} 0 ${PI/2}" xyz="-0.068 0 0"/> -->
+            <parent link="${prefix}arm_left_shoulder_pitch"/>
+            <child link="${prefix}arm_left_shoulder_roll"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint1_PositionMin}" upper="${joint1_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link01">
+        <link name="${prefix}arm_left_shoulder_roll">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link1_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_roll.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -82,7 +83,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link1_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_roll.STL"/>
                 </geometry> 
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -96,21 +97,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint2" type="revolute">
-            <origin rpy="0 1.5708 0" xyz="0 0 0"/>
-            <parent link="${prefix}arm_left_link01"/>
-            <child link="${prefix}arm_left_link02"/>
+        <joint name="${prefix}arm_left_shoulder_roll_joint" type="revolute">
+            <origin rpy="0 ${PI/2} 0" xyz="0 0 0"/>
+            <parent link="${prefix}arm_left_shoulder_roll"/>
+            <child link="${prefix}arm_left_shoulder_yaw"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint2_PositionMin}" upper="${joint2_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link02">
+        <link name="${prefix}arm_left_shoulder_yaw">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link2_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_yaw.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -119,7 +120,7 @@
             <collision>
                 <geometry>
                      <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="-1 1 1"/> -->
-                     <mesh filename="file://$(find libertech_arm_description)/meshes/link2_left.STL" scale="1 1 1"/>
+                     <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_shoulder_yaw.STL"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -133,21 +134,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint3" type="revolute">
-            <origin rpy="1.5708 0 0" xyz="0.0405 -0.1135 0"/>
-            <parent link="${prefix}arm_left_link02"/>
-            <child link="${prefix}arm_left_link03"/>
+        <joint name="${prefix}arm_left_shoulder_yaw_joint" type="revolute">
+            <origin rpy="${PI/2} 0 0" xyz="0.0405 -0.1135 0"/>
+            <parent link="${prefix}arm_left_shoulder_yaw"/>
+            <child link="${prefix}arm_left_elbow_pitch"/>
             <axis xyz="0 0 -1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint3_PositionMin}" upper="${joint3_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link03">
+        <link name="${prefix}arm_left_elbow_pitch">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_elbow_pitch.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -156,7 +157,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link3_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_elbow_pitch.STL"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -170,21 +171,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint4" type="revolute">
-            <origin rpy="-1.5708 0 1.5708" xyz="0 0.053741 0.15856"/> 
-            <parent link="${prefix}arm_left_link03"/>
-            <child link="${prefix}arm_left_link04"/>
+        <joint name="${prefix}arm_left_elbow_pitch_joint" type="revolute">
+            <origin rpy="-${PI/2} 0 ${PI/2}" xyz="0 0.053741 0.15856"/> 
+            <parent link="${prefix}arm_left_elbow_pitch"/>
+            <child link="${prefix}arm_left_elbow_roll"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint4_PositionMin}" upper="${joint4_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link04">
+        <link name="${prefix}arm_left_elbow_roll">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_elbow_roll.STL" />
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -193,7 +194,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_elbow_roll.STL" />
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -207,21 +208,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint5" type="revolute">
-            <origin rpy="0 1.5708 0" xyz="0.0991 0 9.4529E-05"/>
-            <parent link="${prefix}arm_left_link04"/>
-            <child link="${prefix}arm_left_link05"/>
+        <joint name="${prefix}arm_left_elbow_roll_joint" type="revolute">
+            <origin rpy="0 ${PI/2} 0" xyz="0.0991 0 9.4529E-05"/>
+            <parent link="${prefix}arm_left_elbow_roll"/>
+            <child link="${prefix}arm_left_wrist_pitch"/>
             <axis xyz="0 0 -1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint5_PositionMin}" upper="${joint5_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link05">
+        <link name="${prefix}arm_left_wrist_pitch">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_wrist_pitch.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -230,7 +231,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="-1 1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_wrist_pitch.STL"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -244,21 +245,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint6" type="revolute">
-            <origin rpy="0 -1.5708 0" xyz="9.4529E-05 0 0.038"/>
-            <parent link="${prefix}arm_left_link05"/>
-            <child link="${prefix}arm_left_link06"/>
+        <joint name="${prefix}arm_left_wrist_pitch_joint" type="revolute">
+            <origin rpy="0 -${PI/2} 0" xyz="9.4529E-05 0 0.038"/>
+            <parent link="${prefix}arm_left_wrist_pitch"/>
+            <child link="${prefix}arm_left_wrist_yaw"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint6_PositionMin}" upper="${joint6_PositionMax}"/>
         </joint>
 
-        <link name="${prefix}arm_left_link06">
+        <link name="${prefix}arm_left_wrist_yaw">
             <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_wrist_yaw.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -267,7 +268,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 -1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_wrist_yaw.STL"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -281,21 +282,21 @@
             </inertial>
         </link>
 
-        <joint name="${prefix}arm_left_joint7" type="revolute">
-            <origin rpy="-1.5708 0 0" xyz="0.065 0 9.4629E-05"/>
-            <parent link="${prefix}arm_left_link06"/>
-            <child link="${prefix}arm_left_link07"/>
+        <joint name="${prefix}arm_left_wrist_yaw_joint" type="revolute">
+            <origin rpy="-${PI/2} 0 0" xyz="0.065 0 9.4629E-05"/>
+            <parent link="${prefix}arm_left_wrist_yaw"/>
+            <child link="${prefix}arm_left_end"/>
             <axis xyz="0 0 1"/>
             <dynamics damping="${jointDamping}" friction="${jointFriction}"/>
             <limit effort="${torqueMax}" velocity="${velocityMax}" lower="${joint6_PositionMin}" upper="${joint6_PositionMax}"/>
         </joint>
         
-        <link name="${prefix}arm_left_link07">
+        <link name="${prefix}arm_left_end">
              <visual>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 -1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_end.STL"/>
                 </geometry>
                 <material name="">
                     <color rgba="0.913725 0.913725 0.847059 1" />
@@ -304,7 +305,7 @@
             <collision>
                 <geometry>
                     <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 -1 1"/> -->
-                    <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 1 1"/>
+                    <mesh filename="file://$(find libertech_arm_description)/meshes/arm_left_end.STL"/>
                 </geometry>
                 <origin rpy="0 0 0" xyz="0 0 0"/>
             </collision>
@@ -318,9 +319,9 @@
             </inertial>
         </link>
 
-        <!-- <joint name="${prefix}arm_left_rokubi_ft_joint" type="fixed">
+        <joint name="${prefix}arm_left_rokubi_ft_joint" type="fixed">
             <origin rpy="0.0 ${PI/2} 0.0 " xyz="0.0395 0 0"/>
-            <parent link="${prefix}arm_left_link07"/>
+            <parent link="${prefix}arm_left_end"/>
             <child link="${prefix}arm_left_rokubi_ft_link"/>
         </joint>
         <link name="${prefix}arm_left_rokubi_ft_link" >
@@ -352,7 +353,7 @@
                 rpy="0 0 0" />
                 <geometry>
                 <mesh
-                    filename="package://rokubimini_description/meshes/BFT_ROKS_M8/wrench.STL" />
+                    filename="file://$(find rokubimini_description)/meshes/BFT_ROKS_M8/wrench.STL" />
                 </geometry>
                 <material
                 name="Bota_material">
@@ -360,19 +361,54 @@
                     rgba="0.6902 0.61176 0.52941 1" />
                 </material>
             </visual>
-        </link> -->
+        </link>
 
         <xacro:if value="${use_hand}">
             <xacro:include filename="$(find libertech_hand_description)/urdf/hand_left_macro.xacro" />
 
             <xacro:load_hand
                 prefix="${prefix}"
-                connected_to="${prefix}arm_left_link07"
+                connected_to="${prefix}arm_left_end"
                 xyz="0.16725444 -0.025962 -0.0057386"
                 rpy="${-PI/2} 0.0 ${-PI/2}"
                 use_fake_hardware="${use_fake_hardware}"
                 sim_ignition="${sim_ignition}" />
         </xacro:if>
+
+        <xacro:if value="${not use_hand}">
+            <joint name="${prefix}${connected_to}_hand_left_joint" type="fixed">
+                <parent link="${prefix}arm_left_end"/>
+                <child link="${prefix}hand_left_palm"/>
+                <origin rpy="${-PI/2} 0.0 ${-PI/2}" xyz="0.16725444 -0.025962 -0.0057386"/>
+            </joint>
+
+            <link name="${prefix}hand_left_palm">
+                <inertial>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <mass value="0.91778"/>
+                    <inertia
+                        ixx="0.0018592" ixy="6.239E-05" ixz="-6.688E-05"
+                        iyy="0.0015814" iyz="3.163E-05"
+                        izz="0.00064901"/> 
+                </inertial>
+                <collision>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand_left.STL" />
+                    </geometry>
+                </collision>
+                <visual>
+                    <origin rpy="0 0 0" xyz="0 0 0"/>
+                    <geometry>
+                        <mesh filename="file://$(find libertech_arm_description)/meshes/hand_left.STL" />
+                    </geometry>
+                    <material name="hand_material">
+                        <color rgba="0.913725 0.913725 0.847059 1" />
+                    </material>
+                </visual>
+            </link>
+        </xacro:if>
+
     </xacro:macro>
 
 </robot>

@@ -1,0 +1,138 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="leg_ros2_control" params="
+    prefix
+    name
+    use_fake_hardware:=false
+    sim_ignition:=false
+    initial_positions:=${dict(hip_yaw_joint=0.0,
+                              hip_roll_joint=0.0,
+                              hip_pitch_joint=0.0,
+                              knee_pitch_joint=0.0,
+                              ankle_pitch_joint=0.0)}" >
+
+    <ros2_control name="${prefix}${name}MultiInterfaceHardware" type="system">
+      <hardware>
+        <xacro:if value="${sim_ignition}">
+          <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+        <!-- <xacro:unless value="${use_fake_hardware or sim_ignition}">
+          <plugin>kortex_driver/KortexMultiInterfaceHardware</plugin>
+          <param name="robot_ip">${robot_ip}</param>
+          <param name="username">${username}</param>
+          <param name="password">${password}</param>
+          <param name="port">${port}</param>
+          <param name="port_realtime">${port_realtime}</param>
+          <param name="session_inactivity_timeout_ms">${session_inactivity_timeout_ms}</param>
+          <param name="connection_inactivity_timeout_ms">${connection_inactivity_timeout_ms}</param>
+          <param name="tf_prefix">"${tf_prefix}"</param>
+          <param name="use_internal_bus_gripper_comm">${use_internal_bus_gripper_comm}</param>
+          <param name="gripper_joint_name">${gripper_joint_name}</param>
+          <param name="gripper_max_velocity">${gripper_max_velocity}</param>
+          <param name="gripper_max_force">${gripper_max_force}</param>
+        </xacro:unless> -->
+      </hardware>
+      <!-- TODO: command_interface velocity effort -->
+      <joint name="${prefix}${name}_hip_yaw_joint">
+        <command_interface name="position">
+          <param name="min">{-60*pi/180.0}</param>
+          <param name="max">{45*pi/180.0}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-{180*2*pi/60}</param>
+          <param name="max">{180*2*pi/60}</param>
+        </command_interface>
+        <command_interface name="effort">
+          <param name="min">-60</param>
+          <param name="max">60</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['hip_yaw_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_hip_roll_joint">
+        <command_interface name="position">
+          <param name="min">{-60*pi/180.0}</param>
+          <param name="max">{45*pi/180.0}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-{180*2*pi/60}</param>
+          <param name="max">{180*2*pi/60}</param>
+        </command_interface>
+        <command_interface name="effort">
+          <param name="min">-60</param>
+          <param name="max">60</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['hip_roll_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_hip_pitch_joint">
+        <command_interface name="position">
+          <param name="min">{-120*pi/180.0}</param>
+          <param name="max">{80*pi/180.0}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-{120*2*pi/60}</param>
+          <param name="max">{120*2*pi/60}</param>
+        </command_interface>
+        <command_interface name="effort">
+          <param name="min">-150</param>
+          <param name="max">150</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['hip_pitch_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_knee_pitch_joint">
+        <command_interface name="position">
+          <param name="min">{0*pi/180.0}</param>
+          <param name="max">{120*pi/180.0}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-{100*2*pi/60}</param>
+          <param name="max">{100*2*pi/60}</param>
+        </command_interface>
+        <command_interface name="effort">
+          <param name="min">-230</param>
+          <param name="max">230</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['knee_pitch_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+      <joint name="${prefix}${name}_ankle_pitch_joint">
+        <command_interface name="position">
+          <param name="min">{-60*pi/180.0}</param>
+          <param name="max">{60*pi/180.0}</param>
+        </command_interface>
+        <command_interface name="velocity">
+          <param name="min">-{200*2*pi/60}</param>
+          <param name="max">{200*2*pi/60}</param>
+        </command_interface>
+        <command_interface name="effort">
+          <param name="min">-50</param>
+          <param name="max">50</param>
+        </command_interface>
+        <state_interface name="position">
+          <param name="initial_value">${initial_positions['ankle_pitch_joint']}</param>
+        </state_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="effort"/>
+      </joint>
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

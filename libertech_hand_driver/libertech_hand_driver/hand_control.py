@@ -20,7 +20,8 @@ class HandAPI:
                  mode='p_p', # p_p
                  target_ip='10.10.20.61',
                  target_port=2000,
-                 display=True
+                 display=True,
+                 plan=1,
                  ):
         # 思路：
         # 1. 末端/关节只有位置指令，不存在直接给出电机空间或关节空间的轨迹指令。底层可以力指令或位置指令，但只提供位置接口
@@ -45,7 +46,7 @@ class HandAPI:
         self.motor_direction_ = motor_direction[self.hand_name_]
 
         self.mode_ = mode
-        self.plan_ = 1
+        self.plan_ = plan
         self.target_ip_ = target_ip
         self.target_port_ = target_port
         self.reader = None
@@ -90,7 +91,23 @@ class HandAPI:
         self.queue_little_ = Queue()
         self.queue_thumb_ = Queue()
                    
-    # ############################ 用户接口 ############################     
+    # ############################ 用户接口 ############################
+    @property
+    def qname(self):
+        return self.hand_model_.qname_
+
+    @property
+    def hand_name(self):
+        return self.hand_model_.hand_name_
+    
+    @property
+    def qlim(self):
+        return self.hand_model_.qlim_act_
+    
+    @property
+    def finger_joint_index(self):
+        return self.hand_model_.finger_joint_index
+    
     async def init(self):
         logger.info("初始化...")
         await self.connect()

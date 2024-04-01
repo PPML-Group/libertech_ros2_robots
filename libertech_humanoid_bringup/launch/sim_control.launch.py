@@ -52,7 +52,6 @@ def launch_setup(context, *args, **kwargs):
     description_package = LaunchConfiguration("description_package")
     description_file = LaunchConfiguration("description_file")
     prefix = LaunchConfiguration("prefix")
-    robot_traj_controller = LaunchConfiguration("robot_controller")
     launch_rviz = LaunchConfiguration("launch_rviz")
     use_sim_time = LaunchConfiguration("use_sim_time")
 
@@ -109,6 +108,16 @@ def launch_setup(context, *args, **kwargs):
         ]
     )
     robot_description = {"robot_description": robot_description_content.perform(context)}
+    
+    generate_urdf = ExecuteProcess(
+        cmd=[
+            FindExecutable(name="bash"),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'scripts', 'generate_urdf.sh']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro']),
+            PathJoinSubstitution([FindPackageShare('libertech_humanoid_description'), 'urdf', 'humanoid_fixed.xacro.urdf']),
+        ],
+        shell=True
+    )
 
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
@@ -159,6 +168,19 @@ def launch_setup(context, *args, **kwargs):
         arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
     )
     
+    movement_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["movement_trajectory_controller", "-c", "/controller_manager"],
+    )
+    
+    head_traj_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["head_trajectory_controller", "-c", "/controller_manager"],
+    )
+
+    
     hand_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
@@ -172,7 +194,26 @@ def launch_setup(context, *args, **kwargs):
         arguments=["hand_left_trajectory_controller", "-c", "/controller_manager"],
         condition=IfCondition(use_hand),
     )
-        
+    
+    #### velocity
+    arm_right_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_right_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+    
+    arm_left_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_left_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+       
+    head_vel_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["head_velocity_controller", "--inactive", "-c", "/controller_manager"],
+    )
+
     # Bridge
     bridge = Node(
         package="ros_gz_bridge",
@@ -186,8 +227,10 @@ def launch_setup(context, *args, **kwargs):
         executable="create",
         output="screen",
         arguments=[
-            "-string",
-            robot_description_content,
+            # "-string",
+            # robot_description_content,
+            '-topic', 
+            'robot_description',
             "-name",
             "arm",
             "-allow_renaming",
@@ -197,20 +240,21 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "0.35",
+            "1.0",
             "-R",
             "0.0",
             "-P",
             "0.0",
             "-Y",
-            "-1.57",
+            "0.0",
+            # '-J', 'head_pitch_joint -0.5',
         ],
         condition=IfCondition(sim_ignition),
     )
     
     ignition_world = PathJoinSubstitution(
         [
-            FindPackageShare("libertech_arm_bringup"),
+            FindPackageShare("libertech_humanoid_bringup"),
             "world",
             sim_ignition_world,
         ]
@@ -221,26 +265,27 @@ def launch_setup(context, *args, **kwargs):
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
         # launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
-        launch_arguments={"ign_args": f" -r -v 3 {ignition_world.perform(context)}"}.items(),
+        launch_arguments={"ign_args": f" -r -v 1 {ignition_world.perform(context)}"}.items(),
         condition=IfCondition(sim_ignition),
     )
 
     # Bridge
-    # gazebo_bridge = Node(
-    #     package="ros_gz_bridge",
-    #     executable="parameter_bridge",
-    #     parameters=[{"use_sim_time": use_sim_time}],
-    #     arguments=[
-    #         "/wrist_mounted_camera/image@sensor_msgs/msg/Image[ignition.msgs.Image",
-    #         "/wrist_mounted_camera/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
-    #         "/wrist_mounted_camera/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
-    #         "/wrist_mounted_camera/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
-    #     ],
-    #     output="screen",
-    # )
+    ignition_bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        parameters=[{"use_sim_time": use_sim_time}],
+        arguments=[
+            "/zedm/image@sensor_msgs/msg/Image[ignition.msgs.Image",
+            "/zedm/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
+            "/zedm/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
+            "/zedm/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
+        ],
+        output="screen",
+    )
 
     nodes_to_start = [
         bridge,
+        generate_urdf,
         robot_state_publisher_node,
         ignition_launch_description,
         ignition_spawn_entity,
@@ -262,6 +307,20 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[arm_left_traj_controller_spawner],
             )
         ),
+        
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[movement_traj_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[head_traj_controller_spawner],
+            )
+        ),
+        
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
@@ -274,8 +333,28 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[hand_left_traj_controller_spawner],
             )
         ),
-        delay_rviz_after_joint_state_broadcaster_spawner
-        # gazebo_bridge,
+        #### velocity
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_right_vel_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_left_vel_controller_spawner],
+            )
+        ),
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[head_vel_controller_spawner],
+            )
+        ),
+        
+        delay_rviz_after_joint_state_broadcaster_spawner,
+        ignition_bridge,
     ]
 
     return nodes_to_start
@@ -309,7 +388,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_hand",
-            default_value="true",
+            default_value="false",
             description="Use hand.",
         )
     )
@@ -337,7 +416,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_ycb.sdf", # world_ycb world_box world_empty
+            default_value="world_empty.sdf", # world_ycb world_box world_empty
             description="Gazebo Ignition world",
         )
     )

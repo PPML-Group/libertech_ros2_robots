@@ -87,14 +87,5 @@
         <falloff>0</falloff>
       </spot>
     </light>
-
-    <include>
-      <static>false</static>
-      <uri>
-        model://Cardboard Aruco box
-      </uri>
-      <pose>0.4 0.0 0.075 1.57 0 3.14</pose>
-    </include>
-
   </world>
 </sdf>

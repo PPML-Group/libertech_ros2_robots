@@ -30,7 +30,9 @@ int main()
   q0.setZero();
   v0.setZero();
   a0.setZero();
+
   qf << 15, -15, 10, 30, 15, 0, 10, -15, 15, -10, -30, 15, 0, 10;
+
   qf = qf * M_PI / 180;
   vf.setZero();
   af.setZero();

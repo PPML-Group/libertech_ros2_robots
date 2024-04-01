@@ -7,16 +7,13 @@ from mpl_toolkits.mplot3d import Axes3D
 import math
 import time
 from sko.PSO import PSO
-# from sko.GA import GA
-from pyswarm import pso
-from libertech_hand_driver.hand_cfg import *
-from libertech_hand_driver.hand_model_cal import trans2_theta_psi_D    
-import asyncio
-import threading
-from typing import Tuple
-from libertech_hand_driver.logger import logger
+# from pyswarm import pso
+from scipy.optimize import fsolve, minimize
 import urdf_parser_py.urdf as urdf
 from math import cos, sin
+
+from libertech_hand_driver.hand_cfg import *
+from libertech_hand_driver.logger import logger
 
 np.set_printoptions(precision=3, suppress=True)
 
@@ -70,11 +67,13 @@ class HandModelKinematics:
         self.qdim_ = self.model_rtb_.n
         self.qlim_ = self.model_rtb_.qlim
         self.qlim_act_ = []
-        self.qname_ = self.model_rtb_.joint_names_[2:]
+        self.qname_tmp = self.model_rtb_.joint_names_[2:]
+        self.qname_ = []
         self.qname_act_ = []
         for i in range(5):
             self.qlim_act_.append(self.qlim_[:, 4*i:4*i+list(self.finger_driver_num.items())[i][1]])
-            self.qname_act_.extend(self.qname_[4*i:4*i+list(self.finger_driver_num.items())[i][1]])
+            self.qname_.extend(self.qname_tmp[5*i:5*i+4]) # end多了一个
+            self.qname_act_.extend(self.qname_tmp[5*i:5*i+list(self.finger_driver_num.items())[i][1]]) # end多了一个
         self.qlim_act_ = np.hstack(self.qlim_act_)
         
         self.display_ = display
@@ -121,12 +120,17 @@ class HandModelKinematics:
         L1=math.sqrt(A**2+C**2-2*A*C*math.cos(q+degree1_init))
         parameter1=(C-A*math.cos(q+degree1_init))/L1
         parameter2=(L1**2+D**2-B**2)/(2*L1*D)
+        parameter1 = max(min(parameter1, 1), -1)
+        parameter2 = max(min(parameter2, 1), -1)
         return degree2_init-(math.acos(parameter2)-math.acos(parameter1))
+
         
     def four_bar_backward(self, q, A, B, C, D, degree1_init, degree2_init):
         L2=math.sqrt(C**2+D**2-2*C*D*math.cos(degree2_init-q))
         parameter1=math.sin(degree2_init-q)*D/L2
         parameter2=(L2^2+A^2-B^2)/(2*L2*A)
+        parameter1 = max(min(parameter1, 1), -1)
+        parameter2 = max(min(parameter2, 1), -1)
         return math.acos(parameter2)-math.asin(parameter1)-degree1_init
     
     def four_bar_pip2dip(self, q: float, name: str):
@@ -181,7 +185,7 @@ class HandModelKinematics:
             # logger.debug(f"{fg_name}: qi4 is {qi4}")
             
         fg_num = self.get_finger_number(fg_name)
-        end_name = f"{self.hand_name_}_f{fg_num}4"
+        end_name = f"hand_{self.hand_name_}_f{fg_num}4_end"
         # logger.debug(f"end name is {end_name}")
         qa[4*(fg_num-1):4*fg_num] = qi
         # logger.debug(f"{fg_name}: qa is {qa}")
@@ -189,9 +193,26 @@ class HandModelKinematics:
         fk = self.model_rtb_.fkine(qa, end=self.model_rtb_.link_dict[end_name])
         return fk
     
+    def fk_q2q_all(self, q: np.ndarray):
+        assert q.shape[0] == MOTOR_NUM
+        
+        qa = np.zeros(20)
+        qa[:4] = np.append(q[:3], self.four_bar_pip2dip(q[2], "index"))
+        qa[4:8] = np.append(q[3:6], self.four_bar_pip2dip(q[5], "middle"))
+        q33 = self.four_bar_mcp2pip(q[7], "fourth")
+        q34 = self.four_bar_pip2dip(q33, "fourth")
+        qa[8:12] = np.append(q[6:8], [q33, q34])
+        q43 = self.four_bar_mcp2pip(q[9], "little")
+        q44 = self.four_bar_pip2dip(q43, "little")
+        qa[12:16] = np.append(q[8:10], [q43, q44])
+        qa[16:] = np.append(q[10:], self.four_bar_pip2dip(q[12], "thumb"))
+        
+        return qa
+    
     def fk_q2e_all(self, q: np.ndarray): #  -> list[SE3]
         assert q.shape[0] == MOTOR_NUM
         
+        # TODO: 这样写多求了4次运动学
         return [self.fk_q2e(q[:3], "index"), 
             self.fk_q2e(q[3:6], "middle"), 
             self.fk_q2e(q[6:8], "fourth"), 
@@ -231,7 +252,8 @@ class HandModelKinematics:
         # ga = GA(func=func, n_dim=n_dim, size_pop=20, max_iter=40, prob_mut=0.001, lb=lb, ub=ub, precision=1e-7)
         # best_x, best_y = ga.run()
 
-        pso = PSO(func=func, n_dim=n_dim, pop=20, max_iter=40, lb=lb, ub=ub)
+        # pso = PSO(func=func, dim=n_dim, pop=30, max_iter=80, lb=lb, ub=ub)
+        pso = PSO(func=func, dim=n_dim, pop=20, max_iter=40, lb=lb, ub=+ub)
         best_x, best_y = pso.run()
         
         # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
@@ -281,6 +303,159 @@ class HandModelKinematics:
     def ik_e2q_all_free(self, pos_list: list[np.ndarray]):
         # TODO: 手掌具有六自由度，计算合适的位姿与所有关节，避免不同手指的工作空间冲突
         pass
+    
+    def compute_direction(self, pa, ph):            
+            # 计算机械手手指之间的方向向量并归一化
+            direction_vectors_robot = []
+            for i in range(len(pa)):
+                for j in range(i+1, len(pa)):
+                    direction_vector = pa[j] - pa[i]
+                    normalized_direction_vector = direction_vector / np.linalg.norm(direction_vector)
+                    direction_vectors_robot.append(normalized_direction_vector)
+
+            # 计算人手位置之间的方向向量并归一化
+            direction_vectors_human = []
+            for i in range(len(ph)):
+                for j in range(i+1, len(ph)):
+                    direction_vector = ph[j] - ph[i]
+                    normalized_direction_vector = direction_vector / np.linalg.norm(direction_vector)
+                    direction_vectors_human.append(normalized_direction_vector)
+            return direction_vectors_robot, direction_vectors_human
+        
+    def compute_directions_distances(self, p, is_unit=True):
+        results = {}
+
+        # Task 1: Compute directions and distances from origin to each point in p
+        origin_directions = []
+        origin_distances = []
+        for point in p:
+            direction = point
+            distance = np.linalg.norm(direction)
+            if is_unit:
+                unit_direction = direction / distance  # Unit direction vector
+                origin_directions.append(unit_direction)
+            else:
+                origin_directions.append(direction)
+            origin_distances.append(distance)
+        
+        results['origin_directions'] = np.array(origin_directions)
+        results['origin_distances'] = np.array(origin_distances)
+
+        # Task 2: Compute directions and distances from each finger tip to the thumb
+        finger_positions = p[:4]  # Finger tip positions
+        thumb_position = p[4]  # Thumb position
+
+        finger_to_thumb_directions = []
+        finger_to_thumb_distances = []
+        for finger_tip in finger_positions:
+            direction = thumb_position - finger_tip
+            distance = np.linalg.norm(direction)
+            if is_unit:
+                unit_direction = direction / distance  # Unit direction vector
+                finger_to_thumb_directions.append(unit_direction)
+            else:
+                finger_to_thumb_directions.append(direction)
+            finger_to_thumb_distances.append(distance)
+
+        results['finger_to_thumb_directions'] = np.array(finger_to_thumb_directions)
+        results['finger_to_thumb_distances'] = np.array(finger_to_thumb_distances)
+
+        # Task 3: Compute directions and distances between finger tips
+        finger_to_finger_directions = []
+        finger_to_finger_distances = []
+        for i in range(4):
+            for j in range(i + 1, 4):
+                direction = finger_positions[j] - finger_positions[i]
+                distance = np.linalg.norm(direction)
+                if is_unit:
+                    unit_direction = direction / distance  # Unit direction vector
+                    finger_to_finger_directions.append(unit_direction)
+                else:
+                    finger_to_finger_directions.append(direction)
+                finger_to_finger_distances.append(distance)
+        
+        results['finger_to_finger_directions'] = np.array(finger_to_finger_directions)
+        results['finger_to_finger_distances'] = np.array(finger_to_finger_distances)
+
+        return results
+        
+    def ik_e2q_retarget(self, ph: list[np.ndarray], q_last=None):
+        
+        def func(q):
+            fk_all = self.fk_q2e_all(q)
+            pa = [fk.t for fk in fk_all]
+            pa = [fk.t - np.array([0., 0.00, 0.1]) for fk in fk_all] # 对齐人手mediapipe与机械手原点
+            # direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
+            ret_a = self.compute_directions_distances(pa, is_unit=False)
+            ret_h = self.compute_directions_distances(ph, is_unit=True)
+            
+            fd = ret_h['origin_distances']
+            loss_o = np.sum((ret_a['origin_directions'] - fd[:, np.newaxis] * ret_h['origin_directions'])**2)
+            
+            fd = ret_h['finger_to_thumb_distances']
+            sd = np.ones_like(ret_h['finger_to_thumb_distances'])
+            # fd[ret_h['finger_to_thumb_distances'] < 0.02] = 0.001
+            # sd[ret_h['finger_to_thumb_distances'] < 0.02] = 200
+            loss_t = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
+            
+            fd = ret_h['finger_to_finger_distances']
+            sd = np.ones_like(ret_h['finger_to_finger_distances'])
+            # fd[ret_h['finger_to_finger_distances'] < 0.03] = 0.03
+            # sd[ret_h['finger_to_finger_distances'] < 0.02] = 400
+            loss_f = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_finger_directions'] - fd[:, np.newaxis] * ret_h['finger_to_finger_directions'])**2)
+            
+            loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9,11,12]])
+            loss_qy = 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]])
+            
+            return loss_o+loss_t+loss_f+loss_q+loss_qy
+            # # loss1
+            # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(q)
+            # # loss2 不行
+            # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2)
+            # # loss3 只加侧摆
+            # # qy = np.array([q[0],q[3],[6],[8]])
+            # qy = q[[0, 3, 6, 8]]
+            # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(qy)
+            
+            # loss = 0
+            # for i in range(len(direction_vectors_human)):
+            #     loss += np.sum((np.array(direction_vectors_robot[i]) - np.array(direction_vectors_human[i]))** 2)
+        
+        # lb = self.qlim_act_[0]
+        # ub = self.qlim_act_[1]
+        # logger.debug(f"lb is {lb}")
+        # logger.debug(f"ub is {ub}")
+
+        # pso = PSO(func=func, dim=MOTOR_NUM, pop=30, max_iter=100, lb=lb, ub=ub)
+        # # pso.X = 
+        # # pso.cal_y()
+        # best_x, best_y = pso.run()
+        
+        # # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
+         
+        # # logger.info(f"{fg_name}: time is {time.time()-ts}")
+        # logger.debug('best_x:', best_x, '\n', 'best_y:', best_y)
+        # return best_x
+        
+        lower_bounds = self.qlim_act_[0]
+        upper_bounds = self.qlim_act_[1]
+        # 将上下限转换为 bounds 格式
+        bounds = list(zip(lower_bounds, upper_bounds))
+        # print(bounds)
+        if q_last is not None:
+            x0 = q_last
+        else:
+            x0 = np.zeros((MOTOR_NUM))
+        sol_psu = minimize(func, x0, method='SLSQP', bounds=bounds)
+        # SLSQP(快) L-BFGS-B Powell
+        if sol_psu.success:
+            return sol_psu.x
+        else:
+            if q_last is not None: 
+                return q_last
+            else:
+                logger.error("Retarget Error!")
+                return np.zeros((MOTOR_NUM))
      
     # %% 用于计算驱动空间与关节空间的运动学映射  
     def ik_q2d_m1(self, q: np.ndarray, fg_name: str) -> np.ndarray:
@@ -347,36 +522,38 @@ class HandModelKinematics:
         theta = q[1]
         bevel = psi / (2*math.pi)
         
-        # ts = time.time()
-        # rx = np.array([[1, 0, 0],
-        #                 [0,math.cos(psi),-math.sin(psi)],
-        #                 [0,math.sin(psi),math.cos(psi)]])    
-        # ry = np.array([[math.cos(theta),0,math.sin(theta)],
-        #                 [0,1,0],
-        #                 [-math.sin(theta),0,math.cos(theta)]])
-        # r = rx @ ry  # 需要交换吗,决定了哪个高哪个低
-        # p1r = r @ cfg["p1"]
-        # p2r = r @ cfg["p2"]
+        rx = np.array([[1, 0, 0],
+                        [0,math.cos(psi),-math.sin(psi)],
+                        [0,math.sin(psi),math.cos(psi)]])    
+        ry = np.array([[math.cos(theta),0,math.sin(theta)],
+                        [0,1,0],
+                        [-math.sin(theta),0,math.cos(theta)]])
+        r = rx @ ry  # 需要交换吗,决定了哪个高哪个低
+        p1r = r @ cfg["p1"]
+        p2r = r @ cfg["p2"]
         
-        # def ik_psu(x): # 求根公式太复杂
-        #     l2 = np.array([x[0], x[1], x[2]])
-        #     p3 = cfg["p3"]
-        #     p3[2] = x[3]
-        #     l1 = p1r - p3 - l2
-        #     equ = l2 - np.dot(l2,p2r)*p2r - np.dot(l1,l2)*l1/cfg["l1"]
+        def ik_psu(x): # 求根公式太复杂
+            p3 = cfg["p3"]
+            p3[2] = -x[0] # -Z
+            p4 = np.array([x[1], x[2], x[3]])
+            eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
             
-        #     return [equ[0],
-        #             equ[1],
-        #             equ[2],
-        #             np.linalg.norm(l2)-cfg["l2"]]
-    
-        # sol_psu = root(ik_psu, np.array([0, 0, 0, 0]), method='lm')
-        # logger.debug(f"sol_psu: {sol_psu}")
-        # d = sol_psu.x[3]
-        # logger.debug(f"d_time: {time.time() -ts}")
+            return [np.linalg.norm(p1r - p4) - cfg["l1"],
+                    np.linalg.norm(p3 - p4) - cfg["l2"],
+                    np.dot(p1r - p4,p2r),
+                    eq[0],
+                    eq[1],
+                    eq[2]]
+        
+        sol_pss = fsolve(ik_psu, np.array([0.04, 0.02, 0.0, -0.02, 0.0, -3.10]))
+        logger.debug(f"sol_pss: {sol_pss}")
+        d = sol_pss[0]-0.01
         
         # ts = time.time()
-        d = trans2_theta_psi_D(theta,psi)/1000
+        # d1 = trans2_theta_psi_D(theta,psi)/1000
+        # if np.linalg.norm(d-d1) > 0.001:
+        #     print("error")
+        # print(d-d1)
         # logger.debug(f"d2_time: {time.time() -ts}")
         # logger.debug(f"d: {d}")
         # print(d)
@@ -447,27 +624,22 @@ class HandModelKinematics:
         assert d.shape[0] == 3
         assert (fg_name=="index" or fg_name=="middle")
         cfg = self.get_module_config(fg_name)
-        d_left = d[0] # 定义求出的电机位移始终为+,便于发送电机指令,但坐标系中为负数
-        d_right = d[1]
+        d_right = d[0] # 定义求出的电机位移始终为+,便于发送电机指令,但坐标系中为负数
+        d_left = d[1]
         d_direct = d[2]
-        # logger.debug(f"d_left: {d_left}")
-        # logger.debug(f"d_right: {d_right}")
         
         # pip
-        pip = d_direct/cfg["bevel"]
+        pip = d_direct * (2*math.pi) 
         
         # dip,四杆机构
-        L1=math.sqrt(cfg["A"]**2+cfg["C"]**2-2*cfg["A"]*cfg["C"]*math.cos(pip+cfg["degree1_init"]))
-        parameter1=(cfg["C"]-cfg["A"]*math.cos(pip+cfg["degree1_init"]))/L1
-        parameter2=(L1**2+cfg["D"]**2-cfg["B"]**2)/(2*L1*cfg["D"])
-        dip=cfg["degree2_init"]-(math.acos(parameter2)-math.acos(parameter1))
-        
+        dip = self.four_bar_pip2dip(pip, fg_name)
+
         # mcp
-        d_left  /= cfg["screw"]
-        d_right /= cfg["screw"]
+        d_left  *= cfg["h"]
+        d_right *= cfg["h"]
         d_left  += cfg["z0"]
         d_right += cfg["z0"]
-        d_left = -d_left # TODO: 有无负号
+        d_left = -d_left # TODO: 有负号
         d_right = -d_right
         logger.debug(f"d_left: {d_left}")
         logger.debug(f"d_right: {d_right}")
@@ -487,47 +659,15 @@ class HandModelKinematics:
             p3[2] = d_left
             p4 = cfg["p4"]
             p4[2] = d_right
-            return [np.linalg.norm(r @ p1r - p3) - cfg["l1"],
-                    np.linalg.norm(r @ p2r - p4) - cfg["l2"]]
-            # return [np.sum((r @ p1r - p3)**2) - cfg["l1"]**2,
-            #         np.sum((r @ p2r - p4)**2) - cfg["l2"]**2]
-            
-        def fk_pss2(x):
-            a1 = cfg["p1"][0]
-            a2 = cfg["p1"][1]
-            a3 = cfg["p1"][2]
-            a4 = cfg["p3"][0]
-            a5 = cfg["p3"][1]
-            a6 = d_left
-            b1 = cfg["p2"][0]
-            b2 = cfg["p2"][1]
-            b3 = cfg["p2"][2]
-            b4 = cfg["p4"][0]
-            b5 = cfg["p4"][1]
-            b6 = d_right
-            A1 = np.sum(cfg["p1"]**2) + np.sum(cfg["p3"]**2) - cfg["l1"] ** 2 
-            A2 = np.sum(cfg["p2"]**2) + np.sum(cfg["p4"]**2) - cfg["l2"] ** 2 
-            
-            return [cos(x[1])*a1*a4 + sin(x[1])*a3*a4 + cos(x[0])*a2*a5 + sin(x[0])*a2*a6 + 
-                    sin(x[0])*sin(x[1])*a1*a5 - sin(x[0])*cos(x[1])*a3*a5 + cos(x[0])*sin(x[1])*a1*a6 + cos(x[0])*cos(x[1])*a3*a6 - A1 / 2,
-                    cos(x[1])*b1*b4 + sin(x[1])*b3*b4 + cos(x[0])*b2*b5 + sin(x[0])*b2*b6 + 
-                    sin(x[0])*sin(x[1])*b1*b5 - sin(x[0])*cos(x[1])*b3*b5 + cos(x[0])*sin(x[1])*b1*b6 + cos(x[0])*cos(x[1])*b3*b6 - A2 / 2]
-   
-        sol_pss = root(fk_pss2, np.array([math.radians(10), math.radians(50)]), method='broyden1')
-        # broyden1 hybr anderson (lm) anderson linearmixing diagbroyden excitingmixing
-        # print(sol_pss)
-        try:
-            logger.debug(f"sol_pss: {sol_pss}")
-            # logger.debug(f"sol_pss: {type(sol_pss.success)}")
-            if sol_pss.success:
-                psi = sol_pss.x[0]
-                theta = sol_pss.x[1]  # 这句话最后写,urdf才需要减去,后面用解出来的q2???
-                q = np.array([psi, theta, pip, dip])
-            else:
-                q = np.array([None, None, pip, dip])
-            return q
-        except OSError as reason:
-            print(f'reason: {str(reason)}')
+            return [np.linalg.norm(p1r - p3) - cfg["l1"],
+                    np.linalg.norm(p2r - p4) - cfg["l2"]]
+                       
+        sol_pss = fsolve(fk_pss, np.array([math.radians(0), math.radians(50)]))
+        logger.debug(f"sol_pss: {sol_pss}")
+        psi = sol_pss[0]
+        theta = sol_pss[1]
+        q = np.array([psi, theta, pip, dip])
+        return q
     
     def fk_d2q_m2(self, d: np.ndarray, fg_name: str) -> np.ndarray:
         '''用于求解无名指与小拇指的正运动学,其中不包含直驱关节。主要用于显示/规划电机空间使得满足末端轨迹
@@ -540,6 +680,50 @@ class HandModelKinematics:
         assert d.shape[0] == 2
         assert (fg_name=="fourth" or fg_name=="little")
         cfg = self.get_module_config(fg_name)
+        
+        q1 = d[0] * (2*math.pi)
+        d = d[1] 
+        d *= cfg["h"]
+        d += 0.01
+        
+        rx = np.array([[1, 0, 0],
+                        [0,math.cos(q1),-math.sin(q1)],
+                        [0,math.sin(q1),math.cos(q1)]])    
+        def fk_psu(x):
+            ry = np.array([[cos(x[0]),0,sin(x[0])],
+                            [0,1,0],
+                            [-sin(x[0]),0,cos(x[0])]])
+            r = rx @ ry
+            p1r = r @ cfg["p1"]
+            p2r = r @ cfg["p2"]
+            
+            p3 = cfg["p3"]
+            p3[2] = -d # -Z
+            p4 = np.array([x[1], x[2], x[3]])
+            eq = p3-p4-x[4]*p2r-x[5]*(p1r - p4)
+            
+            return [np.linalg.norm(p1r - p4) - cfg["l1"],
+                    np.linalg.norm(p3 - p4) - cfg["l2"],
+                    np.dot(p1r - p4,p2r),
+                    eq[0],
+                    eq[1],
+                    eq[2]]
+        
+        x0 = np.array([math.radians(50), 0.02, 0.0, 0.001, 0.0, -3.10])
+        sol_psu = fsolve(fk_psu, x0)
+        
+        logger.debug(f"sol_psu: {sol_psu}")
+        # print(sol_psu[0])
+        # q2 = math.atan2(sol_psu.x[1],sol_psu.x[0])
+        # print(q2)
+        
+        q2 = sol_psu[0]
+    
+        pip = self.four_bar_mcp2pip(q2, fg_name)    
+        dip = self.four_bar_pip2dip(pip, fg_name)
+
+        q = np.array([q1, q2, pip, dip])
+        return q
         
     def fk_d2q_m3(self, d: np.ndarray, fg_name: str) -> np.ndarray:
         pass      
@@ -604,45 +788,43 @@ class HandModelKinematics:
     def plan_in_dspace_w_ptraj(self, ptraj):
         # TODO: 驱动空间规划,使其趋近于给定的末端空间
         pass
-        
+            
 # %% main  
 if __name__ == '__main__':
-    hand_file = '/home/ccs/test_ws/src/freehand_controller/freehand_controller/individual/description/urdf/freehand_right.urdf'
+    hand_file = '/home/ccs/ros2/libertech_ws/src/libertech_ros2_robots/libertech_hand_description/urdf/hand_right.xacro.urdf'
     
     model = HandModelKinematics(hand_file)
 
-    # print(model.fk_q2e(np.array([0,1,1]), "index"))
+    print(model.fk_q2e(np.array([0,1,1]), "index"))
     
-    # # print(model.fk_q2e_all(np.zeros(13)))
+    # print(model.fk_q2e_all(np.zeros(13)))
     
-    # pos = np.array([0.03841,0.02866,0.08211])
-    # # p = model.fk_q2e(np.array([0,0,1]), "index").o
-    # # print(np.linalg.norm(p - pos))
+    pos = np.array([0.03841,0.02866,0.08211])
+    # p = model.fk_q2e(np.array([0,0,1]), "index").o
+    # print(np.linalg.norm(p - pos))
     
-    # # q = model.ik_e2q(pos, "index")
+    # q = model.ik_e2q(pos, "index")
     
-    # # print(model.fk_q2e(np.asarray(q), "index"))
-    # # print(model.fk_q2e(np.asarray(q), "index").t)
-    # # print(model.fk_q2e(np.array([0.309643, 2.055571, 1.472229]), "index").a)
+    # print(model.fk_q2e(np.asarray(q), "index"))
+    # print(model.fk_q2e(np.asarray(q), "index").t)
+    # print(model.fk_q2e(np.array([0.309643, 2.055571, 1.472229]), "index").a)
     
-    # print('='*30)
+    print('='*30)
     
-    # se3_all = model.fk_q2e_all(np.array([0,1,1,
-    #                                  0,1,1,
-    #                                  0,1,
-    #                                  0,1,
-    #                                  0,1,1]))
-    # print(se3_all)
+    se3_all = model.fk_q2e_all(np.array([0,1,1,
+                                     0,1,1,
+                                     0,1,
+                                     0,1,
+                                     0,1,1]))
+    print(se3_all)
     
-    # p_all = []
-    # for se3 in se3_all:
-    #     p_all.append(se3.t)
-    # # p_all = np.concatenate(p_all) 
-    # # print(p_all)
+    p_all = [se3.t for se3 in se3_all]
+    # p_all = np.concatenate(p_all) 
+    # print(p_all)
     
-    # ts = time.time()
-    # print(model.ik_e2q_all(p_all))
-    # logger.info(f"time is {time.time()-ts}")
+    ts = time.time()
+    print(model.ik_e2q_all(p_all))
+    logger.info(f"time is {time.time()-ts}")
     
     # q = np.array([0.0, 0.3, 0.0, 0.0, 1.7, 1.5, 0.0, 1.3, 0.0, 1.3, 1.2, 0.1, 0.9])
     # logger.info(f"q is {q}")
@@ -656,7 +838,7 @@ if __name__ == '__main__':
     # logger.info(f"pos: {d_traj[:,-1]}") 
     
     
-    print(model.ik_q2d(np.array([0,0,0]), 'thumb'))
+    # print(model.ik_q2d(np.array([0,0,0]), 'thumb'))
     
     # %% 测试时间
     # N = 100
@@ -711,3 +893,105 @@ if __name__ == '__main__':
     #                                  0,1,
     #                                  0,1,1]))
     # logger.info(f"ik_q2d_all() 用时为: {1000*(time.time()-ts)/N} ms")
+    
+    q2_sequence = np.arange(0, 1.75, 0.01)
+    # print(q2_sequence)
+    
+    # pos = np.array([0.4, 0.0, 0.0])
+    # n_error = 0
+    # for q2 in q2_sequence:
+    #     pos[1] = q2
+    #     logger.info(f"pos为: {pos}")
+        
+    #     ts = time.time()
+    #     d = model.ik_q2d(pos, "index")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
+        
+    #     ts = time.time()
+    #     pos_fk = model.fk_d2q(d, "index")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+        
+    #     logger.info(f"pos误差为: {pos - pos_fk[:3]}")
+    #     if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
+    #         n_error += 1
+            
+    # print(n_error)
+        
+    # n_error = 0
+    # pos = np.array([-0.4, 0.0])
+    # for q2 in q2_sequence:
+    #     pos[1] = q2
+    #     logger.info(f"pos为: {pos}")
+        
+    #     ts = time.time()
+    #     d = model.ik_q2d(pos, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, ik_q2d()为: {d}")
+        
+    #     ts = time.time()
+    #     pos_fk = model.fk_d2q(d, "fourth")
+    #     logger.info(f"用时为: {1000*(time.time()-ts)} ms, fk_d2q()为: {pos_fk}")
+    #     print(np.linalg.norm(pos - pos_fk[:2]))
+    #     if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
+    #         n_error += 1
+            
+    # print(n_error)
+        
+    # # print(model.n_e)
+    
+    
+    q1_sequence = np.arange(-0.4, 0.4, 0.05)
+    q2_sequence = np.arange(0, 1.75, 0.05)
+    
+    print(f'---------------测试食指、中指---------------')
+    n_error = 0
+    pos = np.array([0.0, 0.0, 0.4])
+    for q1 in q1_sequence:
+        for q2 in q2_sequence:
+            pos[0] = q1
+            pos[1] = q2
+            # print(f"设定的关节角为: {pos}")
+            
+            ts = time.time()
+            d = model.ik_q2d(pos, "index")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver3()为: {d}")
+            
+            ts = time.time()
+            pos_fk = model.fk_d2q(d, "index")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver3()为: {pos_fk}")
+            
+            # print(f"pos误差为: {pos - pos_fk[:3]}")
+            if np.linalg.norm(pos - pos_fk[:3]) > 0.05:
+                n_error += 1
+          
+    print(f"ik求解错误次数为: {n_error}")  
+    
+    print(f'---------------测试无名指、小拇指---------------')
+    n_error = 0
+    
+    q1_sequence = np.arange(-0.4, 0.4, 0.05)
+    q2_sequence = np.arange(0, 1.75, 0.05)
+    
+    pos = np.array([0.0, 0.0])
+    for q1 in q1_sequence:
+        for q2 in q2_sequence:
+            pos[0] = q1
+            pos[1] = q2
+            # print(f"设定的关节角为: {pos}")
+            
+            ts = time.time()
+            d = model.ik_q2d(pos, "fourth")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver2()为: {d}")
+            
+            ts = time.time()
+            pos_fk = model.fk_d2q(d, "fourth")
+            # print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver2()为: {pos_fk}")
+            
+            # print(f"pos误差为: {pos - pos_fk[:2]}")
+            if np.linalg.norm(pos - pos_fk[:2]) > 0.05:
+                print(f"设定的关节角为: {pos}")
+                print(f"用时为: {1000*(time.time()-ts)} ms, ik_driver2()为: {d}")
+                print(f"用时为: {1000*(time.time()-ts)} ms, fk_driver2()为: {pos_fk}")
+                print(f"pos误差为: {pos - pos_fk[:2]}")
+                n_error += 1
+                
+    print(f"ik求解错误次数为: {n_error}")
