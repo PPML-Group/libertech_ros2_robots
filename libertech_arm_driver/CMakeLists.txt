@@ -36,6 +36,7 @@ endif()
 # 外部导出给其他功能包用
 add_library(arm_driver SHARED
   src/ArmDriver.cpp
+  src/ArmSDK.cpp
 )
 target_link_libraries(arm_driver controlcan.so pthread)
 
@@ -72,6 +73,9 @@ target_link_libraries(demo_arm_driver arm_driver)
 add_executable(demo_arm_calibration src/calibration.cpp)
 target_link_libraries(demo_arm_calibration arm_driver)
 
+add_executable(demo_arm_sdk src/demo_arm_sdk.cpp)
+target_link_libraries(demo_arm_sdk arm_driver)
+
 add_executable(demo_arm_hello src/node_hello.cpp)
 ament_target_dependencies(demo_arm_hello 
   rclcpp sensor_msgs
@@ -98,7 +102,7 @@ install(
 )
 
 install(
-  TARGETS demo_arm_driver test_hex demo_arm_hello demo_arm_calibration
+  TARGETS demo_arm_driver test_hex demo_arm_hello demo_arm_calibration demo_arm_sdk
   DESTINATION lib/${PROJECT_NAME}
 )
 

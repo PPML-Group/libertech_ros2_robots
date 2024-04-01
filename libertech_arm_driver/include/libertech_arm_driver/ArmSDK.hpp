@@ -47,11 +47,11 @@ struct Data
   int error[NUM];
 };
 
-class ArmDriver
+class ArmSDK
 {
 public:
-  ArmDriver(int canID_);  // Constructor
-  ~ArmDriver();
+  ArmSDK(int canID_);  // Constructor
+  ~ArmSDK();
 
   // 运行
   int init();

@@ -1,11 +1,12 @@
 #include "libertech_arm_driver/ArmSDK.hpp"
+#include <chrono>
 
-ArmDriver::ArmDriver(int canID_)
+ArmSDK::ArmSDK(int canID_)
 {
   canID_ = canID_;
 }
 
-ArmDriver::~ArmDriver()
+ArmSDK::~ArmSDK()
 {
   delete cmd_;  // 释放 cmd_ 指向的内存
   delete data_; // 释放 data_ 指向的内存
@@ -17,7 +18,7 @@ ArmDriver::~ArmDriver()
   // VCI_CloseDevice(VCI_USBCAN2, 0); // 关闭设备。
 }
 
-int ArmDriver::init()
+int ArmSDK::init()
 {
   // 初始化USBCAN设备
   vciNum_ = VCI_FindUsbDevice2(vciPInfoAll_);
@@ -170,8 +171,9 @@ int ArmDriver::init()
   return 1;
 }
 
-int ArmDriver::doSendReceive()
+int ArmSDK::doSendReceive()
 {
+  auto start = std::chrono::high_resolution_clock::now();
   int ret;
   // TODO: 线程锁
 
@@ -198,60 +200,113 @@ int ArmDriver::doSendReceive()
   }
 
   // std::cout<<"ret: "<<ret<<std::endl;
-  usleep(500);
+  // usleep(500);
 
-  VCI_CAN_OBJ rec[3000];
-  int reclen = 0;
-  int ind = 0;
-  // 总是获取电流速度位置，在使用线程时
-  if ((reclen = VCI_Receive(VCI_USBCAN2, 0, ind, rec, 3000, 100)) > 0) // 调用接收函数，如果有数据，进行数据处理显示。
-  {
-    for (int j = 0; j < reclen; j++)
-    {
-      // printf("CAN%d RX ID:0x%08X", ind+1, rec[j].ID);//ID
-      // if(rec[j].ExternFlag==0) printf(" Standard ");//帧格式：标准帧
-      // if(rec[j].ExternFlag==1) printf(" Extend   ");//帧格式：扩展帧
-      // if(rec[j].RemoteFlag==0) printf(" Data   ");//帧类型：数据帧
-      // if(rec[j].RemoteFlag==1) printf(" Remote ");//帧类型：远程帧
-      // printf("DLC:0x%02X",rec[j].DataLen);//帧长度
-      // printf(" data:0x");	//数据
-      // for(int i = 0; i < rec[j].DataLen; i++)
-      // {
-      // 	printf(" %02X", rec[j].Data[i]);
-      // }
-      printf("CAN%d RX ID:0x%08X ", ind + 1, rec[j].ID); // ID
+  // VCI_CAN_OBJ rec[3000];
+  // int reclen = 0;
+  // int ind = 0;
+  // // 总是获取电流速度位置，在使用线程时
+  // if ((reclen = VCI_Receive(VCI_USBCAN2, 0, ind, rec, 3000, 100)) > 0) // 调用接收函数，如果有数据，进行数据处理显示。
+  // {
+  //   for (int j = 0; j < reclen; j++)
+  //   {
+  //     // printf("CAN%d RX ID:0x%08X", ind+1, rec[j].ID);//ID
+  //     // if(rec[j].ExternFlag==0) printf(" Standard ");//帧格式：标准帧
+  //     // if(rec[j].ExternFlag==1) printf(" Extend   ");//帧格式：扩展帧
+  //     // if(rec[j].RemoteFlag==0) printf(" Data   ");//帧类型：数据帧
+  //     // if(rec[j].RemoteFlag==1) printf(" Remote ");//帧类型：远程帧
+  //     // printf("DLC:0x%02X",rec[j].DataLen);//帧长度
+  //     // printf(" data:0x");	//数据
+  //     // for(int i = 0; i < rec[j].DataLen; i++)
+  //     // {
+  //     // 	printf(" %02X", rec[j].Data[i]);
+  //     // }
+  //     printf("CAN%d RX ID:0x%08X ", ind + 1, rec[j].ID); // ID
 
-      // 解析电流（前两个字节）
-      int32_t cur_int =
-          static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]); // TODO: 2字节怎么转
-      // data_->tau[rec[j].ID-1];
-      // 解析速度（中间两个字节）
-      int32_t qd_int =
-          static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]); // TODO: 2字节怎么转
-      // data_->tau[rec[j].ID-1];
-      // 解析位置（最后四个字节）
-      uint8_t bytes[4];
-      std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
+  //     // 解析电流（前两个字节）
+  //     int32_t cur_int =
+  //         static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]); // TODO: 2字节怎么转
+  //     // data_->tau[rec[j].ID-1];
+  //     // 解析速度（中间两个字节）
+  //     int32_t qd_int =
+  //         static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]); // TODO: 2字节怎么转
+  //     // data_->tau[rec[j].ID-1];
+  //     // 解析位置（最后四个字节）
+  //     uint8_t bytes[4];
+  //     std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
 
-      {
-        std::lock_guard<std::mutex> lock(mtx_);
-        data_->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
-        // data_->qd
+  //     {
+  //       std::lock_guard<std::mutex> lock(mtx_);
+  //       data_->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
+  //       // data_->qd
 
-        std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
-      }
+  //       std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
+  //     }
 
-      // printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
-      // printf("\n");
-    }
-  }
+  //     // printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
+  //     // printf("\n");
+  //   }
+  // }
 
-  //   std::cout << "reclen: " << reclen << std::endl;
+  // //   std::cout << "reclen: " << reclen << std::endl;
+  	// std::cout<<"Debug: doSendReceive -- ret"<<ret<<std::endl;
+  // std::cout<<"ret: "<<ret<<std::endl;
+  usleep(100);
+
+//   for (int idCAN = 0; idCAN < numCAN_; idCAN++)
+//   {
+// 	VCI_CAN_OBJ rec[3000];
+// 	int reclen = 0;
+// 	// 总是获取电流速度位置，在使用线程时
+// 	if ((reclen = VCI_Receive(VCI_USBCAN2, 0, idCAN, rec, 3000, 100)) > 0)	//调用接收函数，如果有数据，进行数据处理显示。
+// 	{
+// 		for (int j = 0; j < reclen; j++)
+// 		{
+// 		// printf("CAN%d RX ID:0x%08X ", idCAN + 1, rec[j].ID);  // ID
+
+// 		// 解析电流（前两个字节）
+// 		int32_t cur_int =
+// 			static_cast<int32_t>(rec[j].Data[1]) << 8 | static_cast<int32_t>(rec[j].Data[0]);	 // TODO: 2字节怎么转
+// 		// data_->tau[rec[j].ID-1];
+// 		// 解析速度（中间两个字节）
+// 		int32_t qd_int =
+// 			static_cast<int32_t>(rec[j].Data[3]) << 8 | static_cast<int32_t>(rec[j].Data[2]);	 // TODO: 2字节怎么转
+// 		// data_->tau[rec[j].ID-1];
+// 		// 解析位置（最后四个字节）
+// 		uint8_t bytes[4];
+// 		std::copy(rec[j].Data + 4, rec[j].Data + 8, bytes);
+// 		// swapEndianness(bytes);
+
+// 		{
+// 			std::lock_guard<std::mutex> lock(mtx_);
+// 			data_->q[7*idCAN + rec[j].ID - 1] = convertHexBytesToPosition(bytes);
+// 			// data_->qd
+
+// 			// std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
+// 		}
+// 		}
+// 	}
+
+//   }
+
+auto finish = std::chrono::high_resolution_clock::now();
+auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
+std::cout << "time: " << elapsed.count() << "ms" << std::endl;
+
+
+// // 	std::cout << "qm: ";
+// //   {
+// // 	for (auto q: data_->q)
+// // 	{
+// // 		std::cout << q << " ";
+// // 	}
+// //   }
+// // std::cout << std::endl;
 
   return ret;
 }
 
-void ArmDriver::runSendReceive()
+void ArmSDK::runSendReceive()
 {
   // TODO: 只有位置模式
   while (isRunning_)
@@ -261,14 +316,14 @@ void ArmDriver::runSendReceive()
   }
 }
 
-void ArmDriver::runSendReceiveThread()
+void ArmSDK::runSendReceiveThread()
 {
   isRunning_ = true;
   thread_ = std::thread([this]
                         { runSendReceive(); }); // 使用 Lambda 表达式捕获 this
 }
 
-int ArmDriver::pause()
+int ArmSDK::pause()
 {
   isRunning_ = false;
   if (thread_.joinable())
@@ -278,7 +333,7 @@ int ArmDriver::pause()
   usleep(100000);
 }
 
-int ArmDriver::stop()
+int ArmSDK::stop()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -293,12 +348,12 @@ int ArmDriver::stop()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::setId(int id, int setID)
+int ArmSDK::setId(int id, int setID)
 {
   // 暂时不用
   VCI_CAN_OBJ send[1];
@@ -332,7 +387,7 @@ int ArmDriver::setId(int id, int setID)
   return ret;
 }
 
-int ArmDriver::sendKp()
+int ArmSDK::sendKp()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -360,12 +415,12 @@ int ArmDriver::sendKp()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::sendKd()
+int ArmSDK::sendKd()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -392,12 +447,12 @@ int ArmDriver::sendKd()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::sendQ()
+int ArmSDK::sendQ()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -424,12 +479,12 @@ int ArmDriver::sendQ()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::sendQd()
+int ArmSDK::sendQd()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -456,12 +511,12 @@ int ArmDriver::sendQd()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::sendTau()
+int ArmSDK::sendTau()
 {
   VCI_CAN_OBJ send[numJoints_];
   for (int i = 0; i < numJoints_; i++)
@@ -489,12 +544,12 @@ int ArmDriver::sendTau()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::setModePosition()
+int ArmSDK::setModePosition()
 {
   printf("Set Mode: Position\n");
 
@@ -512,7 +567,7 @@ int ArmDriver::setModePosition()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   usleep(500);
   // std::cout<<"ret: "<<ret<<std::endl;
@@ -616,7 +671,7 @@ int ArmDriver::setModePosition()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   usleep(100000);
@@ -624,7 +679,7 @@ int ArmDriver::setModePosition()
   return 1;
 }
 
-int ArmDriver::setModeVelocity()
+int ArmSDK::setModeVelocity()
 {
   // 与设置位置不同，不用读取，直接设为0
   printf("Set Mode: Velocity\n");
@@ -642,7 +697,7 @@ int ArmDriver::setModeVelocity()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   usleep(100000);
@@ -650,7 +705,7 @@ int ArmDriver::setModeVelocity()
   return 1;
 }
 
-int ArmDriver::setModeTorque()
+int ArmSDK::setModeTorque()
 {
   // 与设置位置不同，不用读取，直接设为0
   printf("Set Mode: Torque\n");
@@ -668,7 +723,7 @@ int ArmDriver::setModeTorque()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   usleep(100000);
@@ -676,7 +731,7 @@ int ArmDriver::setModeTorque()
   return 1;
 }
 
-int ArmDriver::setMode(const std::string &mode)
+int ArmSDK::setMode(const std::string &mode)
 {
   // TODO: 目前只有位置控制
   // stop(); // TODO： 切换是否需要停止
@@ -703,7 +758,7 @@ int ArmDriver::setMode(const std::string &mode)
   return ret;
 }
 
-int ArmDriver::resetToDefault()
+int ArmSDK::resetToDefault()
 {
 
   VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
@@ -719,14 +774,14 @@ int ArmDriver::resetToDefault()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   usleep(100000);
   return 1;
 }
 
-int ArmDriver::clearError()
+int ArmSDK::clearError()
 {
 
   VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
@@ -742,14 +797,14 @@ int ArmDriver::clearError()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   usleep(100000);
   return 1;
 }
 
-int ArmDriver::setMinMaxPos(const Vec7 &qmin, const Vec7 &qmax)
+int ArmSDK::setMinMaxPos(const Vec7 &qmin, const Vec7 &qmax)
 {
 
   VCI_CAN_OBJ send[numJoints_]; // 使用局部变量send
@@ -778,7 +833,7 @@ int ArmDriver::setMinMaxPos(const Vec7 &qmin, const Vec7 &qmax)
 
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   ////////////////////////////////////////////////////////////////////////////////////////
   for (int i = 0; i < numJoints_; i++)
@@ -803,22 +858,22 @@ int ArmDriver::setMinMaxPos(const Vec7 &qmin, const Vec7 &qmax)
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::setMinMaxVel(const Vec7 &vmin, const Vec7 &vmax)
+int ArmSDK::setMinMaxVel(const Vec7 &vmin, const Vec7 &vmax)
 {
-  return 0;
+  // return 0;
 }
 
-int ArmDriver::setMinMaxAcc(const Vec7 &amin, const Vec7 &amax)
+int ArmSDK::setMinMaxAcc(const Vec7 &amin, const Vec7 &amax)
 {
-  return 0;
+  // return 0;
 }
 
-int ArmDriver::clearCmd()
+int ArmSDK::clearCmd()
 {
   if (cmd_)
   {
@@ -834,7 +889,7 @@ int ArmDriver::clearCmd()
   return 1;
 }
 
-int ArmDriver::clearData()
+int ArmSDK::clearData()
 {
   if (data_)
   {
@@ -848,7 +903,7 @@ int ArmDriver::clearData()
   return 1;
 }
 
-int ArmDriver::setQ(const Vec7 &q)
+int ArmSDK::setQ(const Vec7 &q)
 {
   std::lock_guard<std::mutex> lock(mtx_);
 
@@ -859,7 +914,7 @@ int ArmDriver::setQ(const Vec7 &q)
   return 1;
 }
 
-int ArmDriver::setQd(const Vec7 &qd)
+int ArmSDK::setQd(const Vec7 &qd)
 {
   std::lock_guard<std::mutex> lock(mtx_);
 
@@ -870,12 +925,12 @@ int ArmDriver::setQd(const Vec7 &qd)
   return 1;
 }
 
-int ArmDriver::setTau(const Vec7 &tau)
+int ArmSDK::setTau(const Vec7 &tau)
 {
-  return 0;
+  // return 0;
 }
 
-int ArmDriver::setKp(const Vec7 &kp)
+int ArmSDK::setKp(const Vec7 &kp)
 {
   std::lock_guard<std::mutex> lock(mtx_);
 
@@ -913,7 +968,7 @@ int ArmDriver::setKp(const Vec7 &kp)
   return 1;
 }
 
-int ArmDriver::setKd(const Vec7 &kd)
+int ArmSDK::setKd(const Vec7 &kd)
 {
   std::lock_guard<std::mutex> lock(mtx_);
 
@@ -951,8 +1006,8 @@ int ArmDriver::setKd(const Vec7 &kd)
   return 1;
 }
 
-// int ArmDriver::getQ(double (&qm)[7])
-int ArmDriver::getQ(Vec7 &qm)
+// int ArmSDK::getQ(double (&qm)[7])
+int ArmSDK::getQ(Vec7 &qm)
 {
   if (isRunning_)
   {
@@ -972,7 +1027,7 @@ int ArmDriver::getQ(Vec7 &qm)
   return 1; // 返回空的 vector
 }
 
-int ArmDriver::getQd(Vec7 &qdm)
+int ArmSDK::getQd(Vec7 &qdm)
 {
   if (isRunning_)
   {
@@ -986,7 +1041,7 @@ int ArmDriver::getQd(Vec7 &qdm)
   return 1; // 返回空的 vector
 }
 
-int ArmDriver::getTau(Vec7 &qm)
+int ArmSDK::getTau(Vec7 &qm)
 {
   if (isRunning_)
   {
@@ -1000,7 +1055,7 @@ int ArmDriver::getTau(Vec7 &qm)
   return 1; // 返回空的 vector
 }
 
-int ArmDriver::getKp(Vec7 &kpm)
+int ArmSDK::getKp(Vec7 &kpm)
 {
   // 线程里是不随时获取Kp的，因此只能手动单次获取
 
@@ -1017,7 +1072,7 @@ int ArmDriver::getKp(Vec7 &kpm)
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   ////////////////////////////////////////////////////////////////////////////////////////////
   VCI_CAN_OBJ rec[3000]; // 接收缓存，设为3000为佳。
@@ -1057,7 +1112,7 @@ int ArmDriver::getKp(Vec7 &kpm)
   return 1;
 }
 
-int ArmDriver::getKd(Vec7 &kdm)
+int ArmSDK::getKd(Vec7 &kdm)
 {
   // 线程里是不随时获取Kd的，因此只能手动单次获取
 
@@ -1074,7 +1129,7 @@ int ArmDriver::getKd(Vec7 &kdm)
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   ////////////////////////////////////////////////////////////////////////////////////////////
@@ -1114,41 +1169,41 @@ int ArmDriver::getKd(Vec7 &kdm)
   return 1;
 }
 
-void ArmDriver::convertPositionToHexBytes(float p, uint8_t (&bytes)[4])
+void ArmSDK::convertPositionToHexBytes(float p, uint8_t (&bytes)[4])
 {
   float p_convert = convertRadiansToDegrees(p) / 360 * 51 * 65536;
   convertFloatToHexBytes(p_convert, bytes);
 }
 
-void ArmDriver::convertVelocityToHexBytes(float v, uint8_t (&bytes)[4])
+void ArmSDK::convertVelocityToHexBytes(float v, uint8_t (&bytes)[4])
 {
   convertFloatToHexBytes((convertRadiansToDegrees(v) * 51 * 100) / 360, bytes); // Check
 }
 
-void ArmDriver::convertTorqueToHexBytes(float t, uint8_t (&bytes)[4])
+void ArmSDK::convertTorqueToHexBytes(float t, uint8_t (&bytes)[4])
 {
   // 力转电流
   float cur = t; // Check
   convertFloatToHexBytes(cur, bytes);
 }
 
-float ArmDriver::convertHexBytesToPosition(const uint8_t (&bytes)[4])
+float ArmSDK::convertHexBytesToPosition(const uint8_t (&bytes)[4])
 {
   float p_convert = convertHexBytesToFloat(bytes) * 360 / (51 * 65536);
   return convertDegreesToRadians(p_convert);
 }
 
-float ArmDriver::convertHexBytesToVelocity(const uint8_t (&bytes)[4])
+float ArmSDK::convertHexBytesToVelocity(const uint8_t (&bytes)[4])
 {
   float p_convert = convertHexBytesToFloat(bytes) * 360 / (51 * 65536); // Check
 }
 
-float ArmDriver::convertHexBytesToTorque(const uint8_t (&bytes)[4])
+float ArmSDK::convertHexBytesToTorque(const uint8_t (&bytes)[4])
 {
   // Check
 }
 
-void ArmDriver::convertFloatToHexBytes(float x, uint8_t (&bytes)[4])
+void ArmSDK::convertFloatToHexBytes(float x, uint8_t (&bytes)[4])
 {
   // 默认Little-Endian, 转换后低位在前,4位
   int32_t int_x = static_cast<int32_t>(x);
@@ -1160,7 +1215,7 @@ void ArmDriver::convertFloatToHexBytes(float x, uint8_t (&bytes)[4])
   // swapEndianness(bytes);
 }
 
-float ArmDriver::convertHexBytesToFloat(const uint8_t (&bytes)[4])
+float ArmSDK::convertHexBytesToFloat(const uint8_t (&bytes)[4])
 {
   // 默认Little-Endian, 输入低位在前的数
   int32_t int_x = 0;
@@ -1175,23 +1230,23 @@ float ArmDriver::convertHexBytesToFloat(const uint8_t (&bytes)[4])
   return static_cast<float>(int_x);
 }
 
-double ArmDriver::convertDegreesToRadians(double degrees)
+double ArmSDK::convertDegreesToRadians(double degrees)
 {
   return degrees * M_PI / 180.0;
 }
 
-double ArmDriver::convertRadiansToDegrees(double radians)
+double ArmSDK::convertRadiansToDegrees(double radians)
 {
   return radians * 180.0 / M_PI;
 }
 
-void ArmDriver::swapEndianness(uint8_t (&bytes)[4])
+void ArmSDK::swapEndianness(uint8_t (&bytes)[4])
 {
   std::swap(bytes[0], bytes[3]);
   std::swap(bytes[1], bytes[2]);
 }
 
-void ArmDriver::printHexBytes(const uint8_t (&bytes)[4])
+void ArmSDK::printHexBytes(const uint8_t (&bytes)[4])
 {
   std::cout << "Hex representation: ";
   // for (int i = 3; i >= 0; --i) {
@@ -1204,7 +1259,7 @@ void ArmDriver::printHexBytes(const uint8_t (&bytes)[4])
   std::cout << std::endl;
 }
 
-int ArmDriver::setZero()
+int ArmSDK::setZero()
 {
 
   int32_t buff_ff[numJoints_];
@@ -1226,7 +1281,7 @@ int ArmDriver::setZero()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   VCI_CAN_OBJ rec[3000]; // 接收缓存，设为3000为佳。
@@ -1282,7 +1337,7 @@ int ArmDriver::setZero()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
 
   if ((reclen = VCI_Receive(VCI_USBCAN2, 0, canID_, rec, 3000, 100)) >
@@ -1347,12 +1402,12 @@ int ArmDriver::setZero()
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
 
-int ArmDriver::save()
+int ArmSDK::save()
 {
 
   VCI_CAN_OBJ send[numJoints_];
@@ -1369,7 +1424,7 @@ int ArmDriver::save()
 
   if (VCI_Transmit(VCI_USBCAN2, 0, canID_, send, numJoints_) != 1)
   {
-    return 0; // 发送失败，返回0
+    // return 0; // 发送失败，返回0
   }
   return 1;
 }
