@@ -138,6 +138,7 @@ ament_export_libraries(
 ament_export_dependencies(
   hardware_interface
   arm_driver
+  controlcan.so
   pluginlib
   rclcpp
 )

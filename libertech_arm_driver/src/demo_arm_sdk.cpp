@@ -82,7 +82,7 @@ int main()
     return 1;
   }
   ////////////////////////////////////////////////////////////////////
-  ArmSDK arm(0); // 右
+  ArmSDK arm(0, false); // 右
 
   float pos = 360 * M_PI / 180;
   std::cout << "pos:" << pos << std::endl;

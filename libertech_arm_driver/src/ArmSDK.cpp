@@ -1,9 +1,10 @@
 #include "libertech_arm_driver/ArmSDK.hpp"
 #include <chrono>
 
-ArmSDK::ArmSDK(int canID_)
+ArmSDK::ArmSDK(int canID_, bool canDeviceInitialize)
 {
   canID_ = canID_;
+  canDeviceInitialize_ = canDeviceInitialize;
 }
 
 ArmSDK::~ArmSDK()
@@ -20,121 +21,125 @@ ArmSDK::~ArmSDK()
 
 int ArmSDK::init()
 {
-  // 初始化USBCAN设备
-  vciNum_ = VCI_FindUsbDevice2(vciPInfoAll_);
-  printf(">>USBCAN DEVICE NUM:");
-  printf("%d", vciNum_);
-  printf(" PCS");
-  printf("\n");
-
-  for (int i = 0; i < vciNum_; i++)
+  printf(">>init");
+  if (!canDeviceInitialize_)
   {
-    printf("Device:");
-    printf("%d", i);
-    printf("\n");
-    printf(">>Get VCI_ReadBoardInfo success!\n");
-
-    printf(">>Serial_Num:%c", vciPInfoAll_[i].str_Serial_Num[0]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[1]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[2]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[3]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[4]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[5]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[6]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[7]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[8]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[9]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[10]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[11]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[12]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[13]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[14]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[15]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[16]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[17]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[18]);
-    printf("%c", vciPInfoAll_[i].str_Serial_Num[19]);
+    // 初始化USBCAN设备
+    vciNum_ = VCI_FindUsbDevice2(vciPInfoAll_);
+    printf(">>USBCAN DEVICE NUM:");
+    printf("%d", vciNum_);
+    printf(" PCS");
     printf("\n");
 
-    printf(">>hw_Type:%c", vciPInfoAll_[i].str_hw_Type[0]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[1]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[2]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[3]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[4]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[5]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[6]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[7]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[8]);
-    printf("%c", vciPInfoAll_[i].str_hw_Type[9]);
-    printf("\n");
+    for (int i = 0; i < vciNum_; i++)
+    {
+      printf("Device:");
+      printf("%d", i);
+      printf("\n");
+      printf(">>Get VCI_ReadBoardInfo success!\n");
 
-    printf(">>Firmware Version:V");
-    printf("%x", (vciPInfoAll_[i].fw_Version & 0xF00) >> 8);
-    printf(".");
-    printf("%x", (vciPInfoAll_[i].fw_Version & 0xF0) >> 4);
-    printf("%x", vciPInfoAll_[i].fw_Version & 0xF);
-    printf("\n");
-  }
+      printf(">>Serial_Num:%c", vciPInfoAll_[i].str_Serial_Num[0]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[1]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[2]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[3]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[4]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[5]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[6]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[7]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[8]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[9]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[10]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[11]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[12]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[13]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[14]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[15]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[16]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[17]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[18]);
+      printf("%c", vciPInfoAll_[i].str_Serial_Num[19]);
+      printf("\n");
 
-  // 打开第一个USBCAN，理论上只有一个
-  if (VCI_OpenDevice(VCI_USBCAN2, 0, 0) == 1) // 打开设备
-  {
-    printf(">>open deivce success!\n"); // 打开设备成功
-  }
-  else
-  {
-    printf(">>open deivce error!\n");
-    exit(1);
-  }
-  if (VCI_ReadBoardInfo(VCI_USBCAN2, 0, &vciPInfo_) == 1) // 读取设备序列号、版本等信息。
-  {
-    printf(">>Get VCI_ReadBoardInfo success!\n");
+      printf(">>hw_Type:%c", vciPInfoAll_[i].str_hw_Type[0]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[1]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[2]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[3]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[4]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[5]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[6]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[7]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[8]);
+      printf("%c", vciPInfoAll_[i].str_hw_Type[9]);
+      printf("\n");
 
-    printf(">>Serial_Num:%c", vciPInfo_.str_Serial_Num[0]);
-    printf("%c", vciPInfo_.str_Serial_Num[1]);
-    printf("%c", vciPInfo_.str_Serial_Num[2]);
-    printf("%c", vciPInfo_.str_Serial_Num[3]);
-    printf("%c", vciPInfo_.str_Serial_Num[4]);
-    printf("%c", vciPInfo_.str_Serial_Num[5]);
-    printf("%c", vciPInfo_.str_Serial_Num[6]);
-    printf("%c", vciPInfo_.str_Serial_Num[7]);
-    printf("%c", vciPInfo_.str_Serial_Num[8]);
-    printf("%c", vciPInfo_.str_Serial_Num[9]);
-    printf("%c", vciPInfo_.str_Serial_Num[10]);
-    printf("%c", vciPInfo_.str_Serial_Num[11]);
-    printf("%c", vciPInfo_.str_Serial_Num[12]);
-    printf("%c", vciPInfo_.str_Serial_Num[13]);
-    printf("%c", vciPInfo_.str_Serial_Num[14]);
-    printf("%c", vciPInfo_.str_Serial_Num[15]);
-    printf("%c", vciPInfo_.str_Serial_Num[16]);
-    printf("%c", vciPInfo_.str_Serial_Num[17]);
-    printf("%c", vciPInfo_.str_Serial_Num[18]);
-    printf("%c", vciPInfo_.str_Serial_Num[19]);
-    printf("\n");
+      printf(">>Firmware Version:V");
+      printf("%x", (vciPInfoAll_[i].fw_Version & 0xF00) >> 8);
+      printf(".");
+      printf("%x", (vciPInfoAll_[i].fw_Version & 0xF0) >> 4);
+      printf("%x", vciPInfoAll_[i].fw_Version & 0xF);
+      printf("\n");
+    }
 
-    printf(">>hw_Type:%c", vciPInfo_.str_hw_Type[0]);
-    printf("%c", vciPInfo_.str_hw_Type[1]);
-    printf("%c", vciPInfo_.str_hw_Type[2]);
-    printf("%c", vciPInfo_.str_hw_Type[3]);
-    printf("%c", vciPInfo_.str_hw_Type[4]);
-    printf("%c", vciPInfo_.str_hw_Type[5]);
-    printf("%c", vciPInfo_.str_hw_Type[6]);
-    printf("%c", vciPInfo_.str_hw_Type[7]);
-    printf("%c", vciPInfo_.str_hw_Type[8]);
-    printf("%c", vciPInfo_.str_hw_Type[9]);
-    printf("\n");
+    // 打开第一个USBCAN，理论上只有一个
+    if (VCI_OpenDevice(VCI_USBCAN2, 0, 0) == 1) // 打开设备
+    {
+      printf(">>open deivce success!\n"); // 打开设备成功
+    }
+    else
+    {
+      printf(">>open deivce error!\n");
+      // exit(1);
+    }
+    if (VCI_ReadBoardInfo(VCI_USBCAN2, 0, &vciPInfo_) == 1) // 读取设备序列号、版本等信息。
+    {
+      printf(">>Get VCI_ReadBoardInfo success!\n");
 
-    printf(">>Firmware Version:V");
-    printf("%x", (vciPInfo_.fw_Version & 0xF00) >> 8);
-    printf(".");
-    printf("%x", (vciPInfo_.fw_Version & 0xF0) >> 4);
-    printf("%x", vciPInfo_.fw_Version & 0xF);
-    printf("\n");
-  }
-  else
-  {
-    printf(">>Get VCI_ReadBoardInfo error!\n");
-    exit(1);
+      printf(">>Serial_Num:%c", vciPInfo_.str_Serial_Num[0]);
+      printf("%c", vciPInfo_.str_Serial_Num[1]);
+      printf("%c", vciPInfo_.str_Serial_Num[2]);
+      printf("%c", vciPInfo_.str_Serial_Num[3]);
+      printf("%c", vciPInfo_.str_Serial_Num[4]);
+      printf("%c", vciPInfo_.str_Serial_Num[5]);
+      printf("%c", vciPInfo_.str_Serial_Num[6]);
+      printf("%c", vciPInfo_.str_Serial_Num[7]);
+      printf("%c", vciPInfo_.str_Serial_Num[8]);
+      printf("%c", vciPInfo_.str_Serial_Num[9]);
+      printf("%c", vciPInfo_.str_Serial_Num[10]);
+      printf("%c", vciPInfo_.str_Serial_Num[11]);
+      printf("%c", vciPInfo_.str_Serial_Num[12]);
+      printf("%c", vciPInfo_.str_Serial_Num[13]);
+      printf("%c", vciPInfo_.str_Serial_Num[14]);
+      printf("%c", vciPInfo_.str_Serial_Num[15]);
+      printf("%c", vciPInfo_.str_Serial_Num[16]);
+      printf("%c", vciPInfo_.str_Serial_Num[17]);
+      printf("%c", vciPInfo_.str_Serial_Num[18]);
+      printf("%c", vciPInfo_.str_Serial_Num[19]);
+      printf("\n");
+
+      printf(">>hw_Type:%c", vciPInfo_.str_hw_Type[0]);
+      printf("%c", vciPInfo_.str_hw_Type[1]);
+      printf("%c", vciPInfo_.str_hw_Type[2]);
+      printf("%c", vciPInfo_.str_hw_Type[3]);
+      printf("%c", vciPInfo_.str_hw_Type[4]);
+      printf("%c", vciPInfo_.str_hw_Type[5]);
+      printf("%c", vciPInfo_.str_hw_Type[6]);
+      printf("%c", vciPInfo_.str_hw_Type[7]);
+      printf("%c", vciPInfo_.str_hw_Type[8]);
+      printf("%c", vciPInfo_.str_hw_Type[9]);
+      printf("\n");
+
+      printf(">>Firmware Version:V");
+      printf("%x", (vciPInfo_.fw_Version & 0xF00) >> 8);
+      printf(".");
+      printf("%x", (vciPInfo_.fw_Version & 0xF0) >> 4);
+      printf("%x", vciPInfo_.fw_Version & 0xF);
+      printf("\n");
+    }
+    else
+    {
+      printf(">>Get VCI_ReadBoardInfo error!\n");
+      // exit(1);
+    }
   }
 
   vciConfig_.AccCode = 0;
@@ -400,7 +405,7 @@ int ArmSDK::sendKp()
     {
       std::lock_guard<std::mutex> lock(mtx_);
       convertFloatToHexBytes(cmd_->kpDes[i], u8); //
-      std::cout << "kp["<< i<<"]: " << cmd_->kpDes[i] << std::endl;
+      // std::cout << "kp["<< i<<"]: " << cmd_->kpDes[i] << std::endl;
     }
 
     for (size_t j = 1; j < 5; j++)
@@ -584,21 +589,21 @@ int ArmSDK::setModePosition()
   {
     for (int j = 0; j < reclen; j++)
     {
-      printf("CAN%d RX ID:0x%08X", canID_, rec[j].ID); // ID
-      if (rec[j].ExternFlag == 0)
-        printf(" Standard "); // 帧格式：标准帧
-      if (rec[j].ExternFlag == 1)
-        printf(" Extend   "); // 帧格式：扩展帧
-      if (rec[j].RemoteFlag == 0)
-        printf(" Data   "); // 帧类型：数据帧
-      if (rec[j].RemoteFlag == 1)
-        printf(" Remote ");                 // 帧类型：远程帧
-      printf("DLC:0x%02X", rec[j].DataLen); // 帧长度
-      printf(" data:0x");                   // 数据
-      for (int i = 0; i < rec[j].DataLen; i++)
-      {
-        printf(" %02X", rec[j].Data[i]);
-      }
+      // printf("CAN%d RX ID:0x%08X", canID_, rec[j].ID); // ID
+      // if (rec[j].ExternFlag == 0)
+      //   printf(" Standard "); // 帧格式：标准帧
+      // if (rec[j].ExternFlag == 1)
+      //   printf(" Extend   "); // 帧格式：扩展帧
+      // if (rec[j].RemoteFlag == 0)
+      //   printf(" Data   "); // 帧类型：数据帧
+      // if (rec[j].RemoteFlag == 1)
+      //   printf(" Remote ");                 // 帧类型：远程帧
+      // printf("DLC:0x%02X", rec[j].DataLen); // 帧长度
+      // printf(" data:0x");                   // 数据
+      // for (int i = 0; i < rec[j].DataLen; i++)
+      // {
+      //   printf(" %02X", rec[j].Data[i]);
+      // }
 
       if (rec[j].DataLen == 5)
       {
@@ -615,8 +620,8 @@ int ArmSDK::setModePosition()
       // int_q[rec[j].ID - 1] = (int32_t(rec[j].Data[1]) << 24) | (int32_t(rec[j].Data[2]) << 16) |
       // 					   (int32_t(rec[j].Data[3]) << 8) | (int32_t(rec[j].Data[4]));
 
-      printf(" TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
-      printf("\n");
+      // printf(" TimeStamp:0x%08X", rec[j].TimeStamp); // 时间标识。
+      // printf("\n");
     }
   }
 
@@ -643,7 +648,7 @@ int ArmSDK::setModePosition()
     //   {
     // 	u8[j] = (int_q[i] >> (j * 8)) & 0xFF;
     //   }
-    printHexBytes(u8);
+    // printHexBytes(u8);
     //   swapEndianness(u8);
 
     // data_->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
@@ -651,7 +656,7 @@ int ArmSDK::setModePosition()
     // printf(" TimeStamp:0x%08X",rec[j].TimeStamp);//时间标识。
     // printf("\n");
 
-    std::cout << "Initial q[" << i << "]  =  " << convertHexBytesToPosition(u8) << std::endl;
+    // std::cout << "Initial q[" << i << "]  =  " << convertHexBytesToPosition(u8) << std::endl;
 
     for (size_t j = 1; j < 5; j++)
     {
@@ -952,9 +957,12 @@ int ArmSDK::getQ(Vec7 &qm)
     // 返回DATA中的值
     // Eigen::Map<Vec7> vector(qm, 7);
     // qm = data_->q
-    for (int i = 0; i < 7; ++i)
     {
-      qm[i] = data_->q[i];
+      std::lock_guard<std::mutex> lock(mtx_);
+      for (int i = 0; i < 7; ++i)
+      {
+        qm[i] = data_->q[i];
+      }
     }
   }
   else
@@ -1048,7 +1056,7 @@ int ArmSDK::getKp(Vec7 &kpm)
       // kpm[rec[j].ID - 1] = convertHexBytesToFloat(bytes);
 
       kpm[rec[j].ID - 1] = static_cast<float>((int32_t(rec[j].Data[1])) | (int32_t(rec[j].Data[2]) << 8) |
-                             (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24));
+                                              (int32_t(rec[j].Data[3]) << 16) | (int32_t(rec[j].Data[4]) << 24));
     }
   }
   return 1;

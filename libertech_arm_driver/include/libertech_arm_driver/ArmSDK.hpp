@@ -50,7 +50,8 @@ struct Data
 class ArmSDK
 {
 public:
-  ArmSDK(int canID_);  // Constructor
+  // ArmSDK(int canID_);  // Constructor
+  ArmSDK(int canID_, bool canDeviceInitialize);  // Constructor
   ~ArmSDK();
 
   // 运行
@@ -141,6 +142,7 @@ private:
   int numJoints_;  // 电机数量
   // int numCAN_;     // 两条CAN
   int canID_; // 0 或 1
+  bool canDeviceInitialize_;
   // VCI_CAN_OBJ *send_;
   // VCI_CAN_OBJ rec_[3000];
   Command* cmd_ = nullptr;

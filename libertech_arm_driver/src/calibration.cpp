@@ -2,7 +2,7 @@
 
 int main()
 {
-  ArmSDK arm(0);
+  ArmSDK arm(0, false);
   arm.init();
   sleep(2);
 

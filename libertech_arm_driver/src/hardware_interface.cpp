@@ -158,9 +158,16 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
 
   // }
   // 初始化
-  armSDK_ = new ArmSDK(0);
-  armSDK_->init();
-  armSDK_->runSendReceiveThread();  // 放在这里吗
+  if (arm_type == "arm_right") {
+    armSDK_ = new ArmSDK(0, false);
+    armSDK_->init();
+    // sleep(1);
+    armSDK_->runSendReceiveThread();  // 放在这里吗
+    // sleep(1);
+  } else {
+      // armSDK_ = new ArmSDK(1, true);
+  }
+
 
   RCLCPP_INFO(LOGGER, "Hardware Interface successfully configured");
   return CallbackReturn::SUCCESS;
@@ -243,7 +250,9 @@ LibertechArmInterfaceHardware::on_deactivate(const rclcpp_lifecycle::State& /*pr
 {
   RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Deactivating ...please wait...");
 
-  armSDK_->pause();
+  // if (info_.hardware_parameters["arm_type"] == "arm_right") {
+  //   armSDK_->pause();
+  // }
 
   RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Successfully deactivated!");
   // END: This part here is for exemplary purposes - Please do not copy to your production code
@@ -267,21 +276,35 @@ hardware_interface::return_type LibertechArmInterfaceHardware::read(const rclcpp
   // }
   // RCLCPP_INFO(rclcpp::get_logger("LibertechArmInterfaceHardware"), "Joints successfully read!");
   // // END: This part here is for exemplary purposes - Please do not copy to your production code
+  if (info_.hardware_parameters["arm_type"] == "arm_right") {
+    Vec7 pos, vel, tau;
+    armSDK_->getQ(pos);
+    armSDK_->getQd(vel);
+    armSDK_->getTau(tau);
 
-  Vec7 pos, vel, tau;
-  armSDK_->getQ(pos);
-  armSDK_->getQd(vel);
-  armSDK_->getTau(tau);
-
-  for (std::size_t i = 0; i < info_.joints.size(); i++)
-  {
-    // read torque
-    arm_efforts_[i] = tau[i];  // N*m
-    // read velocity
-    arm_velocities_[i] = vel[i];  // rad/sec
-    // read position
-    arm_positions_[i] = pos[i];  // rad
+    for (std::size_t i = 0; i < info_.joints.size(); i++)
+    {
+      // read torque
+      arm_efforts_[i] = tau[i];  // N*m
+      // read velocity
+      arm_velocities_[i] = vel[i];  // rad/sec
+      // read position
+      arm_positions_[i] = pos[i];  // rad
+    }
   }
+  else {
+    for (std::size_t i = 0; i < info_.joints.size(); i++)
+    {
+      // read torque
+      arm_efforts_[i] = 0;  // N*m
+      // read velocity
+      arm_velocities_[i] = 0;  // rad/sec
+      // read position
+      arm_positions_[i] = 0;  // rad
+    }
+  }
+
+
 
   return hardware_interface::return_type::OK;
 }
@@ -324,13 +347,18 @@ hardware_interface::return_type LibertechArmInterfaceHardware::write(const rclcp
   //   // refresh feedback
   //   feedback_ = base_cyclic_.RefreshFeedback();
   // }
-  Vec7 pos;
-  for (std::size_t i = 0; i < info_.joints.size(); i++)
-  {
-    pos[i] = arm_commands_positions_[i];  // rad
-  }
+  if (info_.hardware_parameters["arm_type"] == "arm_right") {
+    Vec7 pos;
+    for (std::size_t i = 0; i < info_.joints.size(); i++)
+    {
+      pos[i] = arm_commands_positions_[i];  // rad
+    }
 
-  armSDK_->setQ(pos);
+    armSDK_->setQ(pos);
+  }
+  else {
+
+  }
 
   return hardware_interface::return_type::OK;
 }
