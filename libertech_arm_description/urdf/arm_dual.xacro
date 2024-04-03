@@ -33,9 +33,7 @@
         rpy="1.309 0 0"
         arm="arm_right"
         use_hand="$(arg use_hand)"
-        use_gripper="$(arg use_gripper)"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" />
+        use_gripper="$(arg use_gripper)" />
 
     <xacro:load_arm_hand
         prefix="$(arg prefix)" 
@@ -44,9 +42,7 @@
         rpy="-1.308997 0 0"
         arm="arm_left"
         use_hand="$(arg use_hand)"
-        use_gripper="$(arg use_gripper)"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" />
+        use_gripper="$(arg use_gripper)" />
 
     <xacro:if value="$(arg use_camera)">
         <xacro:include filename="$(find libertech_arm_description)/urdf/zed_macro.urdf.xacro" />
@@ -81,6 +77,29 @@
             name="$(arg camera_name)" 
             model="$(arg camera_model)" />        
 
+    </xacro:if>
+
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm.ros2_control.xacro" />
+    <xacro:arg name="initial_positions_file_arm" default="$(find libertech_arm_description)/config/initial_positions_arm.yaml"/>
+    <xacro:property name="initial_positions_file_arm" default="$(arg initial_positions_file_arm)"/>
+
+    <xacro:arm_ros2_control
+        prefix="$(arg prefix)"
+        use_right="True"
+        use_left="True"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        sim_ignition="$(arg sim_ignition)"
+        initial_positions="${xacro.load_yaml(initial_positions_file_arm)}" />
+
+    <xacro:if value="$(arg use_hand)">
+        <xacro:include filename="$(find libertech_hand_description)/urdf/hand.ros2_control.xacro" />
+
+        <xacro:hand_ros2_control 
+            prefix="$(arg prefix)"
+            use_right="True"
+            use_left="True"
+            use_fake_hardware="$(arg use_fake_hardware)"
+            sim_ignition="$(arg sim_ignition)"/>
     </xacro:if>
 
     <xacro:if value="$(arg sim_ignition)">

@@ -1,17 +1,17 @@
 # Default initial positions for arm's ros2_control fake system
 
 initial_positions:
-  left_joint1: 0
-  left_joint2: 0
-  left_joint3: 0
-  left_joint4: 0
-  left_joint5: 0
-  left_joint6: 0
-  left_joint7: 0
-  right_joint1: 0
-  right_joint2: 0
-  right_joint3: 0
-  right_joint4: 0
-  right_joint5: 0
-  right_joint6: 0
-  right_joint7: 0
+  arm_left_elbow_pitch_joint: 0
+  arm_left_elbow_roll_joint: 0
+  arm_left_shoulder_pitch_joint: 0
+  arm_left_shoulder_roll_joint: 0
+  arm_left_shoulder_yaw_joint: 0
+  arm_left_wrist_pitch_joint: 0
+  arm_left_wrist_yaw_joint: 0
+  arm_right_elbow_pitch_joint: 0
+  arm_right_elbow_roll_joint: 0
+  arm_right_shoulder_pitch_joint: 0
+  arm_right_shoulder_roll_joint: 0
+  arm_right_shoulder_yaw_joint: 0
+  arm_right_wrist_pitch_joint: 0
+  arm_right_wrist_yaw_joint: 0

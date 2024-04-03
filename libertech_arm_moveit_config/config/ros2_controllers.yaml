@@ -1,7 +1,7 @@
 # This config file is used by ros2_control
 controller_manager:
   ros__parameters:
-    update_rate: 100  # Hz
+    update_rate: 1000  # Hz
 
     arm_right_trajectory_controller:
       type: joint_trajectory_controller/JointTrajectoryController
@@ -17,13 +17,13 @@ controller_manager:
 arm_right_trajectory_controller:
   ros__parameters:
     joints:
-      - right_joint1
-      - right_joint2
-      - right_joint3
-      - right_joint4
-      - right_joint5
-      - right_joint6
-      - right_joint7
+      - arm_right_shoulder_pitch_joint
+      - arm_right_shoulder_roll_joint
+      - arm_right_shoulder_yaw_joint
+      - arm_right_elbow_pitch_joint
+      - arm_right_elbow_roll_joint
+      - arm_right_wrist_pitch_joint
+      - arm_right_wrist_yaw_joint
     command_interfaces:
       - position
     state_interfaces:
@@ -32,13 +32,13 @@ arm_right_trajectory_controller:
 arm_left_trajectory_controller:
   ros__parameters:
     joints:
-      - left_joint1
-      - left_joint2
-      - left_joint3
-      - left_joint4
-      - left_joint5
-      - left_joint6
-      - left_joint7
+      - arm_left_shoulder_pitch_joint
+      - arm_left_shoulder_roll_joint
+      - arm_left_shoulder_yaw_joint
+      - arm_left_elbow_pitch_joint
+      - arm_left_elbow_roll_joint
+      - arm_left_wrist_pitch_joint
+      - arm_left_wrist_yaw_joint
     command_interfaces:
       - position
     state_interfaces:

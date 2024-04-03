@@ -12,22 +12,22 @@ moveit_simple_controller_manager:
     action_ns: follow_joint_trajectory
     default: true
     joints:
-      - arm_right_joint1
-      - arm_right_joint2
-      - arm_right_joint3
-      - arm_right_joint4
-      - arm_right_joint5
-      - arm_right_joint6
-      - arm_right_joint7
+      - arm_right_shoulder_pitch_joint
+      - arm_right_shoulder_roll_joint
+      - arm_right_shoulder_yaw_joint
+      - arm_right_elbow_pitch_joint
+      - arm_right_elbow_roll_joint
+      - arm_right_wrist_pitch_joint
+      - arm_right_wrist_yaw_joint
   arm_left_trajectory_controller:
     type: FollowJointTrajectory
     action_ns: follow_joint_trajectory
     default: true
     joints:
-      - arm_left_joint1
-      - arm_left_joint2
-      - arm_left_joint3
-      - arm_left_joint4
-      - arm_left_joint5
-      - arm_left_joint6
-      - arm_left_joint7
+      - arm_left_shoulder_pitch_joint
+      - arm_left_shoulder_roll_joint
+      - arm_left_shoulder_yaw_joint
+      - arm_left_elbow_pitch_joint
+      - arm_left_elbow_roll_joint
+      - arm_left_wrist_pitch_joint
+      - arm_left_wrist_yaw_joint

@@ -113,7 +113,7 @@ def launch_setup(context, *args, **kwargs):
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
-        output="both",
+        # output="both",
         parameters=[
             robot_description,
             {"use_sim_time": use_sim_time},

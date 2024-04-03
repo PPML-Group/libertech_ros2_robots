@@ -6,8 +6,8 @@ moveit_setup_assistant_config:
     relative_path: config/arm.srdf
   package_settings:
     author_name: Jinjian Li
-    author_email: robot_wgc2023@163.com
-    generated_timestamp: 1708591945
+    author_email: 1336189244@qq.com
+    generated_timestamp: 1712143441
   control_xacro:
     command:
       - position

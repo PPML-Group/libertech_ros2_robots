@@ -89,7 +89,9 @@ private:
   // first pass flag
   bool first_pass_;
 
-  int actuator_count_ = 7;
+  int actuator_count_;
+  bool has_right_;
+  bool has_left_;
   ArmSDK* armSDK_;
 };
 

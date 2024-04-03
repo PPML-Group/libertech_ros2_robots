@@ -2,14 +2,14 @@
 
 int main()
 {
-  ArmSDK arm(0, false);
+  ArmSDK arm(0, -1, false);
   arm.init();
   sleep(2);
 
   // 零位
-  arm.setZero();
+  arm.setZero(0);
 
-  arm.save();
+  arm.save(0);
 
   return 0;
 }

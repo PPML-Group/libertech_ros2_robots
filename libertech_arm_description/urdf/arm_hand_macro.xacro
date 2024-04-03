@@ -9,9 +9,7 @@
     rpy:='0 0 0'
     arm:='arm_right'
     use_hand:=false
-    use_gripper:=false
-    use_fake_hardware:=false
-    sim_ignition:=false">
+    use_gripper:=false">
 
     <!-- Include and load arm macro files -->
     <xacro:include filename="$(find libertech_arm_description)/urdf/${arm}_macro.xacro" />
@@ -23,9 +21,7 @@
       xyz="${xyz}"
       rpy="${rpy}"
       use_hand="${use_hand}"
-      use_gripper="${use_gripper}"
-      use_fake_hardware="${use_fake_hardware}"
-      sim_ignition="${sim_ignition}" />
+      use_gripper="${use_gripper}" />
 
   </xacro:macro>
 

@@ -38,8 +38,8 @@ int main()
   qf = qf * M_PI / 180;
   vf.setZero();
   af.setZero();
-  double T = 2;
-  double dt = 0.001;
+  double T = 1;
+  double dt = 0.01; // 0.001 0.005
 
   std::vector<Vec6> coeffs = planQuinticPolynomialTrajectory(q0, v0, a0, qf, vf, af, T);
 
@@ -82,7 +82,8 @@ int main()
     return 1;
   }
   ////////////////////////////////////////////////////////////////////
-  ArmSDK arm(0, false); // 右
+  // ArmSDK arm(0, -1, false);
+  ArmSDK arm(0, 1, false);
 
   float pos = 360 * M_PI / 180;
   std::cout << "pos:" << pos << std::endl;
@@ -95,26 +96,56 @@ int main()
   std::cout << "pos_convert_inv:" << pos_convert_inv << std::endl;
 
   arm.init();
-  sleep(2);
+  usleep(1000);
 
   ///////////////////////////////////////
 
   // kp kd
-  Vec7 kpm;
-  arm.getKp(kpm);
-  std::cout << "kpm:" << kpm.transpose() << std::endl;
-
+  Vec7 kx;
+  for (int i = 0; i < 2; i++)
+  {
+    arm.getKp(kx, 0);
+    std::cout << "kpm[" << i << "]:" << kx.transpose() << std::endl;
+    kx.setZero();
+    arm.getKd(kx, 0);
+    std::cout << "kdm[" << i << "]:" << kx.transpose() << std::endl;
+    kx.setZero();
+    arm.getKi(kx, 0);
+    std::cout << "kim[" << i << "]:" << kx.transpose() << std::endl;
+    kx.setZero();
+  }
   ///////////////////////////////////////
+  usleep(10000);
 
   arm.runSendReceiveThread();
 
-  Vec7 kp;
-  kp << 1000., 800, 800, 1000, 800, 800, 800;
-  arm.setKp(kp);
+  for (int i = 0; i < 2; i++)
+  {
+    Vec7 kp, kd, ki;
+    kp << 800, 800, 800, 800, 800, 800, 800;
+    kd << 1000, 1000, 1000, 1000, 1000, 1000, 1000;
+    ki << 1, 1, 1, 1, 1, 1, 1;
+    arm.setKp(kp, i);
+    // arm.setKi(ki, i);
+  }
+
   sleep(2);
+
+  // std::cout << "............" << std::endl;
+
   // arm.pause();
-  // arm.getKp(kpm);
-  // std::cout << "kpm:" << kpm.transpose() << std::endl;
+  // for (int i = 0; i < 2; i++)
+  // {
+  //   arm.getKp(kx, 0);
+  //   std::cout << "kpm[" << i << "]:" << kx.transpose() << std::endl;
+  //   kx.setZero();
+  //   arm.getKd(kx, 0);
+  //   std::cout << "kdm[" << i << "]:" << kx.transpose() << std::endl;
+  //   kx.setZero();
+  //   arm.getKi(kx, 0);
+  //   std::cout << "kim[" << i << "]:" << kx.transpose() << std::endl;
+  //   kx.setZero();
+  // }
   // while (1)
   // {
   //   sleep(1);
@@ -129,7 +160,7 @@ int main()
   // q[10] = -40 * M_PI / 180;
   // arm.setQ(q);
 
-  std::vector<int> loop_indices(5);
+  std::vector<int> loop_indices(3);
   std::iota(loop_indices.begin(), loop_indices.end(), 0);
   std::vector<Vec7> q_traj_inv(q_traj.rbegin(), q_traj.rend());
 
@@ -137,14 +168,16 @@ int main()
   {
     for (auto q : q_traj)
     {
-      arm.setQ(q);
+      arm.setQ(q, 0);
+      // arm.setQ(q, 1);
       usleep(dt * 1000000);
       // std::cout << "q:" << q.transpose() << std::endl;
     }
 
     for (auto q : q_traj_inv)
     {
-      arm.setQ(q);
+      arm.setQ(q, 0);
+      // arm.setQ(q, 1);
       usleep(dt * 1000000);
       // std::cout << "q:" << q.transpose() << std::endl;
     }

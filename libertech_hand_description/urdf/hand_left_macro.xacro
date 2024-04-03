@@ -1,7 +1,11 @@
 <?xml version="1.0"?>
 <robot name="hand_left"
     xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="load_hand" params=" prefix:='' connected_to:='' xyz:='0 0 0' rpy:='0 0 0' use_fake_hardware:=false sim_ignition:=false">
+    <xacro:macro name="load_hand" params=" 
+        prefix:='' 
+        connected_to:='' 
+        xyz:='0 0 0' 
+        rpy:='0 0 0' ">
         <xacro:unless value="${not connected_to}">
             <joint name="${prefix}${connected_to}_hand_left_joint" type="fixed">
                 <parent link="${connected_to}"/>
@@ -9,13 +13,6 @@
                 <origin rpy="${rpy}" xyz="${xyz}"/>
             </joint>
         </xacro:unless>
-
-        <xacro:include filename="$(find libertech_hand_description)/urdf/hand.ros2_control.xacro" />
-        <xacro:arg name="initial_positions_file" default="$(find libertech_hand_description)/config/initial_positions.yaml"/>
-        <xacro:property name="initial_positions_file" default="$(arg initial_positions_file)"/>
-
-        <xacro:hand_ros2_control prefix="${prefix}" name="hand_left" use_fake_hardware="${use_fake_hardware}" sim_ignition="${sim_ignition}"/>
-        <!-- initial_positions="${xacro.load_yaml(initial_positions_file)}"  -->
 
         <link name="${prefix}hand_left_palm">
             <inertial>
