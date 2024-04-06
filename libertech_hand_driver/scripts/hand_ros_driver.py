@@ -12,7 +12,7 @@ import threading
 import asyncio
 from std_msgs.msg import Float64MultiArray
 
-CHANGE_THRESHOLD = 0.1
+CHANGE_THRESHOLD = 0.5 * 3.14 / 180
 
 class HandDriver(Node):
     def __init__(self):
@@ -39,15 +39,15 @@ class HandDriver(Node):
             urdf_file, 
             action_file=action_file, 
             target_ip=ip,
-            plan=0
+            plan=0 # TODO
         )
         self.joint_states.name = self.hand.qname
         
         self.cmds_sub = self.create_subscription(
             Float64MultiArray,
-            '/hand_joint_cmds',
+            '/liberhand/joints_cmd',
             self.cmds_callback,
-            10)
+            0)
         
         if self.sim:
             self.get_logger().info(f'Sim...')
@@ -68,6 +68,7 @@ class HandDriver(Node):
             return
         
         q = np.array(q)
+        # self.get_logger().info(f'q:{q}')
 
         if self.sim:
             qa = self.hand.hand_model_.fk_q2q_all(q)
@@ -110,11 +111,15 @@ class HandDriver(Node):
                         self.hand.add_queue(q[start:end], name)
                         self.q_last[start:end] = q[start:end]
             else:
+                
                 for name, (start, end) in zip(joint_names, joint_indices):
                     if end is None:
                         end = len(q)
+                    # self.get_logger().info(f'q[start:end]:{q[start:end]}')
                     self.hand.add_queue(q[start:end], name)
-                    self.q_last[start:end] = q[start:end]
+                    
+                    # self.q_last[start:end] = q[start:end]
+                self.q_last = q
             
             # TODO: 从实际电机读取
             # q_m

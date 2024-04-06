@@ -156,6 +156,7 @@ private:
   // Data* data_ = nullptr;  // 存储关节角度的私有变量
   std::vector<Command *> cmd_;
   std::vector<Data *> data_;
+  std::vector<Vec7> dir_;
 };
 
 #endif /* ARM_SDK_H */

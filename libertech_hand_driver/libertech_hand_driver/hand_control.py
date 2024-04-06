@@ -206,31 +206,31 @@ class HandAPI:
                     q = self.queue_index_.get()  # 从队列获取命令
                     await self.set_q(q, fg_name=fg_name)
                 else:
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.005)
             elif fg_name == "middle":
                 if not self.queue_middle_.empty():
                     q = self.queue_middle_.get()  # 从队列获取命令
                     await self.set_q(q, fg_name=fg_name)
                 else:
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.005)
             elif fg_name == "fourth":
                 if not self.queue_fourth_.empty():
                     q = self.queue_fourth_.get()  # 从队列获取命令
                     await self.set_q(q, fg_name=fg_name)
                 else:
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.005)
             elif fg_name == "little":
                 if not self.queue_little_.empty():
                     q = self.queue_little_.get()  # 从队列获取命令
                     await self.set_q(q, fg_name=fg_name)
                 else:
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.005)
             elif fg_name == "thumb":
                 if not self.queue_thumb_.empty():
                     q = self.queue_thumb_.get()  # 从队列获取命令
                     await self.set_q(q, fg_name=fg_name)
                 else:
-                    await asyncio.sleep(0.5)
+                    await asyncio.sleep(0.005)
             
             # if not self.queue_[i].empty():
             #     q = self.queue_[i].get()  # 从队列获取命令
@@ -437,7 +437,8 @@ class HandAPI:
             for i in range(d.shape[0]):
                 await self.set_motor_target(mapping[i], d_map[i], 0, 0)
             # await asyncio.sleep(dt - d.shape[0]*0.004)
-            await asyncio.sleep(dt)
+            await asyncio.sleep(0.005) # TODO 分情况 0.05
+            # time.sleep(0.05)
             logger.info(f"设置{fg_name}的电机位置为: {d_map}")
                 
         elif self.plan_ == 1:

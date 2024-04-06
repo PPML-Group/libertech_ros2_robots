@@ -28,8 +28,8 @@ class HandModelVision:
             static_image_mode=static_image_mode,
             max_num_hands=2,
             model_complexity=1, # 更准确
-            min_detection_confidence=0.65,
-            min_tracking_confidence=0.65);     
+            min_detection_confidence=0.8,
+            min_tracking_confidence=0.7);     
             # 创建了 Hands 类的实例，用于处理手部关键点检测。 
             # 'hands'对象将用于处理每一帧图像，检测手的关键点
         self.draw_mp = mp.solutions.drawing_utils

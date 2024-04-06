@@ -2,43 +2,29 @@
 import sys
 import rclpy
 from rclpy.node import Node
-from rcl_interfaces.msg import ParameterDescriptor, FloatingPointRange, IntegerRange
-from sensor_msgs.msg import JointState
-
-import math
 import numpy as np
-# from libertech_hand_driver.hand_control import HandAPI
 from libertech_hand_driver.hand_model_kinematics import HandModelKinematics, logger
 from libertech_hand_driver.hand_model_vision import HandModelVision
-import threading
-import asyncio
 import cv2
-
-CHANGE_THRESHOLD = 0.1
+from std_msgs.msg import Float64MultiArray
+import queue
+import threading
 
 class HandRetarget(Node):
     def __init__(self):
         super().__init__('freehand_ros_retarget_node')
         
         self.declare_parameter('urdf_file', value='')
-        self.declare_parameter('action_file', value='')
-        self.declare_parameter('ip', value='')
-        
         urdf_file = self.get_parameter('urdf_file').value
-        action_file = self.get_parameter('action_file').value
-        ip = self.get_parameter('ip').value
         
-        self.get_logger().info(f'load {urdf_file}')
-        
-        self.joint_states_pub = self.create_publisher(JointState,"/joint_states",10)
-        self.joint_states = JointState()
-        self.hand = HandModelKinematics(urdf_file)
+        self.hand = HandModelKinematics(
+            urdf_file,
+            display=False
+        )
         self.hand_vision_tool = HandModelVision(
             urdf_file,
-            static_image_mode=False)
-        self.joint_states.name = self.hand.qname_
-        # self.thread_ = threading.Thread(target=self.run_loop, daemon=True)
-        # self.thread_.start()
+            static_image_mode=False
+        )
         
         self.cap = cv2.VideoCapture(0)
         if not self.cap.isOpened():
@@ -49,10 +35,24 @@ class HandRetarget(Node):
         self.ph = None 
         self.ph_last = None
         self.q_retarget = np.zeros(13)
-        self.filter_k = 0.5
+        self.filter_k = 0.7
         self.timer_image = self.create_timer(1./30, self.timer_callback_image)
-        self.timer_joint_pub = self.create_timer(0.005, self.timer_callback_joint_pub)
-        self.timer_retarget = self.create_timer(0.1, self.timer_callback_retarget)
+        # self.timer_retarget = self.create_timer(0.05, self.timer_callback_retarget)
+        # self.timer_pub = self.create_timer(0.001, self.timer_callback_pub)
+        timer_retarget = threading.Timer(0.05, self.timer_callback_retarget)
+        timer_retarget.start()
+        timer_pub = threading.Timer(0.001, self.timer_callback_pub)
+        timer_pub.start()
+        
+        self.lock = threading.Lock()
+        
+        self.cmds_pub = self.create_publisher(
+            Float64MultiArray, 
+            'hand_joint_cmds', 
+            2)
+        
+        self.q_retarget_queue = queue.Queue()
+        self.q_trajectory_queue = queue.Queue()
         
     def timer_callback_image(self):
         # !!!!!!!!!!!!!! 注意： 手必须与相机平行，竖直向上
@@ -62,6 +62,7 @@ class HandRetarget(Node):
             # img = cv2.flip(img, 1) # 左右手是有问题的mediapipe, 但此处不用翻转？
             hand_positions, img = self.hand_vision_tool.pred_hand_pose_mediapipe(img[...,::-1])
             
+            self.lock.acquire()
             if hand_positions['right']:
                 # self.hand_vision_tool.plot_hands(hand_positions)
                 rot = np.array([[0,0,-1],[1,0,0],[0,-1,0]])
@@ -78,11 +79,9 @@ class HandRetarget(Node):
                 self.ph = None
                 self.ph_last = None
                 # TODO: 判断跟丢了多久
-            
+            self.lock.release()
             # self.get_logger().info(f'ph: {self.ph}')
             cv2.imshow("img cap", img[...,::-1])
-
-            cv2.waitKey(1)
     
             if cv2.waitKey(1) & 0xFF == ord('q'):
                 self.cap.release()
@@ -91,49 +90,34 @@ class HandRetarget(Node):
                 rclpy.shutdown()
     
     def timer_callback_retarget(self):
+        self.lock.acquire()
+        
         if self.ph is None:
             self.q_retarget = np.zeros(13)
         else:
             self.q_retarget = self.hand.ik_e2q_retarget(self.ph, q_last=self.q_retarget)
-        # self.get_logger().info(f'ph: {self.ph}')
-    
-    def timer_callback_joint_pub(self):
-        # 不断发布 joint state
-        position = []
-        # for finger, value in self.hand.finger_joint_index.items():
-        #     if finger in ["index", "middle"]:
-        #         q1 = 0.
-        #         q2 = 0.
-        #         q3 = 0.
-        #         q4 = self.hand.four_bar_pip2dip(q3, finger)
-        #         q  = np.array([q1, q2, q3])
-        #         position.extend([q1, q2, q3, q4])
-        #     elif finger in ["fourth", "little"]:
-        #         q1 = 0.
-        #         q2 = 0.
-        #         q3 = self.hand.four_bar_mcp2pip(q2, finger)
-        #         q4 = self.hand.four_bar_pip2dip(q3, finger)
-        #         q  = np.array([q1, q2])                    
-        #         position.extend([q1, q2, q3, q4])
-        #     else:
-        #         q1 = 0.
-        #         q2 = 0.
-        #         q3 = 0.
-        #         q4 = self.hand.four_bar_pip2dip(q3, finger)
-        #         q  = np.array([q1, q2, q3])
-        #         position.extend([q1, q2, q3, q4])
-        qa = self.hand.fk_q2q_all(self.q_retarget)
-        position = qa.tolist()
-        # self.get_logger().info(f'position: {position}')
-        # self.get_logger().info(f'{len(position)}')
-        # self.get_logger().info(f'name: {self.joint_states.name}')
-        self.joint_states.header.stamp = self.get_clock().now().to_msg()
-        self.joint_states.header.frame_id = ""
-        self.joint_states.position = position
-        self.joint_states.velocity = []
-        self.joint_states.effort = []
-        self.joint_states_pub.publish(self.joint_states)
+        self.get_logger().info(f'q_retarget: {self.q_retarget}')
+        
+        self.lock.release()
+        
+        # self.q_retarget_queue.put(self.q_retarget)
+        
+        # if self.q_retarget_queue.qsize() >= 10:
+        #     oldest_points = []  
+        #     [oldest_points.append(self.q_retarget_queue.get()) for _ in range(10)]
+            
+        #     oldest_points = np.array(oldest_points)
+            # self.get_logger().info(f'{oldest_points}')
+            # self.get_logger().info(f'='*10)
 
+    def timer_callback_pub(self):
+        self.lock.acquire()
+        
+        msg = Float64MultiArray()
+        msg.data = self.q_retarget.tolist()
+        self.cmds_pub.publish(msg)
+        self.lock.release()
+        
 def main(args=None):
     rclpy.init(args=args)
     node = HandRetarget()

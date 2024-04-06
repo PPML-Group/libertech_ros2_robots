@@ -77,7 +77,7 @@ def launch_setup(context, *args, **kwargs):
     nodes_to_start = [
         hand_demo,
         TimerAction(period=5.0, actions=[robot_state_publisher_node]),
-        rviz_node,
+        # rviz_node,
     ]
     
     return nodes_to_start

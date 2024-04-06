@@ -204,6 +204,14 @@ int ArmSDK::init()
   numJoints_ = 7;
   std::cout << "numJoints_: " << numJoints_ << std::endl;
 
+  // TODO
+  Vec7 dir_r, dir_l;
+  // dir_l <<-1, 1,-1,-1,-1,-1,-1;
+  dir_r << 1,-1, 1, 1, 1, 1, -1;
+  dir_l << 1, 1, 1, 1, 1, 1, 1; 
+  dir_.push_back(dir_r);
+  dir_.push_back(dir_l);
+
   // cmd_ = new Command(); // 初始化为 Command 类型的默认对象
   // data_ = new Data();   // 初始化为 Data 类型的默认对象
   for (int cid = 0; cid < 2; ++cid)
@@ -289,7 +297,7 @@ int ArmSDK::doSendReceive()
 
           {
             std::lock_guard<std::mutex> lock(mtx_);
-            data_[cid]->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes);
+            data_[cid]->q[rec[j].ID - 1] = convertHexBytesToPosition(bytes) * dir_[cid][rec[j].ID - 1];
             // data_->qd
 
             // std::cout << "qm[" << rec[j].ID - 1 << "]: " << data_->q[rec[j].ID - 1] << std::endl;
@@ -524,7 +532,7 @@ int ArmSDK::sendQ(const int cid)
 
     {
       std::lock_guard<std::mutex> lock(mtx_);
-      convertPositionToHexBytes(cmd_[cid]->qDes[i], u8);
+      convertPositionToHexBytes(cmd_[cid]->qDes[i] * dir_[cid][i], u8);
     }
     for (size_t j = 1; j < 5; j++)
     {
@@ -720,8 +728,15 @@ int ArmSDK::setModePosition(const int cid)
       send[i].Data[j] = u8[j - 1]; // 0
     }
 
-    // !!!! 避免位置跳变，将cmd的值赋值为当前值
-    // cmd_->qDes[i] = convertHexBytesToPosition(u8);
+    {
+      std::lock_guard<std::mutex> lock(mtx_);
+      // !!!! 避免位置跳变，将cmd的值赋值为当前值
+      // if (i < 3)
+      // {
+        cmd_[cid]->qDes[i] = convertHexBytesToPosition(u8) * dir_[cid][i];
+      // }
+      
+    }
   }
   if (VCI_Transmit(VCI_USBCAN2, 0, cid, send, numJoints_) != 1)
   {

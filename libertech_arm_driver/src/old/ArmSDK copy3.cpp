@@ -987,7 +987,7 @@ int ArmSDK::getQ(Vec7 &qm, const int cid)
       std::lock_guard<std::mutex> lock(mtx_);
       for (int i = 0; i < 7; ++i)
       {
-        qm[i] = data_[cid]->q[i];
+        qm[i] = data_[cid]->q[i] * dir_[cid][i];
       }
     }
   }

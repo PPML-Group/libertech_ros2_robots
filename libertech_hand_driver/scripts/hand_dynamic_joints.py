@@ -40,7 +40,7 @@ class HandDynamicJoints(Node):
         
         self.cmds_pub = self.create_publisher(
             Float64MultiArray, 
-            'hand_joint_cmds', 
+            '/liberhand/joints_cmd', 
             10)
 
         # 使用float可能无法滑动到刻度
@@ -70,7 +70,7 @@ class HandDynamicJoints(Node):
         #     self.get_logger().info(f'{self.hand.queue_[i].get()}')
         # return
                 
-        self.timer = self.create_timer(0.1, self.timer_callback)
+        self.timer = self.create_timer(0.001, self.timer_callback)
 
     def timer_callback(self):
         # 滑动动态调参
