@@ -58,7 +58,7 @@ int main()
   vf.setZero();
   af.setZero();
 
-  ArmSDK arm(0, -1, false);
+  ArmSDK arm(-1, 1, false);
   arm.init();
   usleep(1000);
 
@@ -100,103 +100,133 @@ int main()
   //   std::cout << "左臂当前位置:" << q0_l.transpose() << std::endl;
   //   usleep(1000000);
   // }
-  T = 2.;
+  T = 0.5;
   std::vector<Vec7> q_traj;
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 30, 30, 0, 20, 0, 0, 0;
-  qf_r = qf_r * M_PI / 180;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  q0_l.setZero();
+  qf_l.setZero();
+  arm.getQ(q0_l, 1);
+  qf_l << 0, 0, 0, 0, 0, 0, 30;
+  qf_l = qf_l * M_PI / 180;
+  q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
 
   for (auto q : q_traj)
   {
-    arm.setQ(q, 0);
+    arm.setQ(q, 1);
     // arm.setQ(q, 1);
     usleep(dt * 1000000);
     // std::cout << "q:" << q.transpose() << std::endl;
   }
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 0, 0, 0, 0, 0, 0, 0;
-  qf_r = qf_r * M_PI / 180;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  q0_l.setZero();
+  qf_l.setZero();
+  arm.getQ(q0_l, 1);
+  qf_l << 0, 0, 0, 0, 0, 0, 0;
+  qf_l = qf_l * M_PI / 180;
+  q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
 
   for (auto q : q_traj)
   {
-    arm.setQ(q, 0);
+    arm.setQ(q, 1);
     // arm.setQ(q, 1);
     usleep(dt * 1000000);
     // std::cout << "q:" << q.transpose() << std::endl;
   }
-  sleep(1);
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 30, 30, 0, 20, 0, 0, 0;
-  qf_r = qf_r * M_PI / 180;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 30, 30, 0, 20, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
 
-  for (auto q : q_traj)
-  {
-    arm.setQ(q, 0);
-    // arm.setQ(q, 1);
-    usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
-  }
-  usleep(500000);
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 1.737492, -0.142930, -0.098426, -1.001563, 0.298998, -0.352930, 0.246161;
-  // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 0, 0, 0, 0, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
 
-  for (auto q : q_traj)
-  {
-    arm.setQ(q, 0);
-    // arm.setQ(q, 1);
-    usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
-  }
-  usleep(500000);
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+  // sleep(1);
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 1.437492, -0.142930, -0.098426, -1.001563, 0.348998, -0.352930, 0.246161;
-  // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 30, 30, 0, 20, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
 
-  for (auto q : q_traj)
-  {
-    arm.setQ(q, 0);
-    // arm.setQ(q, 1);
-    usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
-  }
-  sleep(6);
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+  // usleep(500000);
 
-  q0_r.setZero();
-  qf_r.setZero();
-  arm.getQ(q0_r, 0);
-  qf_r << 1.737492, -0.142930, -0.098426, -1.001563, 0.348998, -0.352930, 0.246161;
-  // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
-  q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 1.737492, -0.142930, -0.098426, -1.001563, 0.298998, -0.352930, 0.246161;
+  // // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
 
-  for (auto q : q_traj)
-  {
-    arm.setQ(q, 0);
-    // arm.setQ(q, 1);
-    usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
-  }
-  usleep(500000);
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+  // usleep(500000);
+
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 1.437492, -0.142930, -0.098426, -1.001563, 0.348998, -0.352930, 0.246161;
+  // // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+  // sleep(6);
+
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 1.737492, -0.142930, -0.098426, -1.001563, 0.348998, -0.352930, 0.246161;
+  // // qf_r << 1.437492, 0, 0, 0, 0, 0, 0;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+  // usleep(500000);
 
   
 

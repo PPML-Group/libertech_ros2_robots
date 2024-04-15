@@ -83,17 +83,17 @@ class HandRetarget(Node):
             # TODO: 判断跟丢了多久
 
         # self.get_logger().info(f'ph: {self.ph}')
-        cv2.imshow("img cap", img[...,::-1])
+        # cv2.imshow("img cap", img[...,::-1])
         
-        img_file = f"{self.i_img:05d}.png"
-        img_path = os.path.join(self.save_path, img_file)
-        cv2.imwrite(img_path, img[...,::-1])
-        self.i_img+=1
+        # img_file = f"{self.i_img:05d}.png"
+        # img_path = os.path.join(self.save_path, img_file)
+        # cv2.imwrite(img_path, img[...,::-1])
+        # self.i_img+=1
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            cv2.destroyAllWindows()
-            self.get_logger().info("关闭图像，节点终止")
-            rclpy.shutdown()
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     cv2.destroyAllWindows()
+        #     self.get_logger().info("关闭图像，节点终止")
+        #     rclpy.shutdown()
     
     def timer_callback_retarget(self):
         if not self.ph_queue.empty():

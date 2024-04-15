@@ -13,7 +13,7 @@ ArmSDK::ArmSDK(int canIDRight, int canIDLeft, bool useGripper)
 
   hasRight_ = canIDRight == 0 or canIDRight == 1;
   hasLeft_ = canIDLeft == 0 or canIDLeft == 1;
-  if (!hasRight_ && hasLeft_)
+  if (!hasRight_ && !hasLeft_)
   {
     std::cerr << "Error: canIDRight and canIDLeft must be either 0 or 1." << std::endl;
     exit(1);
@@ -316,14 +316,14 @@ int ArmSDK::doSendReceive()
   // }
   // std::cout << std::endl;
 
-  // std::cout << "qm[1]: ";
-  // {
-  //   for (auto q : data_[1]->q)
-  //   {
-  //     std::cout << q << " ";
-  //   }
-  // }
-  // std::cout << std::endl;
+  std::cout << "qm[1]: ";
+  {
+    for (auto q : data_[1]->q)
+    {
+      std::cout << q << " ";
+    }
+  }
+  std::cout << std::endl;
 
   auto finish = std::chrono::high_resolution_clock::now();
   auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);
