@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<!-- 该文件调用macro中的load_robot来构造双臂 -->
+<robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
+    <!-- add arms names prefixes -->
+    <xacro:arg name="prefix"  default="" />
+    <xacro:arg name="use_hand" default="false" />
+    <xacro:arg name="use_gripper" default="false" />
+    <xacro:arg name="use_fake_hardware" default="false" />
+    <xacro:arg name="sim_ignition" default="false" />
+    <xacro:arg name="use_camera" default="false" /> 
+    <xacro:arg name="camera_width" default="640"/>
+    <xacro:arg name="camera_height" default="480"/>
+    <xacro:arg name="camera_fps" default="30"/>
+    <xacro:arg name="simulation_controllers" default="$(find libertech_arm_description)/config/ros2_controllers.yaml" />
+      
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_hand_macro.xacro"/>
+
+    <!-- 如果取消world则为漂浮 -->
+    <link name="world"/>
+
+    <link name="$(arg prefix)baseout"/>
+
+    <joint name="base_static_joint" type="fixed">
+        <origin rpy="0 0 0" xyz="0 0 0"/>
+        <parent link="world"/>
+        <child link="$(arg prefix)baseout"/>
+    </joint>
+
+    <xacro:load_arm_hand
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)baseout" 
+        xyz="0 -0.17735 0.35582"
+        rpy="1.309 0 0"
+        arm="arm_right"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)" />
+
+    <xacro:load_arm_hand
+        prefix="$(arg prefix)" 
+        connected_to="$(arg prefix)baseout" 
+        xyz="0 0.177350 0.355816"
+        rpy="-1.308997 0 0"
+        arm="arm_left"
+        use_hand="$(arg use_hand)"
+        use_gripper="$(arg use_gripper)" />
+
+    <xacro:if value="$(arg use_camera)">
+        <xacro:include filename="$(find libertech_arm_description)/urdf/zed_macro.urdf.xacro" />
+        <xacro:arg name="camera_name"   default="zedm" />
+        <xacro:arg name="camera_model"  default="zedm" />
+
+        <!-- <link name="$(arg prefix)ptz_link1" />
+        <joint name="$(arg prefix)ptz_joint1" type="revolute">
+          <origin xyz="0.0 0.0 1.0" rpy="0 0 0" />
+          <parent link="$(arg prefix)baseout" />
+          <child  link="$(arg prefix)ptz_link1" />
+          <axis xyz="0 0 1"/>
+          <dynamics damping="0.00" friction="0.00"/>
+          <limit effort="5" velocity="3.14" lower="-3.14" upper="3.14"/>
+        </joint>
+        
+        <link name="$(arg prefix)ptz_link2" />
+        <joint name="$(arg prefix)ptz_joint2" type="revolute">
+          <origin xyz="0.0 0.0 0.0" rpy="1.57 0 0" />
+          <parent link="$(arg prefix)ptz_link1" />
+          <child  link="$(arg prefix)ptz_link2" />
+          <axis xyz="0 0 1"/>
+          <dynamics damping="0.00" friction="0.00"/>
+          <limit effort="5" velocity="3.14" lower="-3.14" upper="3.14"/>
+        </joint> -->
+
+        <xacro:zed_camera 
+            prefix="$(arg prefix)" 
+            connected_to="$(arg prefix)baseout" 
+            xyz="0.0 0.0 0.0" 
+            rpy="0 0.0 0"
+            name="$(arg camera_name)" 
+            model="$(arg camera_model)" />        
+
+    </xacro:if>
+
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm.ros2_control.xacro" />
+    <xacro:arg name="initial_positions_file_arm" default="$(find libertech_arm_description)/config/initial_positions_arm.yaml"/>
+    <xacro:property name="initial_positions_file_arm" default="$(arg initial_positions_file_arm)"/>
+
+    <xacro:arm_ros2_control
+        prefix="$(arg prefix)"
+        use_right="True"
+        use_left="True"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        sim_ignition="$(arg sim_ignition)"
+        initial_positions="${xacro.load_yaml(initial_positions_file_arm)}" />
+
+    <xacro:if value="$(arg use_hand)">
+        <xacro:include filename="$(find libertech_hand_description)/urdf/hand.ros2_control.xacro" />
+
+        <xacro:hand_ros2_control 
+            prefix="$(arg prefix)"
+            use_right="True"
+            use_left="True"
+            use_fake_hardware="$(arg use_fake_hardware)"
+            sim_ignition="$(arg sim_ignition)"/>
+    </xacro:if>
+
+    <xacro:if value="$(arg sim_ignition)">
+        <!-- Gazebo plugins -->
+        <gazebo reference="world">
+        </gazebo>
+        <gazebo>
+            <!-- <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin"> -->
+            <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
+                <parameters>$(arg simulation_controllers)</parameters>
+                <controller_manager_node_name>/controller_manager</controller_manager_node_name>
+            </plugin>
+            <plugin filename="libignition-gazebo-sensors-system.so" name="ignition::gazebo::systems::Sensors">
+                <!-- <render_engine>$(arg gazebo_renderer)</render_engine> -->
+                <!-- <render_engine>"ogre"</render_engine> -->
+            </plugin>
+            <!-- <plugin name="ignition::gazebo::systems::Sensors" filename="ignition-gazebo-sensors-system">
+            </plugin> -->
+            <plugin filename="ignition-gazebo-forcetorque-system" name="ignition::gazebo::systems::ForceTorque">
+            </plugin>
+
+        </gazebo>
+    </xacro:if>
+</robot>

@@ -17,7 +17,6 @@
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/materials.xacro"/>
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/imu_macro.xacro"/>
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/head_macro.xacro"/>
-
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg_macro.xacro"/>
     <xacro:include filename="$(find libertech_arm_description)/urdf/arm_hand_macro.xacro"/>
 
@@ -183,20 +182,12 @@
           </collision>
         </link>
 
-    <xacro:include filename="$(find libertech_humanoid_description)/urdf/waist.ros2_control.xacro" />
-    <xacro:waist_ros2_control
-        prefix="$(arg prefix)"
-        name="waist" 
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" />
-
     <xacro:load_head
         prefix="$(arg prefix)" 
         connected_to="$(arg prefix)base"  
         xyz="0.035 0 0.336" 
         rpy="0. 0. 0."
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)"/>
+        use_camera="$(arg use_camera)"/>
 
     <xacro:load_imu 
         prefix="$(arg prefix)" 
@@ -208,18 +199,14 @@
     <xacro:load_leg
         prefix="$(arg prefix)" 
         connected_to="$(arg prefix)pelvis"
-        mirror="false"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" >
+        mirror="false" >
           <origin rpy="0 -0.349066 0" xyz="-0.024112 0.066 0.110009"/>
     </xacro:load_leg>
 
     <xacro:load_leg
         prefix="$(arg prefix)" 
         connected_to="$(arg prefix)pelvis"
-        mirror="true"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" >
+        mirror="true" >
         <origin rpy="0 -0.349066 0" xyz="-0.024112 -0.066 0.110009"/>
     </xacro:load_leg>
 
@@ -230,9 +217,7 @@
         rpy="1.309 0 0"
         arm="arm_right"
         use_hand="$(arg use_hand)"
-        use_gripper="$(arg use_gripper)"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" />
+        use_gripper="$(arg use_gripper)" />
 
     <xacro:load_arm_hand
         prefix="$(arg prefix)" 
@@ -241,16 +226,53 @@
         rpy="-1.308997 0 0"
         arm="arm_left"
         use_hand="$(arg use_hand)"
-        use_gripper="$(arg use_gripper)"
-        use_fake_hardware="$(arg use_fake_hardware)" 
-        sim_ignition="$(arg sim_ignition)" />
+        use_gripper="$(arg use_gripper)" />
+
+    <!-- ###################################################################################### -->
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/head.ros2_control.xacro" />
+    <xacro:arg name="initial_positions_file_head" default="$(find libertech_humanoid_description)/config/initial_positions_head.yaml"/>
+    <xacro:property name="initial_positions_file_head" default="$(arg initial_positions_file_head)"/>
+    <xacro:head_ros2_control
+        prefix="$(arg prefix)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        sim_ignition="$(arg sim_ignition)"
+        initial_positions="${xacro.load_yaml(initial_positions_file_head)}" />
+
+    <xacro:include filename="$(find libertech_arm_description)/urdf/arm_effort.ros2_control.xacro" />
+    <xacro:arg name="initial_positions_file_arm" default="$(find libertech_arm_description)/config/initial_positions_arm.yaml"/>
+    <xacro:property name="initial_positions_file_arm" default="$(arg initial_positions_file_arm)"/>
+    <xacro:arm_ros2_control
+        prefix="$(arg prefix)"
+        use_right="True"
+        use_left="True"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        sim_ignition="$(arg sim_ignition)"
+        initial_positions="${xacro.load_yaml(initial_positions_file_arm)}" />
+
+    <xacro:if value="$(arg use_hand)">
+        <xacro:include filename="$(find libertech_hand_description)/urdf/hand.ros2_control.xacro" />
+        <xacro:hand_ros2_control 
+            prefix="$(arg prefix)"
+            use_right="True"
+            use_left="True"
+            use_fake_hardware="$(arg use_fake_hardware)"
+            sim_ignition="$(arg sim_ignition)"/>
+    </xacro:if>
+
+    <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg.ros2_control.xacro" />
+    <xacro:arg name="initial_positions_file_leg" default="$(find libertech_humanoid_description)/config/initial_positions_leg.yaml"/>
+    <xacro:property name="initial_positions_file_leg" default="$(arg initial_positions_file_leg)"/>
+    <xacro:leg_ros2_control
+        prefix="$(arg prefix)"
+        use_fake_hardware="$(arg use_fake_hardware)"
+        sim_ignition="$(arg sim_ignition)"
+        initial_positions="${xacro.load_yaml(initial_positions_file_leg)}" />    
 
     <xacro:if value="$(arg sim_ignition)">
         <!-- Gazebo plugins -->
         <gazebo reference="world">
         </gazebo>
         <gazebo>
-            <!-- <plugin filename="ign_ros2_control-system" name="ign_ros2_control::IgnitionROS2ControlPlugin"> -->
             <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <parameters>$(arg simulation_controllers)</parameters>
                 <controller_manager_node_name>/controller_manager</controller_manager_node_name>
@@ -259,8 +281,6 @@
                 <!-- <render_engine>$(arg gazebo_renderer)</render_engine> -->
                 <!-- <render_engine>"ogre"</render_engine> -->
             </plugin>
-            <!-- <plugin name="ignition::gazebo::systems::Sensors" filename="ignition-gazebo-sensors-system">
-            </plugin> -->
             <plugin filename="ignition-gazebo-forcetorque-system" name="ignition::gazebo::systems::ForceTorque">
             </plugin>
 

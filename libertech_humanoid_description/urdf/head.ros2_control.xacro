@@ -3,13 +3,12 @@
 
   <xacro:macro name="head_ros2_control" params="
     prefix
-    name
     use_fake_hardware:=false
     sim_ignition:=false
     initial_positions:=${dict(head_yaw_joint=0.0,
                               head_pitch_joint=-0.5)}" >
 
-    <ros2_control name="${prefix}${name}MultiInterfaceHardware" type="system">
+    <ros2_control name="${prefix}HeadMultiInterfaceHardware" type="system">
       <hardware>
         <xacro:if value="${sim_ignition}">
           <plugin>ign_ros2_control/IgnitionSystem</plugin>
@@ -17,23 +16,8 @@
         <xacro:if value="${use_fake_hardware}">
           <plugin>mock_components/GenericSystem</plugin>
         </xacro:if>
-        <!-- <xacro:unless value="${use_fake_hardware or sim_ignition}">
-          <plugin>kortex_driver/KortexMultiInterfaceHardware</plugin>
-          <param name="robot_ip">${robot_ip}</param>
-          <param name="username">${username}</param>
-          <param name="password">${password}</param>
-          <param name="port">${port}</param>
-          <param name="port_realtime">${port_realtime}</param>
-          <param name="session_inactivity_timeout_ms">${session_inactivity_timeout_ms}</param>
-          <param name="connection_inactivity_timeout_ms">${connection_inactivity_timeout_ms}</param>
-          <param name="tf_prefix">"${tf_prefix}"</param>
-          <param name="use_internal_bus_gripper_comm">${use_internal_bus_gripper_comm}</param>
-          <param name="gripper_joint_name">${gripper_joint_name}</param>
-          <param name="gripper_max_velocity">${gripper_max_velocity}</param>
-          <param name="gripper_max_force">${gripper_max_force}</param>
-        </xacro:unless> -->
       </hardware>
-      <!-- TODO: command_interface velocity effort -->
+
       <joint name="${prefix}head_yaw_joint">
         <command_interface name="position">
           <param name="min">{-pi/2}</param>

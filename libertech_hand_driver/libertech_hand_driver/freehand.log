@@ -343299,3 +343299,111 @@
   1784. -6363.  4472.]
 2024-04-12 15:52:19,332 - libertech_hand_driver.logger - INFO - 获取data: [  -24.   -30.  -441.   906.   910.  2205.  -774. -1041.  1655.  2136.
   1784. -6363.  4472.]
+2024-04-17 13:55:36,194 - libertech_hand_driver.logger - INFO - Start log
+2024-04-17 13:55:37,944 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-04-17 13:55:37,946 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-04-17 13:55:37,947 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-17 13:55:37,948 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-17 13:55:37,949 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-17 13:55:37,950 - libertech_hand_driver.logger - INFO - ***************测试食指 (中指)关节-驱动正逆运动学***************
+2024-04-17 13:55:38,062 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 0
+2024-04-17 13:55:38,063 - libertech_hand_driver.logger - INFO - 食指 (中指)关节-驱动逆运动学平均用时: 2.1020003727504184e-05
+2024-04-17 13:55:38,064 - libertech_hand_driver.logger - INFO - 食指 (中指)关节-驱动正运动学平均用时: 0.00017321067196982248
+2024-04-17 13:55:38,065 - libertech_hand_driver.logger - INFO - ***************测试无名指 (小拇指)关节-驱动正逆运动学***************
+2024-04-17 13:55:38,468 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 0
+2024-04-17 13:55:38,469 - libertech_hand_driver.logger - INFO - 无名指 (小拇指)关节-驱动逆运动学平均用时: 0.00023827808243887766
+2024-04-17 13:55:38,470 - libertech_hand_driver.logger - INFO - 无名指 (小拇指)关节-驱动正运动学平均用时: 0.00047557737146105086
+2024-04-17 13:55:38,470 - libertech_hand_driver.logger - INFO - ***************测试关节-末端正逆运动学***************
+2024-04-17 13:55:38,972 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 8
+2024-04-17 13:55:38,973 - libertech_hand_driver.logger - INFO - 关节-末端逆运动学平均用时: 0.01562604308128357
+2024-04-17 13:55:38,974 - libertech_hand_driver.logger - INFO - 关节-末端正运动学平均用时: 3.533065319061279e-05
+2024-04-17 13:55:38,975 - libertech_hand_driver.logger - INFO - ***************testing retarget***************
+2024-04-17 13:55:40,727 - libertech_hand_driver.logger - INFO - retarget用时为: 85.78372001647949 ms, q为: [ 0.358  0.6    0.569  0.266  0.762  0.271  0.092  0.351 -0.288  0.226
+  0.     0.312  0.508]
+2024-04-17 13:55:40,731 - libertech_hand_driver.logger - INFO - ret_h: {'origin_directions': array([[ 0.529,  0.623,  0.576],
+       [ 0.561,  0.265,  0.784],
+       [ 0.583, -0.087,  0.807],
+       [ 0.349, -0.709,  0.613],
+       [ 0.32 ,  0.947, -0.023]]), 'origin_distances': array([0.092, 0.099, 0.089, 0.082, 0.078]), 'finger_to_thumb_directions': array([[-0.383,  0.268, -0.884],
+       [-0.313,  0.489, -0.814],
+       [-0.237,  0.722, -0.65 ],
+       [-0.026,  0.93 , -0.366]]), 'finger_to_thumb_distances': array([0.062, 0.098, 0.113, 0.142]), 'finger_to_finger_directions': array([[ 0.171, -0.772,  0.612],
+       [ 0.045, -0.96 ,  0.275],
+       [-0.171, -0.985, -0.024],
+       [-0.11 , -0.979, -0.175],
+       [-0.291, -0.91 , -0.296],
+       [-0.389, -0.848, -0.359]]), 'finger_to_finger_distances': array([0.04 , 0.068, 0.117, 0.035, 0.093, 0.06 ])}
+2024-04-17 13:55:40,735 - libertech_hand_driver.logger - INFO - ret_a: {'origin_directions': array([[ 0.264,  0.432,  0.862],
+       [ 0.279,  0.165,  0.946],
+       [ 0.248, -0.095,  0.964],
+       [ 0.108, -0.492,  0.864],
+       [ 0.216,  0.846,  0.488]]), 'origin_distances': array([0.12 , 0.133, 0.12 , 0.116, 0.089]), 'finger_to_thumb_directions': array([[-0.189,  0.356, -0.915],
+       [-0.179,  0.535, -0.826],
+       [-0.092,  0.767, -0.635],
+       [ 0.046,  0.918, -0.394]]), 'finger_to_thumb_distances': array([0.066, 0.1  , 0.113, 0.145]), 'finger_to_finger_directions': array([[ 0.143, -0.795,  0.59 ],
+       [-0.032, -0.983,  0.181],
+       [-0.173, -0.985, -0.029],
+       [-0.209, -0.932, -0.296],
+       [-0.283, -0.913, -0.294],
+       [-0.334, -0.897, -0.291]]), 'finger_to_finger_distances': array([0.038, 0.064, 0.111, 0.036, 0.087, 0.051])}
+2024-04-17 13:55:40,738 - libertech_hand_driver.logger - INFO - ***************测试3D Mesh Plot***************
+2024-04-17 15:34:45,409 - libertech_hand_driver.logger - INFO - Start log
+2024-04-17 15:34:47,010 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.5    1.332  1.744  1.744]]
+2024-04-17 15:34:47,012 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.5    1.332  1.744]]
+2024-04-17 15:34:47,013 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-17 15:34:47,015 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-17 15:34:47,016 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-17 15:34:47,016 - libertech_hand_driver.logger - INFO - ***************测试食指 (中指)关节-驱动正逆运动学***************
+2024-04-17 15:34:47,129 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 0
+2024-04-17 15:34:47,130 - libertech_hand_driver.logger - INFO - 食指 (中指)关节-驱动逆运动学平均用时: 2.1378908838544574e-05
+2024-04-17 15:34:47,131 - libertech_hand_driver.logger - INFO - 食指 (中指)关节-驱动正运动学平均用时: 0.0001740600381578718
+2024-04-17 15:34:47,132 - libertech_hand_driver.logger - INFO - ***************测试无名指 (小拇指)关节-驱动正逆运动学***************
+2024-04-17 15:34:47,547 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 0
+2024-04-17 15:34:47,548 - libertech_hand_driver.logger - INFO - 无名指 (小拇指)关节-驱动逆运动学平均用时: 0.0002483138016292027
+2024-04-17 15:34:47,549 - libertech_hand_driver.logger - INFO - 无名指 (小拇指)关节-驱动正运动学平均用时: 0.00048703593867165703
+2024-04-17 15:34:47,549 - libertech_hand_driver.logger - INFO - ***************测试关节-末端正逆运动学***************
+2024-04-17 15:34:48,050 - libertech_hand_driver.logger - WARNING - 求解错误次数为: 10
+2024-04-17 15:34:48,051 - libertech_hand_driver.logger - INFO - 关节-末端逆运动学平均用时: 0.01556987315416336
+2024-04-17 15:34:48,051 - libertech_hand_driver.logger - INFO - 关节-末端正运动学平均用时: 3.3408403396606445e-05
+2024-04-17 15:34:48,052 - libertech_hand_driver.logger - INFO - ***************testing retarget***************
+2024-04-17 15:34:49,887 - libertech_hand_driver.logger - INFO - retarget用时为: 86.99417114257812 ms, q为: [ 0.358  0.6    0.569  0.266  0.762  0.271  0.092  0.351 -0.288  0.226
+  0.     0.312  0.508]
+2024-04-17 15:34:49,892 - libertech_hand_driver.logger - INFO - ret_h: {'origin_directions': array([[ 0.529,  0.623,  0.576],
+       [ 0.561,  0.265,  0.784],
+       [ 0.583, -0.087,  0.807],
+       [ 0.349, -0.709,  0.613],
+       [ 0.32 ,  0.947, -0.023]]), 'origin_distances': array([0.092, 0.099, 0.089, 0.082, 0.078]), 'finger_to_thumb_directions': array([[-0.383,  0.268, -0.884],
+       [-0.313,  0.489, -0.814],
+       [-0.237,  0.722, -0.65 ],
+       [-0.026,  0.93 , -0.366]]), 'finger_to_thumb_distances': array([0.062, 0.098, 0.113, 0.142]), 'finger_to_finger_directions': array([[ 0.171, -0.772,  0.612],
+       [ 0.045, -0.96 ,  0.275],
+       [-0.171, -0.985, -0.024],
+       [-0.11 , -0.979, -0.175],
+       [-0.291, -0.91 , -0.296],
+       [-0.389, -0.848, -0.359]]), 'finger_to_finger_distances': array([0.04 , 0.068, 0.117, 0.035, 0.093, 0.06 ])}
+2024-04-17 15:34:49,895 - libertech_hand_driver.logger - INFO - ret_a: {'origin_directions': array([[ 0.264,  0.432,  0.862],
+       [ 0.279,  0.165,  0.946],
+       [ 0.248, -0.095,  0.964],
+       [ 0.108, -0.492,  0.864],
+       [ 0.216,  0.846,  0.488]]), 'origin_distances': array([0.12 , 0.133, 0.12 , 0.116, 0.089]), 'finger_to_thumb_directions': array([[-0.189,  0.356, -0.915],
+       [-0.179,  0.535, -0.826],
+       [-0.092,  0.767, -0.635],
+       [ 0.046,  0.918, -0.394]]), 'finger_to_thumb_distances': array([0.066, 0.1  , 0.113, 0.145]), 'finger_to_finger_directions': array([[ 0.143, -0.795,  0.59 ],
+       [-0.032, -0.983,  0.181],
+       [-0.173, -0.985, -0.029],
+       [-0.209, -0.932, -0.296],
+       [-0.283, -0.913, -0.294],
+       [-0.334, -0.897, -0.291]]), 'finger_to_finger_distances': array([0.038, 0.064, 0.111, 0.036, 0.087, 0.051])}
+2024-04-17 15:34:49,898 - libertech_hand_driver.logger - INFO - ***************测试3D Mesh Plot***************

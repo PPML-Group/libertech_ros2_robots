@@ -1,0 +1,197 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+  <xacro:macro name="arm_ros2_control_joint" params="
+    prefix
+    name
+    initial_positions:=${dict(shoulder_pitch_joint=0.0,
+                              shoulder_roll_joint=0.0,
+                              shoulder_yaw_joint=0.0,
+                              elbow_pitch_joint=0.0,
+                              elbow_roll_joint=0.0,
+                              wrist_pitch_joint=0.0,
+                              wrist_yaw_joint=0.0)}" >
+
+    <joint name="${prefix}${name}_shoulder_pitch_joint">
+      <command_interface name="position">
+        <param name="min">{-pi}</param>
+        <param name="max">{pi}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['shoulder_pitch_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_shoulder_roll_joint">
+      <command_interface name="position">
+        <param name="min">-0.6</param>
+        <param name="max">1.6</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['shoulder_roll_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_shoulder_yaw_joint">
+      <command_interface name="position">
+        <param name="min">{-pi}</param>
+        <param name="max">{pi}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['shoulder_yaw_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_elbow_pitch_joint">
+      <command_interface name="position">
+        <param name="min">-1.3</param>
+        <param name="max">0.7</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['elbow_pitch_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_elbow_roll_joint">
+      <command_interface name="position">
+        <param name="min">{-pi}</param>
+        <param name="max">{pi}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['elbow_roll_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_wrist_pitch_joint">
+      <command_interface name="position">
+        <param name="min">${-pi*0.5}</param>
+        <param name="max">${pi*0.5}</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['wrist_pitch_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+    <joint name="${prefix}${name}_wrist_yaw_joint">
+      <command_interface name="position">
+        <param name="min">${-pi*0.5}</param>
+        <param name="max">0.4</param>
+      </command_interface>
+      <command_interface name="velocity">
+        <param name="min">-3.14</param>
+        <param name="max">3.14</param>
+      </command_interface>
+      <command_interface name="effort">
+        <param name="min">-50</param>
+        <param name="max">50</param>
+      </command_interface>
+      <state_interface name="position">
+        <param name="initial_value">${initial_positions['wrist_yaw_joint']}</param>
+      </state_interface>
+      <state_interface name="velocity"/>
+      <state_interface name="effort"/>
+    </joint>
+
+  </xacro:macro>
+
+  <xacro:macro name="arm_ros2_control" params="
+    prefix
+    use_right:=true
+    use_left:=true
+    use_fake_hardware:=false
+    sim_ignition:=false
+    initial_positions:=${dict(shoulder_pitch_joint=0.0,
+                              shoulder_roll_joint=0.0,
+                              shoulder_yaw_joint=0.0,
+                              elbow_pitch_joint=0.0,
+                              elbow_roll_joint=0.0,
+                              wrist_pitch_joint=0.0,
+                              wrist_yaw_joint=0.0)}" >
+
+    <ros2_control name="${prefix}ArmMultiInterfaceHardware" type="system">
+      <hardware>
+        <xacro:if value="${sim_ignition}">
+          <plugin>ign_ros2_control/IgnitionSystem</plugin>
+        </xacro:if>
+        <xacro:if value="${use_fake_hardware}">
+          <plugin>mock_components/GenericSystem</plugin>
+        </xacro:if>
+        <xacro:unless value="${use_fake_hardware or sim_ignition}">
+          <plugin>libertech_arm_driver/LibertechArmInterfaceHardware</plugin>
+          <param name="use_right">${use_right}</param>
+          <param name="use_left">${use_left}</param>
+        </xacro:unless>
+      </hardware>
+      
+      <xacro:if value="${use_right}">
+        <xacro:arm_ros2_control_joint
+            prefix="${prefix}"
+            name="arm_right" 
+            initial_positions="${initial_positions}" />
+      </xacro:if>
+
+      <xacro:if value="${use_left}">
+        <xacro:arm_ros2_control_joint
+            prefix="${prefix}"
+            name="arm_left" 
+            initial_positions="${initial_positions}" />
+      </xacro:if>
+      
+    </ros2_control>
+  </xacro:macro>
+
+</robot>

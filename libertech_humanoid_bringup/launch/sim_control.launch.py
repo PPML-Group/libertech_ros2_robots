@@ -265,7 +265,7 @@ def launch_setup(context, *args, **kwargs):
             [FindPackageShare("ros_gz_sim"), "/launch/gz_sim.launch.py"]
         ),
         # launch_arguments={"ign_args": " -r -v 3 empty.sdf"}.items(),
-        launch_arguments={"ign_args": f" -r -v 1 {ignition_world.perform(context)}"}.items(),
+        launch_arguments={"ign_args": f" -r -v 0 {ignition_world.perform(context)}"}.items(),
         condition=IfCondition(sim_ignition),
     )
 

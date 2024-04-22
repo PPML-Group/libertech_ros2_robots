@@ -38,7 +38,7 @@ def launch_setup(context, *args, **kwargs):
             PathJoinSubstitution([FindExecutable(name="xacro")]),
             " ",
             PathJoinSubstitution(
-                [FindPackageShare("libertech_humanoid_description"), "urdf", "humanoid_fixed.xacro"]
+                [FindPackageShare("libertech_humanoid_description"), "urdf", "humanoid_fixed.xacro"] # humanoid_fixed
             ),
         ]
     )

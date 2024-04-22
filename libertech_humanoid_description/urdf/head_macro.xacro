@@ -7,21 +7,8 @@
         connected_to:=''
         xyz:='0 0 0' 
         rpy:='0 0 0'
-        use_camera:=True
-        use_fake_hardware:=False
-        sim_ignition:=False ">
+        use_camera:=True">
         <!-- head_base is fixed to the base link -->
-
-        <xacro:include filename="$(find libertech_humanoid_description)/urdf/head.ros2_control.xacro" />
-        <xacro:arg name="initial_positions_file_head" default="$(find libertech_humanoid_description)/config/initial_positions_head.yaml"/>
-        <xacro:property name="initial_positions_file_head" default="$(arg initial_positions_file_head)"/>
-
-        <xacro:head_ros2_control
-            prefix="${prefix}"
-            name="head" 
-            use_fake_hardware="${use_fake_hardware}"
-            sim_ignition="${sim_ignition}"
-            initial_positions="${xacro.load_yaml(initial_positions_file_head)}" />
 
         <joint
             name="${connected_to}_to_head_fixed"  type="fixed">
@@ -232,7 +219,6 @@
                     <enable_metrics>false</enable_metrics>
                 </sensor>
             </gazebo>
-
 
         </xacro:if>
 
