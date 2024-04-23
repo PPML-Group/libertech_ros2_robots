@@ -89,59 +89,27 @@
     </light>
 
     <include>
-      <static>false</static>
+      <static>true</static>
       <uri>
-        model://YCB/Black and Decker Cordless Drill
+        model://Table
       </uri>
-      <pose>0.7 0.4 0.1 0.0 0.0 0.0</pose>
+      <pose>0.7 0.0 0.0 0.0 0.0 0.0</pose>
     </include>
 
     <include>
       <static>false</static>
       <uri>
-        model://YCB/Cracker Box
+        model://YCB-V/obj_000001
       </uri>
-      <pose>0.7 0.2 0.1 0.0 0.0 0.0</pose>
+      <pose>0.7 -0.2 1.1 0.0 0.0 0.0</pose>
     </include>
 
     <include>
       <static>false</static>
       <uri>
-        model://YCB/Master Chef Can
+        model://YCB-V/obj_000005
       </uri>
-      <pose>0.7 0.0 0.1 0.0 0.0 0.0</pose>
-    </include>
-
-    <include>
-      <static>false</static>
-      <uri>
-        model://YCB/Mustard Bottle
-      </uri>
-      <pose>0.7 -0.2 0.1 0.0 0.0 0.0</pose>
-    </include>
-
-    <include>
-      <static>false</static>
-      <uri>
-        model://YCB/Pitcher Base
-      </uri>
-      <pose>0.7 -0.4 0.1 0.0 0.0 0.0</pose>
-    </include>
-
-    <include>
-      <static>false</static>
-      <uri>
-        model://YCB/Potted Meat Can
-      </uri>
-      <pose>0.9 0.2 0.1 0.0 0.0 0.0</pose>
-    </include>
-
-    <include>
-      <static>false</static>
-      <uri>
-        model://YCB/Rubiks Cube
-      </uri>
-      <pose>0.9 -0.2 0.1 0.0 0.0 0.0</pose>
+      <pose>0.7 0.2 1.1 0.0 0.0 0.0</pose>
     </include>
 
   </world>
