@@ -4,7 +4,6 @@ from rclpy.node import Node
 from geometry_msgs.msg import PoseStamped
 import numpy as np
 import time
-import math
 from transformations import quaternion_from_euler, quaternion_from_matrix
 from math import sin, cos   
     
@@ -43,8 +42,8 @@ class PosePublisher(Node):
         pose_right.header.stamp = self.get_clock().now().to_msg()
         pose_right.header.frame_id = "base"
         pose_right.pose.position.x = 0.55
-        pose_right.pose.position.y = -0.24
-        pose_right.pose.position.z = 0.25     
+        pose_right.pose.position.y = -0.2
+        pose_right.pose.position.z = 0.27     
         # pose_right.pose.orientation.x = 0.430477  # 无旋转
         # pose_right.pose.orientation.y = 0.560972  # 无旋转
         # pose_right.pose.orientation.z = 0.430477  # 无旋转
@@ -62,8 +61,8 @@ class PosePublisher(Node):
         pose_left.header.stamp = self.get_clock().now().to_msg()
         pose_left.header.frame_id = "base"
         pose_left.pose.position.x = 0.55
-        pose_left.pose.position.y = 0.24
-        pose_left.pose.position.z = 0.25     
+        pose_left.pose.position.y = 0.2
+        pose_left.pose.position.z = 0.27     
         # pose_right.pose.orientation.x = 0.430477  # 无旋转
         # pose_right.pose.orientation.y = 0.560972  # 无旋转
         # pose_right.pose.orientation.z = 0.430477  # 无旋转
@@ -84,8 +83,8 @@ class PosePublisher(Node):
         
         ## ############################################################
         t0, t1 = 0, 5.0
-        theta0, theta1 = 0, np.pi/3
-        r = 0.24
+        theta0, theta1 = 0, np.pi/4
+        r = 0.2
         num_points = 100
         self.arc_planner = ArcTrajectory()
         ts, xs, ys, thetas = self.arc_planner.generate_trajectory(t0, t1,theta0, theta1, r, num_points)
@@ -96,9 +95,9 @@ class PosePublisher(Node):
             pose_right = PoseStamped()
             pose_right.header.stamp = self.get_clock().now().to_msg()
             pose_right.header.frame_id = "base"
-            pose_right.pose.position.x = 0.50
+            pose_right.pose.position.x = 0.55
             pose_right.pose.position.y = -xs[i]
-            pose_right.pose.position.z = 0.25+ys[i]  # Keep Z constant
+            pose_right.pose.position.z = 0.27+ys[i]  # Keep Z constant
             rot_right = np.array([[0,0,1],[cos(-thetas[i]),sin(-thetas[i]),0],[-sin(-thetas[i]),cos(-thetas[i]),0]])
             # rot_right = np.array([[0,0,1],[-cos(thetas[i]),sin(thetas[i]),0],[-sin(thetas[i]),-cos(thetas[i]),0]])
             # rot_right = np.array([[0,0,1],[1,0,0],[0,1,0]])
@@ -117,9 +116,9 @@ class PosePublisher(Node):
             pose_left = PoseStamped()
             pose_left.header.stamp = self.get_clock().now().to_msg()
             pose_left.header.frame_id = "base"
-            pose_left.pose.position.x = 0.50
+            pose_left.pose.position.x = 0.55
             pose_left.pose.position.y = xs[i]
-            pose_left.pose.position.z = 0.25-ys[i]  # Keep Z constant
+            pose_left.pose.position.z = 0.27-ys[i]  # Keep Z constant
             rot_left = np.array([[0,0,1],[-cos(thetas[i]),sin(thetas[i]),0],[-sin(thetas[i]),-cos(thetas[i]),0]])
             # rot_left = np.array([[0,0,1],[cos(thetas[i]),sin(thetas[i]),0],[-sin(thetas[i]),cos(thetas[i]),0]])
             # rot_left = np.array([[0,0,1],[-1,0,0],[0,-1,0]])

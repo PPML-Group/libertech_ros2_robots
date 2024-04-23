@@ -70,7 +70,7 @@
     </model>
     <model name='simple_cube'>
       <!-- <static>true</static> -->
-      <pose>1.15 0 1 0 0 -1.57</pose> <!-- 改变这些值来改变立方体的位置和朝向 -->
+      <pose>1.2 0 1 0 0 -1.57</pose> <!-- 改变这些值来改变立方体的位置和朝向 -->
       <link name='link_cube'>
         <pose>0 0 0 0 0 0</pose>
         <inertial>
@@ -102,7 +102,7 @@
         </visual>
       </link>
       <link name='disk_link'>
-        <pose>0 -0.5 0.3 0 0 0</pose> <!-- 根据需要调整圆盘的位置 -->
+        <pose>0 -0.5 0.26 0 0 0</pose> <!-- 根据需要调整圆盘的位置 -->
         <inertial>
             <mass>1.0</mass>
             <inertia>
