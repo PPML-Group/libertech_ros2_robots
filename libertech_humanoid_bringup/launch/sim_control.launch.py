@@ -159,13 +159,13 @@ def launch_setup(context, *args, **kwargs):
     arm_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_right_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_right_trajectory_controller", "--inactive", "-c", "/controller_manager"],
     )
     
     arm_left_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_left_trajectory_controller", "--inactive", "-c", "/controller_manager"],
     )
     
     movement_traj_controller_spawner = Node(
@@ -213,7 +213,20 @@ def launch_setup(context, *args, **kwargs):
         executable="spawner",
         arguments=["head_velocity_controller", "--inactive", "-c", "/controller_manager"],
     )
-
+    ####   cartesian_motion
+    arm_right_cartesian_motion_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_right_cartesian_motion_controller",  "-c", "/controller_manager"],
+    )
+    
+    arm_left_cartesian_motion_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_left_cartesian_motion_controller",  "-c", "/controller_manager"],
+    )
+    
+    
     # Bridge
     bridge = Node(
         package="ros_gz_bridge",
@@ -352,7 +365,20 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[head_vel_controller_spawner],
             )
         ),
+        ###   cartesian_motion
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_right_cartesian_motion_controller_spawner ],
+            )
+        ),
         
+        RegisterEventHandler(
+            event_handler=OnProcessExit(
+                target_action=ignition_spawn_entity,
+                on_exit=[arm_left_cartesian_motion_controller_spawner ],
+            )
+        ),
         delay_rviz_after_joint_state_broadcaster_spawner,
         ignition_bridge,
     ]
@@ -416,7 +442,7 @@ def generate_launch_description():
     declared_arguments.append(
         DeclareLaunchArgument(
             "sim_ignition_world",
-            default_value="world_empty.sdf", # world_ycb world_box world_empty
+            default_value="world_pan.sdf", # world_ycb world_box world_empty world_pan world_test
             description="Gazebo Ignition world",
         )
     )
@@ -480,13 +506,13 @@ def generate_launch_description():
         have to be updated.",
         )
     )
-    declared_arguments.append(
-        DeclareLaunchArgument(
-            "robot_controller",
-            default_value="arm_right_trajectory_controller",
-            description="Robot controller to start.",
-        )
-    )
+    # declared_arguments.append(
+    #     DeclareLaunchArgument(
+    #         "robot_controller",
+    #         default_value="arm_right_trajectory_controller",
+    #         description="Robot controller to start.",
+    #     )
+    # )
     declared_arguments.append(
         DeclareLaunchArgument(
             "use_sim_time",

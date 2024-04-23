@@ -44,9 +44,9 @@ def generate_launch_description():
 
     # MoveGroupInterface demo executable
     move_group_demo = Node(
-        name="move_group_interface_direct_dual",#move_group_interface_direct，move_group_interface_joint，move_group_interface_cartesian
+        name="move_group_interface_direct",#move_group_interface_direct，move_group_interface_joint，move_group_interface_cartesian,move_group_interface_direct_dual
         package="libertech_humanoid_bringup",
-        executable="move_group_interface_direct_dual",
+        executable="move_group_interface_direct",
         output="screen",
         parameters=[
             moveit_config.robot_description,

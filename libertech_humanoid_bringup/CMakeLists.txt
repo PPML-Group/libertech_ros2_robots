@@ -28,6 +28,9 @@ set(THIS_PACKAGE_INCLUDE_DEPENDS
   tf2_geometry_msgs
   tf2_ros
   tf2
+  cartesian_controller_base
+  cartesian_motion_controller
+
 )
 
 # find dependencies
@@ -80,6 +83,7 @@ DESTINATION lib/${PROJECT_NAME}
 
 install(PROGRAMS
   scripts/test_huge_joint_space_jump.py
+  scripts/pose_publisher.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

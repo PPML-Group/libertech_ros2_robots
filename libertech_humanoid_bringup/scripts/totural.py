@@ -10,8 +10,8 @@ import rclpy
 from rclpy.logging import get_logger
 
 # moveit python library
-from moveit.core.robot_state import RobotState
-from moveit.planning import (
+from moveit.core.robot_state import RobotState # type: ignore
+from moveit.planning import ( # type: ignore
     MoveItPy,
     MultiPipelinePlanRequestParameters,
 )
