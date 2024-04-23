@@ -21,6 +21,7 @@ from launch.actions import (
     IncludeLaunchDescription,
     OpaqueFunction,
     RegisterEventHandler,
+    TimerAction,
 )
 from launch.event_handlers import OnProcessExit
 from launch.launch_description_sources import PythonLaunchDescriptionSource
@@ -365,18 +366,18 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[head_vel_controller_spawner],
             )
         ),
-        ###   cartesian_motion
+        #### cartesian_motion
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
-                on_exit=[arm_right_cartesian_motion_controller_spawner ],
+                on_exit=[arm_right_cartesian_motion_controller_spawner],
             )
         ),
         
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
-                on_exit=[arm_left_cartesian_motion_controller_spawner ],
+                on_exit=[arm_left_cartesian_motion_controller_spawner],
             )
         ),
         delay_rviz_after_joint_state_broadcaster_spawner,
