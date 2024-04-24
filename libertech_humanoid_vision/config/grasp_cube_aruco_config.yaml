@@ -1,0 +1,30 @@
+grasp_cube_aruco:
+  ros__parameters:
+
+    hand_controller: "hand_right_trajectory_controller"
+
+    arm_controller: "arm_right_cartesian_motion_controller"
+
+    aruco_id: 33
+
+    hand_right_joints:
+      - hand_right_f11_joint
+      - hand_right_f12_joint
+      - hand_right_f13_joint
+      - hand_right_f14_joint
+      - hand_right_f21_joint
+      - hand_right_f22_joint
+      - hand_right_f23_joint
+      - hand_right_f24_joint
+      - hand_right_f31_joint
+      - hand_right_f32_joint
+      - hand_right_f33_joint
+      - hand_right_f34_joint
+      - hand_right_f41_joint
+      - hand_right_f42_joint
+      - hand_right_f43_joint
+      - hand_right_f44_joint
+      - hand_right_f51_joint
+      - hand_right_f52_joint
+      - hand_right_f53_joint
+      - hand_right_f54_joint

@@ -243,12 +243,6 @@ hand_right_trajectory_controller:
     state_interfaces:
       - position
 
-
-    # interpolation_method: splines
-    open_loop_control: false
-    # state_publish_rate: 500.0
-    
-
 hand_left_trajectory_controller:
   ros__parameters:
     joints:

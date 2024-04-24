@@ -309,25 +309,25 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[joint_state_broadcaster_spawner],
             )
         ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[arm_right_traj_controller_spawner],
-            )
-        ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[arm_left_traj_controller_spawner],
-            )
-        ),
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[arm_right_traj_controller_spawner],
+        #     )
+        # ),
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[arm_left_traj_controller_spawner],
+        #     )
+        # ),
         
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[movement_traj_controller_spawner],
-            )
-        ),
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[movement_traj_controller_spawner],
+        #     )
+        # ),
         RegisterEventHandler(
             event_handler=OnProcessExit(
                 target_action=ignition_spawn_entity,
@@ -347,36 +347,36 @@ def launch_setup(context, *args, **kwargs):
                 on_exit=[hand_left_traj_controller_spawner],
             )
         ),
-        #### velocity
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[arm_right_vel_controller_spawner],
-            )
-        ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[arm_left_vel_controller_spawner],
-            )
-        ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
-                on_exit=[head_vel_controller_spawner],
-            )
-        ),
+        # #### velocity
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[arm_right_vel_controller_spawner],
+        #     )
+        # ),
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[arm_left_vel_controller_spawner],
+        #     )
+        # ),
+        # RegisterEventHandler(
+        #     event_handler=OnProcessExit(
+        #         target_action=ignition_spawn_entity,
+        #         on_exit=[head_vel_controller_spawner],
+        #     )
+        # ),
         #### cartesian_motion
         RegisterEventHandler(
             event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
+                target_action=joint_state_broadcaster_spawner,
                 on_exit=[arm_right_cartesian_motion_controller_spawner],
             )
         ),
         
         RegisterEventHandler(
             event_handler=OnProcessExit(
-                target_action=ignition_spawn_entity,
+                target_action=joint_state_broadcaster_spawner,
                 on_exit=[arm_left_cartesian_motion_controller_spawner],
             )
         ),
