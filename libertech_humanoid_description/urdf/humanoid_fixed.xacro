@@ -260,12 +260,16 @@
 
     <xacro:if value="$(arg use_hand)">
         <xacro:include filename="$(find libertech_hand_description)/urdf/hand.ros2_control.xacro" />
+        <xacro:arg name="initial_positions_file_hand" default="$(find libertech_hand_description)/config/initial_positions_hand.yaml"/>
+        <xacro:property name="initial_positions_file_hand" default="$(arg initial_positions_file_hand)"/>
+
         <xacro:hand_ros2_control 
             prefix="$(arg prefix)"
             use_right="True"
             use_left="True"
             use_fake_hardware="$(arg use_fake_hardware)"
-            sim_ignition="$(arg sim_ignition)"/>
+            sim_ignition="$(arg sim_ignition)"
+            initial_positions="${xacro.load_yaml(initial_positions_file_hand)}" />
     </xacro:if>
 
     <xacro:include filename="$(find libertech_humanoid_description)/urdf/leg.ros2_control.xacro" />
@@ -282,6 +286,7 @@
         <gazebo reference="world">
         </gazebo>
         <gazebo>
+            <self_collide>false</self_collide>
             <plugin filename="libign_ros2_control-system.so" name="ign_ros2_control::IgnitionROS2ControlPlugin">
                 <parameters>$(arg simulation_controllers)</parameters>
                 <controller_manager_node_name>/controller_manager</controller_manager_node_name>

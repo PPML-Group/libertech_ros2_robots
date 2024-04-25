@@ -13,6 +13,14 @@ import time
 import tf2_ros
 from tf2_ros.buffer import Buffer
 from tf2_ros.transform_listener import TransformListener
+from model_rtb import ModelRtb
+from ament_index_python.packages import get_package_share_directory
+import os
+from spatialmath import SO3, SE3
+import numpy as np
+from transformations import quaternion_from_euler, quaternion_from_matrix
+from scipy.spatial.transform import Rotation
+
 
 class GraspCubeAruco(Node):
     def __init__(self):
@@ -26,17 +34,39 @@ class GraspCubeAruco(Node):
         
         publish_topic = "/" + arm_controller + "/target_frame"
         self.get_logger().info('Publishing arm goal on topic "{}"'.format(publish_topic))
-        self.arm_pub = self.create_publisher(JointTrajectory, publish_topic, 1) 
+        self.arm_pub = self.create_publisher(PoseStamped, publish_topic, 1) 
         
         publish_topic = "/" + hand_controller + "/joint_trajectory"
         self.get_logger().info('Publishing hand goal on topic "{}"'.format(publish_topic))
         self.hand_pub = self.create_publisher(JointTrajectory, publish_topic, 1) 
-          
+        
+        self.declare_parameter("hand_joints", rclpy.Parameter.Type.STRING_ARRAY)
+        self.hand_joints = self.get_parameter("hand_joints").value
+        self.get_logger().info('hand_joints "{}"'.format(self.hand_joints))
+        
+        # self.joint_state_sub = self.create_subscription(
+        #     JointState, "joint_states", self.joint_state_callback, 10
+        # )
+        self.timer = self.create_timer(5, self.timer_callback)
+        
         self.declare_parameter("aruco_id", 0)
         self.aruco_id = self.get_parameter("aruco_id").value
         
-        
         self.camera_info_received = False
+        
+        self.declare_parameter("urdf_file", f"")
+        urdf_file = self.get_parameter("urdf_file").value
+        package_share_directory = get_package_share_directory("libertech_humanoid_description")
+        self.urdf_file = os.path.join(package_share_directory, "urdf", urdf_file)
+        # print(self.urdf_file)
+        self.model = ModelRtb(self.urdf_file)
+        print(self.model.n)
+        q = np.zeros(self.model.n)
+        q[12] = -0.5 # camera init
+        self.T_base_cam = self.model.fkine(q,
+                                  start=self.model.link_dict["base"],
+                                  end=self.model.link_dict["head_camera_zedm_optical_frame"]) # SE3
+        print(self.T_base_cam)
         
         # /controller_manager/
         # result = list_controllers(self,"/controller_manager")
@@ -45,15 +75,15 @@ class GraspCubeAruco(Node):
         #     print(controller)
             
         # result = switch_controllers(self,"/controller_manager",
-        #                             ["arm_right_trajectory_controller"],
-        #                             ["arm_right_velocity_controller"],
+        #                             ["arm_trajectory_controller"],
+        #                             ["arm_velocity_controller"],
         #                             1,
         #                             True,
         #                             10)
         
         # result = switch_controllers(self,"/controller_manager",
-        #                             ["arm_right_velocity_controller"],
-        #                             ["arm_right_trajectory_controller"],
+        #                             ["arm_velocity_controller"],
+        #                             ["arm_trajectory_controller"],
         #                             1,
         #                             True,
         #                             10)                
@@ -71,29 +101,9 @@ class GraspCubeAruco(Node):
                 1)
         self.cv_bridge = CvBridge()
         
-        self.tf_buffer = Buffer(cache_time=rclpy.duration.Duration(seconds=10),node=self)
-        self.tf_listener = TransformListener(self.tf_buffer, node=self, spin_thread=False)
-        transform = self.get_relative_pose()
-        print(transform)
-    
-    def print_all_transforms(self):
-        # 获取所有的转换数据
-        all_transforms = self.tf_buffer.all_frames_as_yaml()
-        self.get_logger().info('All transforms:\n{}'.format(all_transforms))
-        
-    def get_relative_pose(self):
-        max_attempts = 1000
-        attempts = 0
-        while attempts < max_attempts:
-            try:
-                transform = self.tf_buffer.lookup_transform('base', 'head_camera_zedm', rclpy.time.Time())
-                self.get_logger().info('Relative Pose:\n{}'.format(transform))
-                return transform
-            except (tf2_ros.LookupException, tf2_ros.ConnectivityException, tf2_ros.ExtrapolationException) as e:
-                self.get_logger().warn('Failed to lookup transform: {}'.format(e))
-                attempts += 1
-                time.sleep(5)  # 等待一段时间后重试
-        
+        self.move_flag = False
+        self.grasp_flag = False
+
     def camera_info_callback(self, info: CameraInfo): 
         if self.camera_info_received is False:
             self.camera_d = info.d
@@ -128,12 +138,105 @@ class GraspCubeAruco(Node):
         ret = self.aruco_detetor.detect_and_estimate_pose(img.copy())
         if ret is not None:
             rvecs, tvecs, image = ret
-            cv2.imshow("aruco detection",image)  
+            # cv2.imshow("aruco detection",image)  
             # self.get_logger().info(f'rvecs: {rvecs}')
             # self.get_logger().info(f'tvecs: {tvecs}')
-            key = cv2.waitKey(1)
-        pass
-        
+            # key = cv2.waitKey(1)
+            
+            rotation_matrix, _ = cv2.Rodrigues(rvecs[0])
+            # self.get_logger().info(f'rotation_matrix: {rotation_matrix}')
+            
+            rot = SE3(SO3(rotation_matrix))
+            # self.get_logger().info(f'rot: {rot}')
+            T_cam_obj = SE3(tvecs[0]) * rot
+            # self.get_logger().info(f'T_cam_obj: {T_cam_obj}')
+            
+            T_cam_grasp = T_cam_obj * (SE3([0.06,0,0.02]) * SE3(SO3.Eul(np.array([0,np.pi,0]))))
+            # self.get_logger().info(f'T_cam_grasp: {T_cam_grasp}')
+            # self.get_logger().info(f'T_cam_grasp: {T_cam_grasp.t}')
+            # self.get_logger().info(f'T_cam_grasp: {T_cam_grasp.R}')
+            T_base_grasp = self.T_base_cam * T_cam_grasp
+            # self.get_logger().info(f'T_base_grasp: {T_base_grasp}')
+            # self.get_logger().info(f'T_cam_grasp.t: {T_base_grasp.x}')
+            # self.get_logger().info(f'T_cam_grasp.t: {T_base_grasp.y}')
+            # self.get_logger().info(f'T_cam_grasp.t: {T_base_grasp.z}')
+            # self.get_logger().info(f'T_cam_grasp.R: {T_base_grasp.R}')
+            
+            # SE3().
+            if self.move_flag is False:
+                pose = PoseStamped()
+                pose.header.stamp = self.get_clock().now().to_msg()
+                pose.header.frame_id = "base"
+                pose.pose.position.x = T_base_grasp.x
+                pose.pose.position.y = T_base_grasp.y
+                pose.pose.position.z = T_base_grasp.z
+                # self.get_logger().info(f'position: {pose.pose.position}')
+                # rotation_matrix_4x4 = np.eye(4)
+                # rotation_matrix_4x4[:3, :3] = T_base_grasp.R
+                # quat = quaternion_from_matrix(rotation_matrix_4x4)
+                # self.get_logger().info(f'quat: {quat}')
+                r = Rotation.from_matrix(T_base_grasp.R)
+                quat = r.as_quat()
+                # self.get_logger().info(f'quat: {quat}')
+                # self.get_logger().info(f'T_cam_grasp.R: {T_cam_grasp.R}')
+                
+                pose.pose.orientation.x = quat[0]
+                pose.pose.orientation.y = quat[1]
+                pose.pose.orientation.z = quat[2]
+                pose.pose.orientation.w = quat[3]
+                
+                self.arm_pub.publish(pose)
+                self.arm_pub.publish(pose)
+                self.arm_pub.publish(pose)
+                self.move_flag = True
+                self.get_logger().info(f"Published trajectory 1 succ")
+        # else:
+        #     cv2.imshow("aruco detection",img)  
+        #     key = cv2.waitKey(1)
+                
+    def timer_callback(self):
+        self.get_logger().info(f"timer for grasp")
+        if self.move_flag is True and self.grasp_flag is False:
+            self.get_logger().info(f"grasping")
+            time.sleep(5)
+            
+            traj = JointTrajectory()
+            traj.joint_names = self.hand_joints
+            point = JointTrajectoryPoint()
+            pos_a = [0,0.01,0.01,0.01,
+                    0,0.01,0.01,0.01,
+                    0,0.01,0.01,0.01,
+                    0,0.01,0.01,0.01,
+                    1.8,0,0.0,0.0]
+            for idx, name in enumerate(traj.joint_names):
+                pos = (pos_a[idx])
+                point.positions.append(pos)
+
+            point.velocities = [0.0] * len(point.positions)
+            point.time_from_start = Duration(sec=0)
+            traj.points.append(point)
+            self.hand_pub.publish(traj)
+            time.sleep(2)
+            
+            traj = JointTrajectory()
+            traj.joint_names = self.hand_joints
+            point = JointTrajectoryPoint()
+            pos_a = [0,1.4,0.8,0.8,
+                    0,1.5,0.8,0.8,
+                    0,1.0,1.0,1.0,
+                    0,0.8,0.8,0.8,
+                    1.8,0.0,0.0,0.0]
+            for idx, name in enumerate(traj.joint_names):
+                pos = (pos_a[idx])
+                point.positions.append(pos)
+
+            point.velocities = [0.0] * len(point.positions)
+            point.time_from_start = Duration(sec=1)
+            traj.points.append(point)
+            self.hand_pub.publish(traj)
+            
+            self.grasp_flag = True
+
         
 def main(args=None):
     rclpy.init(args=args)

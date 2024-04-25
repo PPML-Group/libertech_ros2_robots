@@ -1,16 +1,33 @@
 test_huge_joint_space_jump:
   ros__parameters:
 
-    controller_name: "arm_right_trajectory_controller"
+    controller_name: "hand_right_trajectory_controller"
     wait_sec_to_publish: 3
 
-    goal_offset: [-0.5, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+    goal_offset: [0.0, 1.5, 0.0, 0.0, 
+                  0.0, 1.5, 0.0, 0.0, 
+                  0.0, 1.5, 0.0, 0.0, 
+                  0.0, 1.5, 0.0, 0.0, 
+                  0.0, 0.0, 0.0, 0.0]
 
     joints:
-      - arm_right_shoulder_pitch_joint
-      - arm_right_shoulder_roll_joint
-      - arm_right_shoulder_yaw_joint
-      - arm_right_elbow_pitch_joint
-      - arm_right_elbow_roll_joint
-      - arm_right_wrist_pitch_joint
-      - arm_right_wrist_yaw_joint
+      - hand_right_f11_joint
+      - hand_right_f12_joint
+      - hand_right_f13_joint
+      - hand_right_f14_joint
+      - hand_right_f21_joint
+      - hand_right_f22_joint
+      - hand_right_f23_joint
+      - hand_right_f24_joint
+      - hand_right_f31_joint
+      - hand_right_f32_joint
+      - hand_right_f33_joint
+      - hand_right_f34_joint
+      - hand_right_f41_joint
+      - hand_right_f42_joint
+      - hand_right_f43_joint
+      - hand_right_f44_joint
+      - hand_right_f51_joint
+      - hand_right_f52_joint
+      - hand_right_f53_joint
+      - hand_right_f54_joint

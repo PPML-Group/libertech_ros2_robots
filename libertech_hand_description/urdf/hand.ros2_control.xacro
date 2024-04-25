@@ -161,7 +161,7 @@
       <joint name="${prefix}${name}_f51_joint">
         <command_interface name="position">
           <param name="min">0.01</param>
-          <param name="max">1.5</param>
+          <param name="max">1.9</param>
         </command_interface>
         <state_interface name="position">
           <param name="initial_value">${initial_positions['f51_joint']}</param>

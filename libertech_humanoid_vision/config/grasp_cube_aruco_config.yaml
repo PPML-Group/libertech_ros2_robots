@@ -7,7 +7,9 @@ grasp_cube_aruco:
 
     aruco_id: 33
 
-    hand_right_joints:
+    urdf_file: "humanoid_fixed.xacro.urdf"
+
+    hand_joints:
       - hand_right_f11_joint
       - hand_right_f12_joint
       - hand_right_f13_joint

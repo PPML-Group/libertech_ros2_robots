@@ -683,7 +683,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_shoulder_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_shoulder_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -714,7 +714,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_shoulder_roll.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_shoulder_roll.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -744,7 +744,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_shoulder_yaw.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_shoulder_yaw.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -774,7 +774,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_elbow_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_elbow_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -804,7 +804,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_elbow_roll.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_elbow_roll.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -834,7 +834,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_wrist_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_wrist_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -864,7 +864,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_wrist_yaw.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_wrist_yaw.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -894,7 +894,7 @@
     </visual>
     <collision>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_right_end.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_right_end.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -950,7 +950,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/hand_right.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/hand_right.STL"/>
       </geometry>
     </collision>
     <visual>
@@ -984,7 +984,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/base.STL" scale="-1 1 1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_shoulder_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_shoulder_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1017,7 +1017,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link1.STL" scale="1 1 -1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_shoulder_roll.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_shoulder_roll.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1049,7 +1049,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link2.STL" scale="-1 1 1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_shoulder_yaw.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_shoulder_yaw.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1081,7 +1081,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link3.STL" scale="-1 1 1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_elbow_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_elbow_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1113,7 +1113,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link4_left.STL"  scale="1 1 -1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_elbow_roll.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_elbow_roll.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1145,7 +1145,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link5_left.STL" scale="-1 1 1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_wrist_pitch.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_wrist_pitch.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1177,7 +1177,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link6_left.STL" scale="1 1 -1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_wrist_yaw.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_wrist_yaw.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1209,7 +1209,7 @@
     <collision>
       <geometry>
         <!-- <mesh filename="file://$(find libertech_arm_description)/meshes/link7_left.STL" scale="1 -1 1"/> -->
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/arm_left_end.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/arm_left_end.STL"/>
       </geometry>
       <origin rpy="0 0 0" xyz="0 0 0"/>
     </collision>
@@ -1265,7 +1265,7 @@
     <collision>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/hand_left.STL"/>
+        <mesh filename="file:///home/ccs/ros2/libertech_ws/install/libertech_arm_description/share/libertech_arm_description/meshes/collision/hand_left.STL"/>
       </geometry>
     </collision>
     <visual>
