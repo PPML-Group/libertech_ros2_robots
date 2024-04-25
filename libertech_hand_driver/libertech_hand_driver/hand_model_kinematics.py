@@ -378,16 +378,104 @@ class HandModelKinematics:
         results['finger_to_finger_distances'] = np.array(finger_to_finger_distances)
 
         return results
+    
+    def vvd(self, vector1,vector2):             
+            #vector1,vector2夹角 值域0~180
+            degree=math.acos(np.dot(vector1, vector2)/(np.linalg.norm(vector1)*np.linalg.norm(vector2)))
+            #degree=degree* (180 / m.pi)
+            return degree
+    def safe_1(self, degree, initial_degree):          #对食指二关节估计数据的一个安全校验，同时更加准确,弧度制计算
+        degree = math.pi-degree + math.radians(initial_degree)
+        if degree > math.radians(95):
+            degree = math.radians(95)
+        if  degree <= 0:
+            degree = 0
+        # degree = degree**2.5/m.radians(95)**1.5
+        return degree
+    
+    #食指一关节偏差角8度,0~35->0~90
+    def safe_2(self, vector1,vector2,matrix1,error_degree,K,initial_degree,max_rangedegree):          #对食指一关节弯曲角估计数据正负号判断与一个安全校验，同时更加准确,弧度制计算
+        #向量与平面间的夹角，matrix是3X3矩阵，每一行代表平面上的一个点坐标，三个点确定一个平面 #输入两个向量，平面点矩阵3X3,校准角度,增益，初始角度，最大值范围
+        # 计算两个边向量
+        V1=matrix1[0]-matrix1[1]
+        V2=matrix1[2]-matrix1[0]
+        # 计算单位法向量（取两个边向量的叉积）手心朝外方向
+        normal_vector = np.cross(V2, V1)/np.linalg.norm(np.cross(V1, V2))   #右手用，左手需要交换叉乘向量位置
+        # 计算向量在单位法向量上的投影(有正负)
+        projection_vector = np.dot(vector1, normal_vector)         
+        degree = math.pi-self.vvd(vector1,vector2)
+        degree = degree + math.radians(error_degree)
+        if projection_vector < 0:                                #说明是指向手掌反方向的，转角是负值
+            degree = (-math.pi+self.vvd(vector1,vector2)-math.radians(error_degree))/(K-0.5)
+            degree = K*degree
+            degree = degree + math.radians(initial_degree)
+        if degree > math.radians(max_rangedegree):
+            degree = math.radians(max_rangedegree)
+        if degree <= 0:
+            degree = 0
+    #  degree = degree**4/m.radians(max_rangedegree)**3
+        return degree
+
+    def safe_3(self,vector1,vector2,error_degree,K,max_rangedegree):          #对拇指3关节弯曲角估计数据正负号判断与一个安全校验，同时更加准确,弧度制计算
+        #向量与平面间的夹角，matrix是3X3矩阵，每一行代表平面上的一个点坐标，三个点确定一个平面 #输入两个向量，平面点矩阵3X3,校准角度,增益，初始角度，最大值范围        
+        degree = math.pi-self.vvd(vector1,vector2)
+        degree = degree + math.radians(error_degree)
+        degree = K*degree
+        if degree > math.radians(max_rangedegree):
+            degree = math.radians(max_rangedegree)
+        if degree <= 0:
+            degree = 0
+    #  degree = degree**4/m.radians(max_rangedegree)**3
+        return degree
         
-    def ik_e2q_retarget(self, ph: list[np.ndarray], q_last=None):
         
-        def func(q):
+    def ik_e2q_retarget(self, ph, ph_end: list[np.ndarray], q_last=None):
+        
+        # palm_plane1 = np.array([ph[0],
+        #                       ph[5],
+        #                       ph[9]])         #用0 5 9的点坐标代表手掌平面
+        # palm_plane2 = np.array([ph[0],
+        #                       ph[13],
+        #                       ph[17]])         #用0 13 17的点坐标代表手掌平面
+        # vector6_7 = ph[7] - ph[6]
+        # vector6_5 = ph[5] - ph[6]
+        # vector10_11 = ph[11] - ph[10]
+        # vector10_9 = ph[9] - ph[10]
+        # vector9_10 = ph[10] - ph[9]
+        # vector9_0 = ph[0] - ph[9]
+        # vector13_14 = ph[14] - ph[13]
+        # vector13_0 = ph[0] - ph[13]
+        # vector17_18 = ph[18] - ph[17]
+        # vector17_0 = ph[0] - ph[17]
+        # vector5_6 = ph[6] - ph[5]
+        # vector5_0 = ph[0] - ph[5]
+        # vector5_9 = ph[9] - ph[5]
+        vector2_3 = ph[3] - ph[2]
+        vector2_1 = ph[1] - ph[2]
+        # vector1_2 = ph[2] - ph[1]
+        # vector1_0 = ph[0] - ph[1]
+        
+        # q12 = self.safe_2(vector5_6,vector5_0,palm_plane1,-8,90/35,23.6928,110)
+        # q22 = self.safe_2(vector9_10,vector9_0,palm_plane1,-3,90/35,23.6928,110)
+        # q32 = self.safe_2(vector13_14,vector13_0,palm_plane2,-3.5,75/36.5,4.2493,95)
+        # q42 = self.safe_2(vector17_18,vector17_0,palm_plane2,-6.5,90/84,4.2493,95)
+        # q52 = self.safe_3(vector1_2,vector1_0,-19,70/13,70),
+        q53 = self.safe_3(vector2_3,vector2_1,-4,100/60,90)
+        
+        def func(qp):
+            # q = np.array([qp[0], q12, qp[1], 
+            #               qp[2], q22, qp[3],
+            #               qp[4], q32,
+            #               qp[5], q42,
+            #               qp[6], q52, q53])
+            # q = np.concatenate([qp[0], q12, qp[1], qp[2], q22, qp[3], qp[4], q32, qp[5], qp[6]])
+            q = np.hstack((qp, q53))
             fk_all = self.fk_q2e_all(q)
             # pa = [fk.t for fk in fk_all]
-            pa = [fk.t - np.array([-0.02, 0.00, 0.05]) for fk in fk_all] # 对齐人手mediapipe与机械手原点 0.05
+            pa_end = [fk.t - np.array([-0.02, 0.00, 0.05]) for fk in fk_all] # 对齐人手mediapipe与机械手原点 0.05
             # direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
-            ret_a = self.compute_directions_distances(pa, is_unit=False)
-            ret_h = self.compute_directions_distances(ph, is_unit=True)
+            ret_a = self.compute_directions_distances(pa_end, is_unit=False)
+            ret_h = self.compute_directions_distances(ph_end, is_unit=True)
             
             scale = 1.
             
@@ -398,7 +486,7 @@ class HandModelKinematics:
             sd = np.ones_like(ret_h['finger_to_thumb_distances'])
             # fd[ret_h['finger_to_thumb_distances'] < 0.02] = 0.001
             # sd[ret_h['finger_to_thumb_distances'] < 0.02] = 200
-            loss_t = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
+            loss_t = 0.1 * np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
             
             fd = ret_h['finger_to_finger_distances']
             sd = np.ones_like(ret_h['finger_to_finger_distances'])
@@ -406,62 +494,123 @@ class HandModelKinematics:
             # sd[ret_h['finger_to_finger_distances'] < 0.02] = 400
             loss_f = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_finger_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_finger_directions'])**2)
             
-            loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9,11,12]])
-            loss_qy = 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]])
+            loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9]]) \
+                + 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]]) \
+                + 5e-4 * np.linalg.norm(q[[10,11]])
+                            
+            return loss_o+loss_t+loss_f+loss_q
 
-            # loss_q = 2.5e-3 * np.linalg.norm(q[[1,4,7,9,11,12]])
-            # loss_q_pip = 0.5e-3 * np.linalg.norm(q[[2,5]])
-            # loss_qy = 4e-3 * np.linalg.norm(q[[0, 3, 6, 8]])
-            
-            return loss_o+loss_t+loss_f+loss_q+loss_qy
-            # # loss1
-            # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(q)
-            # # loss2 不行
-            # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2)
-            # # loss3 只加侧摆
-            # # qy = np.array([q[0],q[3],[6],[8]])
-            # qy = q[[0, 3, 6, 8]]
-            # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(qy)
-            
-            # loss = 0
-            # for i in range(len(direction_vectors_human)):
-            #     loss += np.sum((np.array(direction_vectors_robot[i]) - np.array(direction_vectors_human[i]))** 2)
-        
-        # lb = self.qlim_act_[0]
-        # ub = self.qlim_act_[1]
-        # logger.debug(f"lb is {lb}")
-        # logger.debug(f"ub is {ub}")
-
-        # pso = PSO(func=func, dim=MOTOR_NUM, pop=30, max_iter=100, lb=lb, ub=ub)
-        # # pso.X = 
-        # # pso.cal_y()
-        # best_x, best_y = pso.run()
-        
-        # # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
-         
-        # # logger.info(f"{fg_name}: time is {time.time()-ts}")
-        # logger.debug('best_x:', best_x, '\n', 'best_y:', best_y)
-        # return best_x
-        
-        lower_bounds = self.qlim_act_[0]
-        upper_bounds = self.qlim_act_[1]
+        lower_bounds = self.qlim_act_[0][:12]
+        upper_bounds = self.qlim_act_[1][:12]
         # 将上下限转换为 bounds 格式
         bounds = list(zip(lower_bounds, upper_bounds))
         # print(bounds)
         if q_last is not None:
-            x0 = q_last
+            x0 = q_last[:12]
         else:
-            x0 = np.zeros((MOTOR_NUM))
+            x0 = np.zeros((MOTOR_NUM))[:12]
         sol_psu = minimize(func, x0, method='SLSQP', bounds=bounds)
         # SLSQP(快) L-BFGS-B Powell
         if sol_psu.success:
-            return sol_psu.x
+            q_ret = sol_psu.x         
+            return np.hstack((q_ret[:12], q53))
+            
         else:
             if q_last is not None: 
                 return q_last
             else:
                 logger.error("Retarget Error!")
                 return np.zeros((MOTOR_NUM))
+            
+    # def ik_e2q_retarget(self, ph, ph_end: list[np.ndarray], q_last=None):
+        
+    #     def vvd(vector1,vector2):             
+    #         #vector1,vector2夹角 值域0~180
+    #         degree=math.acos(np.dot(vector1, vector2)/(np.linalg.norm(vector1)*np.linalg.norm(vector2)))
+    #         #degree=degree* (180 / m.pi)
+    #         return degree
+        
+    #     def func(q):
+    #         fk_all = self.fk_q2e_all(q)
+    #         # pa = [fk.t for fk in fk_all]
+    #         pa_end = [fk.t - np.array([-0.02, 0.00, 0.05]) for fk in fk_all] # 对齐人手mediapipe与机械手原点 0.05
+    #         # direction_vectors_robot, direction_vectors_human = self.get_direction(pa, ph)
+    #         ret_a = self.compute_directions_distances(pa_end, is_unit=False)
+    #         ret_h = self.compute_directions_distances(ph_end, is_unit=True)
+            
+    #         scale = 1.
+            
+    #         fd = ret_h['origin_distances']
+    #         loss_o = np.sum((ret_a['origin_directions'] - scale * fd[:, np.newaxis] * ret_h['origin_directions'])**2)
+            
+    #         fd = ret_h['finger_to_thumb_distances']
+    #         sd = np.ones_like(ret_h['finger_to_thumb_distances'])
+    #         # fd[ret_h['finger_to_thumb_distances'] < 0.02] = 0.001
+    #         # sd[ret_h['finger_to_thumb_distances'] < 0.02] = 200
+    #         loss_t = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_thumb_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_thumb_directions'])**2)
+            
+    #         fd = ret_h['finger_to_finger_distances']
+    #         sd = np.ones_like(ret_h['finger_to_finger_distances'])
+    #         # fd[ret_h['finger_to_finger_distances'] < 0.03] = 0.03
+    #         # sd[ret_h['finger_to_finger_distances'] < 0.02] = 400
+    #         loss_f = np.sum(sd[:, np.newaxis] * (ret_a['finger_to_finger_directions'] - scale * fd[:, np.newaxis] * ret_h['finger_to_finger_directions'])**2)
+            
+    #         loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9,11,12]])
+    #         loss_qy = 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]])
+
+    #         # loss_q = 2.5e-3 * np.linalg.norm(q[[1,4,7,9,11,12]])
+    #         # loss_q_pip = 0.5e-3 * np.linalg.norm(q[[2,5]])
+    #         # loss_qy = 4e-3 * np.linalg.norm(q[[0, 3, 6, 8]])
+            
+    #         return loss_o+loss_t+loss_f+loss_q+loss_qy
+    #         # # loss1
+    #         # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(q)
+    #         # # loss2 不行
+    #         # # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2)
+    #         # # loss3 只加侧摆
+    #         # # qy = np.array([q[0],q[3],[6],[8]])
+    #         # qy = q[[0, 3, 6, 8]]
+    #         # return np.sum((np.array(direction_vectors_robot) - np.array(direction_vectors_human))**2) + np.linalg.norm(qy)
+            
+    #         # loss = 0
+    #         # for i in range(len(direction_vectors_human)):
+    #         #     loss += np.sum((np.array(direction_vectors_robot[i]) - np.array(direction_vectors_human[i]))** 2)
+        
+    #     # lb = self.qlim_act_[0]
+    #     # ub = self.qlim_act_[1]
+    #     # logger.debug(f"lb is {lb}")
+    #     # logger.debug(f"ub is {ub}")
+
+    #     # pso = PSO(func=func, dim=MOTOR_NUM, pop=30, max_iter=100, lb=lb, ub=ub)
+    #     # # pso.X = 
+    #     # # pso.cal_y()
+    #     # best_x, best_y = pso.run()
+        
+    #     # # best_x, best_y = pso(func, lb, ub, swarmsize=20, maxiter=40, minfunc=1e-5)
+         
+    #     # # logger.info(f"{fg_name}: time is {time.time()-ts}")
+    #     # logger.debug('best_x:', best_x, '\n', 'best_y:', best_y)
+    #     # return best_x
+        
+    #     lower_bounds = self.qlim_act_[0]
+    #     upper_bounds = self.qlim_act_[1]
+    #     # 将上下限转换为 bounds 格式
+    #     bounds = list(zip(lower_bounds, upper_bounds))
+    #     # print(bounds)
+    #     if q_last is not None:
+    #         x0 = q_last
+    #     else:
+    #         x0 = np.zeros((MOTOR_NUM))
+    #     sol_psu = minimize(func, x0, method='SLSQP', bounds=bounds)
+    #     # SLSQP(快) L-BFGS-B Powell
+    #     if sol_psu.success:
+    #         return sol_psu.x
+    #     else:
+    #         if q_last is not None: 
+    #             return q_last
+    #         else:
+    #             logger.error("Retarget Error!")
+    #             return np.zeros((MOTOR_NUM))
      
     # %% 用于计算驱动空间与关节空间的运动学映射  
     def ik_q2d_m1(self, q: np.ndarray, fg_name: str) -> np.ndarray:

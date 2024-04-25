@@ -343407,3 +343407,557 @@
        [-0.283, -0.913, -0.294],
        [-0.334, -0.897, -0.291]]), 'finger_to_finger_distances': array([0.038, 0.064, 0.111, 0.036, 0.087, 0.051])}
 2024-04-17 15:34:49,898 - libertech_hand_driver.logger - INFO - ***************测试3D Mesh Plot***************
+2024-04-25 19:56:19,212 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 19:56:19,315 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 19:56:19,443 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 19:56:19,445 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 19:56:19,446 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 19:56:19,447 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 19:56:19,448 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 19:56:19,456 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 19:58:44,968 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 19:58:45,027 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 19:58:45,155 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 19:58:45,157 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 19:58:45,159 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 19:58:45,160 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 19:58:45,161 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 19:58:45,169 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 19:58:46,041 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:03:17,120 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:03:17,158 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:03:17,622 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:03:17,624 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:03:17,625 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:03:17,627 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:03:17,628 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:03:17,635 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:03:18,198 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:04:32,975 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:04:32,994 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:04:33,122 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:04:33,124 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:04:33,126 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:04:33,128 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:04:33,129 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:04:33,137 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:04:34,041 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:09:23,899 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:09:23,945 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:09:24,071 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:09:24,073 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:09:24,075 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:09:24,076 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:09:24,077 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:09:24,085 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:09:24,964 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:11:48,287 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:11:48,354 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:11:48,480 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:11:48,482 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:11:48,483 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:11:48,485 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:11:48,486 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:11:48,493 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:11:49,379 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:36:23,804 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:36:23,839 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:36:23,966 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:36:23,968 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:36:23,969 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:36:23,970 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:36:23,972 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:36:23,979 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:36:24,861 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:37:42,400 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:37:42,440 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:37:42,567 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:37:42,569 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:37:42,571 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:37:42,572 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:37:42,574 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:37:42,581 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:37:43,484 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:38:41,834 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:38:41,900 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:38:42,030 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:38:42,032 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:38:42,034 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:38:42,035 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:38:42,036 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:38:42,044 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:38:42,915 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:41:13,193 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:41:13,250 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:41:13,376 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:41:13,378 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:41:13,379 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:41:13,381 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:41:13,382 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:41:13,389 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:41:14,262 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:43:56,318 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:43:56,372 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:43:56,498 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:43:56,500 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:43:56,501 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:43:56,503 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:43:56,504 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:43:56,511 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:43:57,385 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:44:41,117 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:44:41,214 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:44:41,341 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:44:41,343 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:44:41,345 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:44:41,346 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:44:41,347 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:44:41,355 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:44:42,184 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:45:18,774 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:45:18,825 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:45:18,952 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:45:18,954 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:45:18,955 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:45:18,956 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:45:18,958 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:45:18,965 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:45:19,852 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:47:42,972 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:47:43,034 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:47:43,160 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:47:43,162 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:47:43,163 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:47:43,164 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:47:43,165 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:47:43,173 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:47:44,033 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:48:37,244 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:48:37,329 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:48:37,474 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:48:37,477 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:48:37,478 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:48:37,479 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:48:37,480 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:48:37,488 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:48:38,323 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:51:25,036 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:51:25,070 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:51:25,195 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:51:25,198 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:51:25,200 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:51:25,201 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:51:25,202 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:51:25,210 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:51:26,094 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:52:29,878 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:52:29,907 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:52:30,035 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:52:30,037 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:52:30,038 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:52:30,039 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:52:30,041 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:52:30,048 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:52:30,943 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:54:42,159 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:54:42,190 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:54:42,314 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:54:42,316 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:54:42,318 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:54:42,319 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:54:42,320 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:54:42,328 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:54:43,227 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:55:35,640 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:55:35,680 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:55:36,473 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:55:36,476 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:55:36,478 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:55:36,480 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:55:36,481 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:55:36,489 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:55:36,736 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:56:37,832 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:56:37,890 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 20:56:38,015 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 20:56:38,017 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 20:56:38,018 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 20:56:38,020 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 20:56:38,021 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 20:56:38,028 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 20:56:38,909 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:01:49,206 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:01:49,251 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:01:49,711 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:01:49,713 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:01:49,715 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:01:49,716 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:01:49,717 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:01:49,725 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:01:50,279 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:13:21,994 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:13:22,060 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:13:22,188 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:13:22,190 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:13:22,191 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:13:22,193 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:13:22,194 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:13:22,201 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:13:23,077 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:14:31,451 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:14:31,532 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:14:31,663 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:14:31,665 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:14:31,666 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:14:31,667 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:14:31,669 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:14:31,677 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:14:32,537 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:18:18,928 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:18:18,994 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:18:19,123 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:18:19,126 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:18:19,127 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:18:19,129 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:18:19,130 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:18:19,138 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:18:19,990 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:18:43,321 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:18:43,326 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:18:43,786 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:18:43,789 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:18:43,790 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:18:43,791 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:18:43,792 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:18:43,800 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:18:44,387 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:20:08,365 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:20:08,491 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:20:08,619 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:20:08,621 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:20:08,623 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:20:08,624 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:20:08,625 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:20:08,632 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:20:09,464 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:21:10,955 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:21:11,070 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:21:11,197 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:21:11,199 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:21:11,201 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:21:11,202 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:21:11,204 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:21:11,212 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:21:12,026 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:22:04,475 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:22:04,557 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:22:04,686 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:22:04,688 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:22:04,690 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:22:04,691 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:22:04,692 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:22:04,700 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:22:05,551 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:22:27,394 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:22:27,468 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:22:27,931 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:22:27,934 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:22:27,935 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:22:27,937 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:22:27,938 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:22:27,945 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:22:28,470 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:23:41,610 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:23:41,622 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:23:41,752 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:23:41,754 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:23:41,755 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:23:41,757 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:23:41,758 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:23:41,765 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:23:42,684 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:25:32,248 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:25:32,308 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:25:32,433 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:25:32,435 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:25:32,437 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:25:32,438 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:25:32,439 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:25:32,447 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:25:33,325 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:26:07,875 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:26:07,911 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:26:08,036 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:26:08,039 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:26:08,040 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:26:08,041 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:26:08,042 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:26:08,050 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:26:08,940 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:30:55,987 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:30:56,045 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:30:56,172 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:30:56,174 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:30:56,176 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:30:56,177 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:30:56,178 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:30:56,186 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:30:57,049 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:31:59,956 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:31:59,992 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:32:00,119 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:32:00,121 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:32:00,123 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:32:00,124 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:32:00,125 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:32:00,133 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:32:01,028 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:33:48,892 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:33:48,907 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:33:49,035 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:33:49,037 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:33:49,038 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:33:49,040 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:33:49,041 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:33:49,048 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:33:49,955 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:35:35,899 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:35:36,021 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:35:36,146 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:35:36,148 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:35:36,150 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:35:36,152 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:35:36,153 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:35:36,161 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:35:36,964 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:36:14,168 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:36:14,204 - libertech_hand_driver.logger - INFO - Start log
+2024-04-25 21:36:14,664 - libertech_hand_driver.logger - INFO - qlim: [[-0.4    0.     0.     0.    -0.4    0.     0.     0.    -0.4    0.
+   0.     0.    -0.4    0.     0.     0.     0.     0.     0.     0.   ]
+ [ 0.4    2.09   1.744  1.744  0.4    2.09   1.744  1.744  0.4    1.744
+   1.744  1.744  0.4    1.6    1.744  1.744  1.9    1.332  1.744  1.744]]
+2024-04-25 21:36:14,667 - libertech_hand_driver.logger - INFO - qlim_act: [[-0.4    0.     0.    -0.4    0.     0.    -0.4    0.    -0.4    0.
+   0.     0.     0.   ]
+ [ 0.4    2.09   1.744  0.4    2.09   1.744  0.4    1.744  0.4    1.6
+   1.9    1.332  1.744]]
+2024-04-25 21:36:14,668 - libertech_hand_driver.logger - INFO - qname_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f14_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f24_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f33_joint', 'hand_right_f34_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f43_joint', 'hand_right_f44_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint', 'hand_right_f54_joint']
+2024-04-25 21:36:14,669 - libertech_hand_driver.logger - INFO - qname_act_: ['hand_right_f11_joint', 'hand_right_f12_joint', 'hand_right_f13_joint', 'hand_right_f21_joint', 'hand_right_f22_joint', 'hand_right_f23_joint', 'hand_right_f31_joint', 'hand_right_f32_joint', 'hand_right_f41_joint', 'hand_right_f42_joint', 'hand_right_f51_joint', 'hand_right_f52_joint', 'hand_right_f53_joint']
+2024-04-25 21:36:14,670 - libertech_hand_driver.logger - INFO - Using right hand
+2024-04-25 21:36:14,678 - libertech_hand_driver.logger - INFO - 使用位置模式
+2024-04-25 21:36:15,227 - libertech_hand_driver.logger - INFO - Using right hand

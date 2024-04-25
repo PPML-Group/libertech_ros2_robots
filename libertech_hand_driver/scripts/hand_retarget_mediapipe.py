@@ -71,7 +71,9 @@ class HandRetarget(Node):
             # self.hand_vision_tool.plot_hands(hand_positions)
             rot = np.array([[0,0,-1],[1,0,0],[0,-1,0]])
             hand_positions_rot = self.hand_vision_tool.transform_hand_pose(hand_positions['right'][0],rot)
-            ph = self.hand_vision_tool.extract_endpoints(hand_positions_rot)
+            # ph = self.hand_vision_tool.extract_endpoints(hand_positions_rot)
+            ph = [p for p in hand_positions_rot]
+            # self.get_logger().info(f'{hand_positions_rot.tolist()}')
             if self.ph_last is not None:
                 # 列表
                 ph = [self.filter_k * ph_i + (1 - self.filter_k) * ph_last_i for ph_i, ph_last_i in zip(ph, self.ph_last)]
@@ -97,7 +99,9 @@ class HandRetarget(Node):
     
     def timer_callback_retarget(self):
         if not self.ph_queue.empty():
-            self.q_retarget = self.hand.ik_e2q_retarget(self.ph_queue.get(), q_last=self.q_retarget)
+            ph = self.ph_queue.get()
+            ph_end = self.hand_vision_tool.extract_endpoints(ph)
+            self.q_retarget = self.hand.ik_e2q_retarget(ph, ph_end, q_last=self.q_retarget)
             
             # self.get_logger().info(f'q_retarget: {self.q_retarget}')
         msg = Float64MultiArray()

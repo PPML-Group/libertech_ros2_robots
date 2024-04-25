@@ -26,6 +26,7 @@ install(PROGRAMS
   scripts/hand_dynamic_joints.py
   scripts/hand_demo.py
   scripts/hand_retarget_mediapipe.py
+  scripts/cam_pub.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

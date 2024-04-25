@@ -46,6 +46,7 @@ def launch_setup(context, *args, **kwargs):
         name='hand_retarget_mediapipe',
         parameters=[{'urdf_file': urdf_file_gen}],
         output='screen',
+        emulate_tty=True,
     )
 
     nodes_to_start = [
