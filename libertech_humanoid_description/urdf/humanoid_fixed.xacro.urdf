@@ -260,10 +260,10 @@
           <format>R8G8B8</format>
           <!-- RGB_INT8 -->
         </image>
-        <clip>
-          <near>0.1</near>
-          <far>5</far>
-        </clip>
+        <!-- <clip>
+                            <near>0.1</near>
+                            <far>5</far>
+                        </clip> -->
         <distortion>
           <k1>0.0</k1>
           <k2>0.0</k2>
@@ -294,17 +294,17 @@
             <ty>0</ty>
           </projection>
         </lens>
-        <noise>
-          <type>gaussian</type>
-          <mean>0</mean>
-          <stddev>0.07</stddev>
-        </noise>
-        <depth_camera>
-          <clip>
-            <near>0.25</near>
-            <far>5</far>
-          </clip>
-        </depth_camera>
+        <!-- <noise>
+                            <type>gaussian</type>
+                            <mean>0</mean>
+                            <stddev>0.07</stddev>
+                        </noise>
+                        <depth_camera>
+                            <clip>
+                            <near>0.25</near>
+                            <far>5</far>
+                            </clip>
+                        </depth_camera> -->
         <!-- <optical_frame_id>$(arg prefix)$(arg camera_name)_camera_center_optical_frame</optical_frame_id> -->
       </camera>
       <!-- <ignition_frame_id>$(arg prefix)$(arg camera_name)_camera_center_optical_frame</ignition_frame_id> -->
@@ -1314,7 +1314,7 @@
           <param name="max">10</param>
         </command_interface> -->
       <state_interface name="position">
-        <param name="initial_value">-0.5</param>
+        <param name="initial_value">0.0</param>
       </state_interface>
       <state_interface name="velocity"/>
       <state_interface name="effort"/>

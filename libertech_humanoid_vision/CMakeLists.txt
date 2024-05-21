@@ -18,6 +18,7 @@ endforeach()
 
 install(PROGRAMS
   scripts/grasp_cube_aruco.py
+  scripts/get_aligned_image.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

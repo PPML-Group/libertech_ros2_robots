@@ -51,14 +51,14 @@ int main()
   Vec7 v0, a0, vf, af;
   Vec7 q0_r, q0_l, qf_r, qf_l;
   double T = 1;
-  double dt = 0.02;
+  double dt = 0.01;
 
   v0.setZero();
   a0.setZero();
   vf.setZero();
   af.setZero();
 
-  ArmSDK arm(-1, 1, false);
+  ArmSDK arm(0, 1, false);
   arm.init();
   usleep(1000);
 
@@ -83,13 +83,29 @@ int main()
   for (int i = 0; i < 1; i++)
   {
     Vec7 kp, kd, ki;
-    kp << 800, 800, 800, 800, 800, 800, 800;
-    kd << 1000, 1000, 1000, 1000, 1000, 1000, 1000;
+    // kp << 800, 800, 800, 800, 800, 800, 800;
+    // kd << 1000, 1000, 1000, 1000, 1000, 1000, 1000;
+    kd << 800, 800, 800, 800, 800, 800, 800;
+    kp << 1000, 1000, 1000, 1000, 1000, 1000, 1000;
     ki << 0, 0, 0, 0, 0, 0, 0;
-    arm.setKp(kp, i);
-    // arm.setKi(ki, i);
+    arm.setKp(kp, 0);
+    arm.setKi(ki, i);
   }
   sleep(1);
+
+  
+  std::ofstream outfile_r("q_traj_r.txt");
+  std::ofstream outfile_l("q_traj_l.txt");
+  if (outfile_r.is_open() && outfile_l.is_open())
+  {
+    outfile_r << std::fixed << std::setprecision(6);  // 设置输出格式，保留2位小数
+    outfile_l << std::fixed << std::setprecision(6);
+  }
+  else
+  {
+    std::cerr << "Unable to open file for writing!" << std::endl;
+    return 1;
+  }
 
   // while (1)
   // {
@@ -100,38 +116,371 @@ int main()
   //   std::cout << "左臂当前位置:" << q0_l.transpose() << std::endl;
   //   usleep(1000000);
   // }
-  T = 0.5;
-  std::vector<Vec7> q_traj;
-
-  q0_l.setZero();
-  qf_l.setZero();
-  arm.getQ(q0_l, 1);
-  qf_l << 0, 0, 0, 0, 0, 0, 30;
-  qf_l = qf_l * M_PI / 180;
-  q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
-
-  for (auto q : q_traj)
-  {
-    arm.setQ(q, 1);
-    // arm.setQ(q, 1);
-    usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
-  }
+  
+  std::vector<Vec7> q_traj_l, q_traj_r;
+  T = 3;
+  q0_r.setZero();
+  qf_r.setZero();
+  arm.getQ(q0_r, 0);
+  qf_r << 0, 0, 0, 0, 0, 0, 0;
+  qf_r = qf_r * M_PI / 180;
 
   q0_l.setZero();
   qf_l.setZero();
   arm.getQ(q0_l, 1);
   qf_l << 0, 0, 0, 0, 0, 0, 0;
   qf_l = qf_l * M_PI / 180;
-  q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
 
-  for (auto q : q_traj)
+  q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+  q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  for (int i=0;i<q_traj_l.size();i++)
   {
-    arm.setQ(q, 1);
-    // arm.setQ(q, 1);
+    arm.setQ(q_traj_r[i], 0);
+    arm.setQ(q_traj_l[i], 1);
     usleep(dt * 1000000);
-    // std::cout << "q:" << q.transpose() << std::endl;
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_r << std::setw(10) << q_traj_r[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_r << " ";
+      }
+    }
+    outfile_r << std::endl;
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_l << " ";
+      }
+    }
+    outfile_l << std::endl;
   }
+  usleep(200000);
+  std::cout << "初始化至零位" << std::endl;
+
+  // 抬臂
+  T = 4;
+  q0_r.setZero();
+  qf_r.setZero();
+  arm.getQ(q0_r, 0);
+  qf_r << 70, 60, 0, 0, 0, 0, 0;
+  qf_r = qf_r * M_PI / 180;
+  q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  for (int i=0;i<q_traj_r.size();i++)
+  {
+    arm.setQ(q_traj_r[i], 0);
+    usleep(dt * 1000000);
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_r << std::setw(10) << q_traj_r[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_r << " ";
+      }
+    }
+    outfile_r << std::endl;
+  }
+  usleep(1000000);
+
+  // 挥手
+  for (int x=0;x<2;x++){
+    T = 1;
+    q0_r.setZero();
+    qf_r.setZero();
+    arm.getQ(q0_r, 0);
+    // q0_r << 70, 60, 0, 0, 0, 0, 0;
+    // q0_r = q0_r * M_PI / 180;
+    qf_r << 70, 60, 0, 30, 0, 0, 0;
+    qf_r = qf_r * M_PI / 180;
+    q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+    for (int i=0;i<q_traj_r.size();i++)
+    {
+      arm.setQ(q_traj_r[i], 0);
+      usleep(dt * 1000000);
+
+      for (int j = 0; j < 7; ++j)
+      {
+        outfile_r << std::setw(10) << q_traj_r[i][j];  // 设置字段宽度为8个字符
+        if (j < 7 - 1)
+        {
+          outfile_r << " ";
+        }
+      }
+      outfile_r << std::endl;
+    }
+
+    T = 1;
+    q0_r.setZero();
+    qf_r.setZero();
+    arm.getQ(q0_r, 0);
+    // q0_r << 70, 60, 0, 30, 0, 0, 0;
+    // q0_r = q0_r * M_PI / 180;
+    qf_r << 70, 60, 0, 0, 0, 0, 0;
+    qf_r = qf_r * M_PI / 180;
+    q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+    for (int i=0;i<q_traj_r.size();i++)
+    {
+      arm.setQ(q_traj_r[i], 0);
+      usleep(dt * 1000000);
+
+      for (int j = 0; j < 7; ++j)
+      {
+        outfile_r << std::setw(10) << q_traj_r[i][j];  // 设置字段宽度为8个字符
+        if (j < 7 - 1)
+        {
+          outfile_r << " ";
+        }
+      }
+      outfile_r << std::endl;
+    }
+  }
+  
+  usleep(600000);
+
+  // 回到零位
+  T = 5;
+  q0_r.setZero();
+  qf_r.setZero();
+  arm.getQ(q0_r, 0);
+  qf_r << 0, 0, 0, 0, 0, 0, 0;
+  qf_r = qf_r * M_PI / 180;
+
+  q0_l.setZero();
+  qf_l.setZero();
+  arm.getQ(q0_l, 1);
+  qf_l << 0, 0, 0, 0, 0, 0, 0;
+  qf_l = qf_l * M_PI / 180;
+
+  q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+  q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  for (int i=0;i<q_traj_l.size();i++)
+  {
+    arm.setQ(q_traj_r[i], 0);
+    arm.setQ(q_traj_l[i], 1);
+    usleep(dt * 1000000);
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_r << std::setw(10) << q_traj_r[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_r << " ";
+      }
+    }
+    outfile_r << std::endl;
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_l << " ";
+      }
+    }
+    outfile_l << std::endl;
+  }
+  usleep(200000);
+  std::cout << "回到零位" << std::endl;
+  //////////////////////////////////////////////////////////////
+  // 抬臂
+  T = 4;
+  q0_l.setZero();
+  qf_l.setZero();
+  arm.getQ(q0_l, 1);
+  qf_l << 70, 60, 0, 0, 0, 0, 0;
+  qf_l = qf_l * M_PI / 180;
+  q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+  for (int i=0;i<q_traj_l.size();i++)
+  {
+    arm.setQ(q_traj_l[i], 1);
+    usleep(dt * 1000000);
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_l << " ";
+      }
+    }
+    outfile_l << std::endl;
+    
+  }
+  usleep(1000000);
+
+  // 挥手
+  for (int x=0;x<2;x++){
+    T = 1;
+    q0_l.setZero();
+    qf_l.setZero();
+    arm.getQ(q0_l, 1);
+    qf_l << 70, 60, 0, 30, 0, 0, 0;
+    qf_l = qf_l * M_PI / 180;
+    q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+    for (int i=0;i<q_traj_l.size();i++)
+    {
+      arm.setQ(q_traj_l[i], 1);
+      usleep(dt * 1000000);
+
+      for (int j = 0; j < 7; ++j)
+      {
+        outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+        if (j < 7 - 1)
+        {
+          outfile_l << " ";
+        }
+      }
+      outfile_l << std::endl;
+
+    }
+
+    T = 1;
+    q0_l.setZero();
+    qf_l.setZero();
+    arm.getQ(q0_l, 1);
+    qf_l << 70, 60, 0, 0, 0, 0, 0;
+    qf_l = qf_l * M_PI / 180;
+    q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+    for (int i=0;i<q_traj_l.size();i++)
+    {
+      arm.setQ(q_traj_l[i], 1);
+      usleep(dt * 1000000);
+
+      for (int j = 0; j < 7; ++j)
+      {
+        outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+        if (j < 7 - 1)
+        {
+          outfile_l << " ";
+        }
+      }
+      outfile_l << std::endl;
+
+    }
+  }
+  usleep(600000);
+
+  // 回到零位
+  T = 5;
+  q0_r.setZero();
+  qf_r.setZero();
+  arm.getQ(q0_r, 0);
+  qf_r << 0, 0, 0, 0, 0, 0, 0;
+  qf_r = qf_r * M_PI / 180;
+
+  q0_l.setZero();
+  qf_l.setZero();
+  arm.getQ(q0_l, 1);
+  qf_l << 0, 0, 0, 0, 0, 0, 0;
+  qf_l = qf_l * M_PI / 180;
+
+  q_traj_l = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+  q_traj_r = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+  for (int i=0;i<q_traj_l.size();i++)
+  {
+    arm.setQ(q_traj_r[i], 0);
+    arm.setQ(q_traj_l[i], 1);
+    usleep(dt * 1000000);
+
+    for (int j = 0; j < 7; ++j)
+    {
+      outfile_l << std::setw(10) << q_traj_l[i][j];  // 设置字段宽度为8个字符
+      if (j < 7 - 1)
+      {
+        outfile_l << " ";
+      }
+    }
+    outfile_l << std::endl;
+  }
+  usleep(200000);
+  std::cout << "回到零位" << std::endl;
+
+
+
+  // q0_l.setZero();
+  // qf_l.setZero();
+  // arm.getQ(q0_l, 1);
+  // qf_l << 0, 0, 0, 0, 0, 0, 30;
+  // qf_l = qf_l * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  // }
+
+  // q0_l.setZero();
+  // qf_l.setZero();
+  // arm.getQ(q0_l, 1);
+  // qf_l << 0, 0, 0, 0, 0, 0, 0;
+  // qf_l = qf_l * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  // }
+
+  // q0_l.setZero();
+  // qf_l.setZero();
+  // arm.getQ(q0_l, 1);
+  // qf_l << 0, 0, 0, 0, 0, 0, 0;
+  // qf_l = qf_l * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_l, v0, a0, qf_l, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 1);
+  //   // arm.setQ(q, 1);
+  //   usleep(dt * 1000000);
+  //   // std::cout << "q:" << q.transpose() << std::endl;
+  // }
+
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 0, 0, 0, 0, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   usleep(dt * 1000000);
+  // }
+  
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 0, 0, 30, 0, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   usleep(dt * 1000000);
+  // }
+
+  // q0_r.setZero();
+  // qf_r.setZero();
+  // arm.getQ(q0_r, 0);
+  // qf_r << 0, 0, 0, 0, 0, 0, 0;
+  // qf_r = qf_r * M_PI / 180;
+  // q_traj = planQuinticPolynomialTrajectory(q0_r, v0, a0, qf_r, vf, af, T, dt);
+
+  // for (auto q : q_traj)
+  // {
+  //   arm.setQ(q, 0);
+  //   usleep(dt * 1000000);
+  // }
 
   // q0_r.setZero();
   // qf_r.setZero();
@@ -287,7 +636,8 @@ int main()
   //     // std::cout << "q:" << q.transpose() << std::endl;
   //   }
   // }
-
+  outfile_r.close();
+  outfile_l.close();
   while (1)
   {
     sleep(1);

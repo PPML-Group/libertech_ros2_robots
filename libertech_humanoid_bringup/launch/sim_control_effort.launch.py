@@ -220,7 +220,7 @@ def launch_setup(context, *args, **kwargs):
             "-y",
             "0.0",
             "-z",
-            "1.0",
+            "0.6",
             "-R",
             "0.0",
             "-P",
@@ -259,6 +259,15 @@ def launch_setup(context, *args, **kwargs):
             "/zedm/depth_image@sensor_msgs/msg/Image[ignition.msgs.Image",
             "/zedm/points@sensor_msgs/msg/PointCloud2[ignition.msgs.PointCloudPacked",
             "/zedm/camera_info@sensor_msgs/msg/CameraInfo[ignition.msgs.CameraInfo",
+            # Odometry (IGN -> ROS2)
+            '/odom@nav_msgs/msg/Odometry[ignition.msgs.Odometry',
+            # TF (IGN -> ROS2)
+            '/odom/tf@tf2_msgs/msg/TFMessage[ignition.msgs.Pose_V',
+            # IMU (IGN -> ROS2)
+            '/imu@sensor_msgs/msg/Imu[ignition.msgs.IMU',
+        ],
+        remappings=[
+            ("/odom/tf", "tf"),
         ],
         output="screen",
     )

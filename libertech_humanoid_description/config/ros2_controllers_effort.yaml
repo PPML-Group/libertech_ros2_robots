@@ -52,20 +52,21 @@ arm_left_effort_controller:
       - arm_left_wrist_pitch_joint
       - arm_left_wrist_yaw_joint
    
+# 适配Pinocchio顺序
 movement_effort_controller:
   ros__parameters:
     joints:
-      - leg_right_hip_yaw_joint
-      - leg_right_hip_roll_joint
-      - leg_right_hip_pitch_joint
-      - leg_right_knee_pitch_joint
-      - leg_right_ankle_pitch_joint
+      - waist_yaw_joint
       - leg_left_hip_yaw_joint
       - leg_left_hip_roll_joint
       - leg_left_hip_pitch_joint
       - leg_left_knee_pitch_joint
       - leg_left_ankle_pitch_joint
-      - waist_yaw_joint
+      - leg_right_hip_yaw_joint
+      - leg_right_hip_roll_joint
+      - leg_right_hip_pitch_joint
+      - leg_right_knee_pitch_joint
+      - leg_right_ankle_pitch_joint      
 
 head_trajectory_controller:
   ros__parameters:

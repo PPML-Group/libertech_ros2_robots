@@ -11,6 +11,17 @@
     <plugin name='gz::sim::systems::UserCommands' filename='ignition-gazebo-user-commands-system'/>
     <plugin name='gz::sim::systems::SceneBroadcaster' filename='ignition-gazebo-scene-broadcaster-system'/>
     <plugin name='gz::sim::systems::Contact' filename='ignition-gazebo-contact-system'/>
+    <plugin name="gz::sim::systems::ApplyLinkWrench" filename="ignition-gazebo-apply-link-wrench-system"/>
+    <!-- <plugin
+      filename="ignition-gazebo-apply-link-wrench-system"
+      name="gz::sim::systems::ApplyLinkWrench">
+      <persistent>
+        <entity_name>obj_000005</entity_name>
+        <entity_type>model</entity_type>
+        <force>0 0 0</force>
+        <torque>0 0 0</torque>
+      </persistent>
+    </plugin> -->
     <gravity>0 0 0</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
     <atmosphere type='adiabatic'/>
@@ -416,6 +427,21 @@
         model://International Space Station
       </uri>
       <pose>7.0 0.0 -2.5 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>false</static>
+      <uri>
+        model://YCB-V/obj_000005
+      </uri>
+      <pose>0.4 0.0 0.2 1.57 0.0 1.57</pose>
+      <!-- 需要关闭，不然无法抓取 -->
+      <!-- <plugin
+        filename="ignition-gazebo-velocity-control-system"
+        name="gz::sim::systems::VelocityControl">
+        <initial_linear>0.0 0 0</initial_linear>
+        <initial_angular>0.0 0.0 0.0</initial_angular>
+      </plugin> -->
     </include>
 
   </world>

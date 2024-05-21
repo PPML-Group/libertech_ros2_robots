@@ -496,7 +496,7 @@ class HandModelKinematics:
             
             loss_q = 2.5e-3 * np.linalg.norm(q[[1,2,4,5,7,9]]) \
                 + 5e-3 * np.linalg.norm(q[[0, 3, 6, 8]]) \
-                + 5e-4 * np.linalg.norm(q[[10,11]])
+                + 5e-3 * np.linalg.norm(q[[11]])
                             
             return loss_o+loss_t+loss_f+loss_q
 

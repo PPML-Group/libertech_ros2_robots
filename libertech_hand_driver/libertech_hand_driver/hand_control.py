@@ -151,7 +151,7 @@ class HandAPI:
                 await self.set_motor_target(i, 0, 0, -800*self.motor_direction_["all"][i])
             # elif i == 5 or i == 6 or i == 10:
             #     await self.set_motor_target(i, 0, 0, -3000*self.motor_direction_["all"][i])
-        await asyncio.sleep(4)
+        await asyncio.sleep(5)
         logger.info("回到零位")
                 
         # 清零编码器

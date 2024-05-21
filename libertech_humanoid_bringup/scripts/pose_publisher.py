@@ -40,7 +40,8 @@ class PosePublisher(Node):
         
         pose_right = PoseStamped()
         pose_right.header.stamp = self.get_clock().now().to_msg()
-        pose_right.header.frame_id = "base"
+        # pose_right.header.frame_id = "base"
+        pose_right.header.frame_id = "baseout"
         pose_right.pose.position.x = 0.55
         pose_right.pose.position.y = -0.2
         pose_right.pose.position.z = 0.27     
@@ -59,7 +60,8 @@ class PosePublisher(Node):
         
         pose_left = PoseStamped()
         pose_left.header.stamp = self.get_clock().now().to_msg()
-        pose_left.header.frame_id = "base"
+        # pose_left.header.frame_id = "base"
+        pose_right.header.frame_id = "baseout"
         pose_left.pose.position.x = 0.55
         pose_left.pose.position.y = 0.2
         pose_left.pose.position.z = 0.27     
@@ -77,15 +79,16 @@ class PosePublisher(Node):
         pose_left.pose.orientation.w = quat[3]
         
         self.right_publisher.publish(pose_right)
-        self.left_publisher.publish(pose_left)
+        # self.left_publisher.publish(pose_left)
+        # self.left_publisher.publish(pose_left)
         self.get_logger().info(f"Published trajectory 1 succ")
-        time.sleep(5)
+        time.sleep(10)
         
         ## ############################################################
-        t0, t1 = 0, 5.0
+        t0, t1 = 0, 2.0
         theta0, theta1 = 0, np.pi/4
         r = 0.2
-        num_points = 100
+        num_points = 1000
         self.arc_planner = ArcTrajectory()
         ts, xs, ys, thetas = self.arc_planner.generate_trajectory(t0, t1,theta0, theta1, r, num_points)
         self.get_logger().info(f"xs:{xs}")
@@ -94,7 +97,7 @@ class PosePublisher(Node):
         for i in range(len(ts)):
             pose_right = PoseStamped()
             pose_right.header.stamp = self.get_clock().now().to_msg()
-            pose_right.header.frame_id = "base"
+            pose_right.header.frame_id = "baseout"
             pose_right.pose.position.x = 0.55
             pose_right.pose.position.y = -xs[i]
             pose_right.pose.position.z = 0.27+ys[i]  # Keep Z constant
@@ -115,7 +118,7 @@ class PosePublisher(Node):
             
             pose_left = PoseStamped()
             pose_left.header.stamp = self.get_clock().now().to_msg()
-            pose_left.header.frame_id = "base"
+            pose_left.header.frame_id = "baseout"
             pose_left.pose.position.x = 0.55
             pose_left.pose.position.y = xs[i]
             pose_left.pose.position.z = 0.27-ys[i]  # Keep Z constant
@@ -131,7 +134,7 @@ class PosePublisher(Node):
             pose_left.pose.orientation.w = quaternion_left[3]
             
             self.right_publisher.publish(pose_right)
-            self.left_publisher.publish(pose_left)
+            # self.left_publisher.publish(pose_left)
             
             time.sleep((t1-t0)/num_points)
         self.get_logger().info(f"Published trajectory 2 succ")

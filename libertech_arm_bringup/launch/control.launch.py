@@ -157,15 +157,27 @@ def launch_setup(context, *args, **kwargs):
     arm_right_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_right_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_right_trajectory_controller", "--inactive", "-c", "/controller_manager"],
     )
     
     arm_left_traj_controller_spawner = Node(
         package="controller_manager",
         executable="spawner",
-        arguments=["arm_left_trajectory_controller", "-c", "/controller_manager"],
+        arguments=["arm_left_trajectory_controller", "--inactive", "-c", "/controller_manager"],
     )
     
+    ####   cartesian_motion
+    arm_right_cartesian_motion_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_right_cartesian_motion_controller",  "-c", "/controller_manager"],
+    )
+    
+    arm_left_cartesian_motion_controller_spawner = Node(
+        package="controller_manager",
+        executable="spawner",
+        arguments=["arm_left_cartesian_motion_controller",  "-c", "/controller_manager"],
+    )
 
     nodes_to_start = [
         control_node,
@@ -173,6 +185,8 @@ def launch_setup(context, *args, **kwargs):
         joint_state_broadcaster_spawner,
         arm_right_traj_controller_spawner,
         arm_left_traj_controller_spawner,
+        arm_right_cartesian_motion_controller_spawner,
+        arm_left_cartesian_motion_controller_spawner,
         delay_rviz_after_joint_state_broadcaster_spawner,
     ]
 

@@ -3,7 +3,7 @@
 <robot name="arm" xmlns:xacro="http://www.ros.org/wiki/xacro">
     <!-- add arms names prefixes -->
     <xacro:arg name="prefix"  default="" />
-    <xacro:arg name="use_hand" default="false" />
+    <xacro:arg name="use_hand" default="true" />
     <xacro:arg name="use_gripper" default="false" />
     <xacro:arg name="use_fake_hardware" default="false" />
     <xacro:arg name="sim_ignition" default="false" />
@@ -47,14 +47,14 @@
     <xacro:if value="$(arg use_camera)">
         <link name="$(arg prefix)head_camera_zedm" />
         <joint name="$(arg prefix)head_camera_zedm_joint" type="fixed">
-            <origin xyz="0.03 -0.08 0.0" rpy="${pi/2} 0 0.2" />
+            <origin xyz="0.0 0.0 0.4" rpy="0.0 0.0 0.0" />
             <parent link="$(arg prefix)baseout" />
             <child  link="$(arg prefix)head_camera_zedm" />
         </joint>
 
         <link name="$(arg prefix)head_camera_zedm_optical_frame"/>
         <joint name="$(arg prefix)head_camera_zedm_optical_joint" type="fixed">
-            <origin xyz="0 0 0" rpy="-${pi/2} 0.0 -${pi/2}"/>
+            <origin xyz="0 0 0" rpy="-${pi/2+0.2} 0.0 -${pi/2}"/>
             <parent link="$(arg prefix)head_camera_zedm"/>
             <child link="$(arg prefix)head_camera_zedm_optical_frame"/>
         </joint>

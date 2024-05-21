@@ -208,7 +208,7 @@ int ArmSDK::init()
   Vec7 dir_r, dir_l;
   // dir_l <<-1, 1,-1,-1,-1,-1,-1;
   dir_r << 1,-1, 1, 1, 1, 1, -1;
-  dir_l << 1, 1, 1, 1, 1, 1, 1; 
+  dir_l << -1, 1, -1, -1, -1, -1, 1; 
   dir_.push_back(dir_r);
   dir_.push_back(dir_l);
 
@@ -250,8 +250,8 @@ int ArmSDK::doSendReceive()
       {
         // 先设置kp,kdstd
         ret = sendKp(cid);
-        ret = sendKd(cid);
-        ret = sendKi(cid);
+        // ret = sendKd(cid);
+        // ret = sendKi(cid);
         ret = sendQ(cid);
       }
       else if (mode_ == "velocity")
@@ -316,14 +316,14 @@ int ArmSDK::doSendReceive()
   // }
   // std::cout << std::endl;
 
-  std::cout << "qm[1]: ";
-  {
-    for (auto q : data_[1]->q)
-    {
-      std::cout << q << " ";
-    }
-  }
-  std::cout << std::endl;
+  // std::cout << "qm[1]: ";
+  // {
+  //   for (auto q : data_[1]->q)
+  //   {
+  //     std::cout << q << " ";
+  //   }
+  // }
+  // std::cout << std::endl;
 
   auto finish = std::chrono::high_resolution_clock::now();
   auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(finish - start);

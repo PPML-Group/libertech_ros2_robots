@@ -70,7 +70,7 @@ hardware_interface::CallbackReturn LibertechArmInterfaceHardware::on_init(const 
   if (has_right_ && has_left_)
   {
     actuator_count_ = 14;
-    armSDK_ = new ArmSDK(0, -1, false);// TODO
+    armSDK_ = new ArmSDK(0, 1, false);// TODO
   }
   else if (has_right_)
   {
