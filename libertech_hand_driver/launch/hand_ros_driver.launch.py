@@ -102,7 +102,7 @@ def generate_launch_description():
             description="Type of hand",
             choices=["right", "left"],
         )
-    )    
+    )
     declared_arguments.append(
         DeclareLaunchArgument(
             "hand_ip",

@@ -32,8 +32,58 @@
         </link>
         <gazebo reference="${prefix}${imu_name}">
             <material>Gazebo/Orange</material>
+            <sensor name="imu" type="imu">
+                <always_on>1</always_on>
+                <update_rate>200</update_rate>
+                <visualize>true</visualize>
+                <topic>imu</topic>
+                <ignition_frame_id>${prefix}${imu_name}</ignition_frame_id>
+                <imu>
+                    <angular_velocity>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>2e-4</stddev>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>2e-4</stddev>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>2e-4</stddev>
+                        </noise>
+                        </z>
+                    </angular_velocity>
+                    <linear_acceleration>
+                        <x>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1.7e-2</stddev>
+                        </noise>
+                        </x>
+                        <y>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1.7e-2</stddev>
+                        </noise>
+                        </y>
+                        <z>
+                        <noise type="gaussian">
+                            <mean>0.0</mean>
+                            <stddev>1.7e-2</stddev>
+                        </noise>
+                        </z>
+                    </linear_acceleration>
+                </imu>
+            </sensor>
         </gazebo>
         <gazebo reference="${prefix}${imu_name}_joint">
+            <preserveFixedJoint>true</preserveFixedJoint>
             <disableFixedJointLumping>true</disableFixedJointLumping>
         </gazebo>
     </xacro:macro>
