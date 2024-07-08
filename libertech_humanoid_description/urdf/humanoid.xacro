@@ -296,6 +296,7 @@
               <odom_publish_frequency>50</odom_publish_frequency>
               <odom_topic>/odom</odom_topic>
               <odom_frame>odom</odom_frame>
+              <dimensions>3</dimensions>
               <robot_base_frame>$(arg prefix)base</robot_base_frame>
               <tf_topic>/odom/tf</tf_topic>
             </plugin>
